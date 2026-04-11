@@ -1,0 +1,22 @@
+# token-savior ignore patterns
+# Public/safe data that should NOT trigger warnings
+
+# Public contact information
+designedbyrishab@gmail.com
+designedbyrish@gmail.com
+
+# Public social media & portfolio links
+instagram.com/designedbyrish
+linkedin.com/in/designedbyrish
+behance.net/designedbyrish
+twitter.com/designedbyrish
+
+# Public website URLs
+designedbyrish.com
+www.designedbyrish.com
+
+# Public schema markup & metadata
+@context
+@type
+@id
+schema.org

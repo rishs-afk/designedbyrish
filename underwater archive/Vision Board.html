@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes From the Deep — A Personal Collection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #fff;
+            --zinc-900: #18181b;
+            --panel-border: rgba(24, 24, 27, 0.16);
+            --story-space: clamp(1rem, 2.2vw, 2rem);
+        }
+        body {
+            background-color: var(--bg);
+            font-family: 'Inter', sans-serif;
+            overflow-x: visible;
+            cursor: none;
+        }
+        .font-serif { font-family: 'Inter', sans-serif; }
+        
+        /* Gallery Layout */
+        #gallery-section { 
+            height: 320vh;
+            position: relative; 
+            background: #fff;
+        }
+
+        #gallery-viewport {
+            perspective: 1200px;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(147,197,253,0.3) 0.5px, transparent 0.5px),
+                linear-gradient(90deg, rgba(147,197,253,0.3) 0.5px, transparent 0.5px),
+                #fff;
+            background-size: 120px 120px;
+            background-position: center center;
+            z-index: 10;
+            overflow: hidden;
+            transform: scale(2);
+            transform-origin: center center;
+        }
+
+        #cylinder-world {
+            position: absolute;
+            top: 4%;
+            transform-style: preserve-3d;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        #central-title {
+            position: absolute;
+            top: 54%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(-100px);
+            z-index: 5;
+            pointer-events: none;
+            text-align: center;
+            width: 100%;
+            transform-style: preserve-3d;
+        }
+
+        #central-title h1 {
+            font-size: clamp(3rem, 12vw, 8rem);
+            color: var(--zinc-900);
+            letter-spacing: -0.04em;
+            line-height: 0.85;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        #central-title .subtitle {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        #central-title .divider {
+            height: 1px;
+            width: 3rem;
+            background: rgba(24, 24, 27, 0.1);
+        }
+
+        #central-title .label {
+            font-size: 9px;
+            letter-spacing: 1.4em;
+            color: rgba(24, 24, 27, 0.5);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .image-card {
+            position: absolute;
+            transform-style: preserve-3d;
+            pointer-events: auto;
+        }
+
+        .image-wrapper {
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            background: transparent;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: auto;
+            height: auto;
+            max-width: 280px;
+            max-height: 380px;
+            display: block;
+            pointer-events: none;
+            border-radius: 1rem;
+            filter: grayscale(10%);
+            will-change: transform;
+        }
+
+        .ui-chrome {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .ui-chrome .header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: rgba(24, 24, 27, 0.6);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .ui-chrome .footer {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .scroll-prompt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: center;
+            color: rgba(24, 24, 27, 0.5);
+        }
+
+        .scroll-prompt p {
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .scroll-icon {
+            color: rgba(24, 24, 27, 0.4);
+            animation: bounce 2s infinite;
+            stroke: rgba(24, 24, 27, 0.4);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); opacity: 0.6; }
+            50% { transform: translateY(8px); opacity: 1; }
+        }
+
+        #video-container-fixed { 
+            height: 1400vh; 
+            position: relative; 
+            z-index: 20; 
+            background: #000;
+        }
+
+        #video-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: visible;
+        }
+
+        #video-scroll-area {
+            display: flex;
+            height: 100vh;
+            will-change: transform;
+        }
+        
+        .video-slide { 
+            flex: 0 0 auto;
+            height: 100vh; 
+            aspect-ratio: 9 / 16;
+            position: relative; 
+            overflow: hidden;
+            contain: layout style paint;
+        }
+
+        .slide-counter {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: rgba(255,255,255,0.35);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            z-index: 3;
+            pointer-events: none;
+        }
+        
+        video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            opacity: 1; 
+        }
+
+        .bloom-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: calc(100% - 3rem);
+            color: white;
+            text-align: center;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.92);
+            filter: blur(6px);
+            z-index: 2;
+            pointer-events: none;
+            transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        transform 1s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        filter 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .video-slide:hover .bloom-text {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            filter: blur(0px);
+        }
+
+        .bloom-text h2 {
+            margin: 0;
+            font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+            line-height: 1.6;
+            letter-spacing: 0.08em;
+            font-family: 'EB Garamond', serif;
+            font-weight: 400;
+            font-style: italic;
+            text-transform: none;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.32);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+
+
+        /* ======= Scroll Grid Section ======= */
+        #scroll-grid-section {
+            position: relative;
+            z-index: 20;
+            background: #fff;
+            overflow: visible;
+        }
+
+        .sg-stage {
+            min-height: 400vh;
+            position: relative;
+        }
+
+        .sg-content {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            place-items: center;
+            align-content: center;
+            position: sticky;
+            top: 0;
+            overflow: visible;
+        }
+
+        .sg-grid {
+            --sg-offset: 0;
+            --sg-gap: clamp(4px, 2vw, 20px);
+            width: min(2000px, calc(100vw - 4rem), calc((100vh - 4rem) * 28 / 15));
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(3, auto);
+            gap: var(--sg-gap);
+            margin: 0 auto;
+            align-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+        }
+
+        .sg-grid > .sg-layer {
+            display: grid;
+            grid-column: 1 / -1;
+            grid-row: 1 / -1;
+            grid-template-columns: subgrid;
+            grid-template-rows: subgrid;
+        }
+
+        .sg-grid > .sg-layer:nth-of-type(1) div:nth-of-type(odd) { grid-column: 1; }
+        .sg-grid > .sg-layer:nth-of-type(1) div:nth-of-type(even) { grid-column: -2; }
+        .sg-grid > .sg-layer:nth-of-type(2) div:nth-of-type(odd) { grid-column: calc(2 + var(--sg-offset)); }
+        .sg-grid > .sg-layer:nth-of-type(2) div:nth-of-type(even) { grid-column: calc(-3 - var(--sg-offset)); }
+        .sg-grid > .sg-layer:nth-of-type(3) div:nth-of-type(odd) { grid-column: calc(3 + var(--sg-offset)); }
+        .sg-grid > .sg-layer:nth-of-type(3) div:nth-of-type(even) { grid-column: calc(-4 - var(--sg-offset)); }
+        .sg-grid > .sg-layer:nth-of-type(4) div:first-of-type { grid-column: calc(4 + var(--sg-offset)); grid-row: 1; }
+        .sg-grid > .sg-layer:nth-of-type(4) div:last-of-type { grid-column: calc(4 + var(--sg-offset)); grid-row: -1; }
+
+        .sg-grid img {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            border-radius: 1rem;
+        }
+
+        .sg-grid .sg-scaler {
+            position: relative;
+            grid-area: 2 / calc(4 + var(--sg-offset));
+            z-index: 2;
+        }
+
+        .sg-scaler img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            object-fit: cover;
+            border-radius: 1rem;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sg-fin {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #fff;
+            color: var(--zinc-900);
+        }
+
+        .sg-fin-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            transition: opacity 1.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        transform 1.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .sg-fin-inner.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .sg-fin h2 {
+            font-size: clamp(4rem, 12vw, 12rem);
+            line-height: 0.85;
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            margin: 0;
+        }
+
+        .back-to-surface {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(24, 24, 27, 0.5);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, opacity 0.5s ease;
+            pointer-events: auto;
+            cursor: none;
+            z-index: 100;
+            opacity: 0;
+        }
+
+        .back-to-surface .surface-icon {
+            color: rgba(24, 24, 27, 0.4);
+            stroke: rgba(24, 24, 27, 0.4);
+            animation: bounce-up 2s infinite;
+        }
+
+        @keyframes bounce-up {
+            0%, 100% { transform: translateY(0); opacity: 0.6; }
+            50% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        .back-to-surface.is-visible {
+            opacity: 1;
+        }
+
+        .back-to-surface:hover {
+            color: rgba(24, 24, 27, 0.8);
+        }
+
+        .crosshair-h, .crosshair-v {
+            display: none;
+        }
+
+        .turtle-hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background: transparent;
+        }
+        .turtle-hero .turtle-video-wrapper {
+            aspect-ratio: 16 / 9;
+            width: 90vw;
+            max-width: 1600px;
+            max-height: 90vh;
+            border-radius: 2.5rem;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .turtle-hero video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0;
+            background: transparent;
+            border: none;
+            display: block;
+        }
+        .turtle-hero .turtle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .turtle-hero .turtle-text h2 {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(1.4rem, 2.8vw, 2.6rem);
+            line-height: 1.6;
+            color: #fff;
+            opacity: 0;
+            filter: blur(8px);
+            transform: scale(0.96);
+            transition: opacity 1.2s ease, filter 1.4s ease, transform 1.4s ease;
+        }
+        .turtle-hero .turtle-text.is-visible h2 {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+        }
+        .crosshair-dot {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.5);
+            transform: translate(-50%, -50%);
+            transition: background 0.3s ease;
+        }
+        .crosshair-invert .crosshair-dot {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 600px) {
+            .sg-grid {
+                grid-template-columns: repeat(5, 1fr);
+                --sg-offset: -1;
+            }
+            .sg-grid > .sg-layer:nth-of-type(1) {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="gallery-viewport">
+        <div id="cylinder-world">
+            <div id="central-title">
+                <h1>
+                    Beneath<br />
+                    <span style="font-style: italic; font-weight: 300; opacity: 0.6;">the Surface</span>
+                </h1>
+                <div class="subtitle">
+                    <div class="divider"></div>
+                    <p class="label">A Visual Dive Log</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="static-ui" class="ui-chrome">
+        <div class="header">
+            <div>APRIL 2026 / FIELD NOTES</div>
+            <div>JOURNAL ENTRY NO. 001</div>
+        </div>
+        <div class="footer">
+            <div class="scroll-prompt">
+                <p>scroll to submerge</p>
+                <svg class="scroll-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section id="gallery-section"></section>
+
+        <section id="video-container-fixed">
+            <div id="video-sticky">
+            <div id="video-scroll-area">
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_9.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>What was once a vessel is now a home.<br>The ocean wastes very little.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_3.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>Above, the world carries on.<br>Down here, it simply doesn't matter.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_14.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>Humans left this here.<br>Nature has been making it its own ever since.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_7.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>The light comes from somewhere far above.<br>It always does.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_11.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>He has lived in this particular anemone<br>his entire life. He sees no reason to leave.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_1.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>In the shallows,<br>life moves in formation.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_16.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>A brief exchange between two creatures,<br>neither of whom is in any hurry.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_5.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>A single reef can hold more living things<br>than most forests ever will.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_12.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>Every breath released becomes a small reminder —<br>somewhere above this, there is air.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_18.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>And so, as they always must,<br>the diver returns to the world above —<br>changed, in ways that are difficult to explain.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_6.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>And then — nothing.<br>Just open water, in every direction.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_10.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>Up close, the reef is not one thing.<br>It is thousands of things, quietly coexisting.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_17.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>Down here,<br>urgency is a surface concept.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_8.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>Beneath the noise of the surface,<br>something extraordinary is getting on with things.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_15.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>She has passed through here before.<br>She will pass through again.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_2.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>Deeper, the reef reveals itself slowly —<br>as if deciding whether to trust you.</h2></div></div>
+                <div class="video-slide"><video muted playsinline preload="none"><source src="assets/videos/vid_13.webm" type="video/webm"></video><div class="video-overlay"></div><div class="bloom-text"><h2>The seafloor, when empty, is not absence.<br>It is patience.</h2></div></div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Scroll Grid Reveal -->
+        <section id="scroll-grid-section">
+            <section class="sg-stage">
+                <div class="sg-content">
+                    <div class="sg-grid">
+                        <div class="sg-layer">
+                            <div><img src="assets/images/img_1.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_2.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_3.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_4.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_5.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_6.webp" alt="" loading="lazy" decoding="async" /></div>
+                        </div>
+                        <div class="sg-layer">
+                            <div><img src="assets/images/img_7.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_8.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_9.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_10.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_11.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_12.webp" alt="" loading="lazy" decoding="async" /></div>
+                        </div>
+                        <div class="sg-layer">
+                            <div><img src="assets/images/img_13.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_15.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_16.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_17.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_18.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_19.webp" alt="" loading="lazy" decoding="async" /></div>
+                        </div>
+                        <div class="sg-layer">
+                            <div><img src="assets/images/img_20.webp" alt="" loading="lazy" decoding="async" /></div>
+                            <div><img src="assets/images/img_21.webp" alt="" loading="lazy" decoding="async" /></div>
+                        </div>
+                        <div class="sg-scaler">
+                            <img src="assets/images/img_14.webp" alt="" loading="lazy" decoding="async" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="turtle-carousel-fin-combined" style="height: 100vh; min-height: 100vh; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6vw;">
+                <style>
+                #turtle-carousel-fin-combined {
+                    height: 100vh !important;
+                    min-height: 100vh !important;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    gap: 6vw;
+                }
+                .circular-carousel-viewport-center {
+                    flex: 0 0 50vw;
+                    max-width: 50vw;
+                    min-width: 320px;
+                    height: 80vh;
+                    min-height: 220px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    z-index: 1;
+                }
+                .circular-carousel-wrapper {
+                    width: 100%;
+                    height: 100%;
+                    max-width: 480px;
+                    max-height: 80vh;
+                    perspective: 1800px;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: grab;
+                    user-select: none;
+                    touch-action: none;
+                    background: none;
+                    z-index: 2;
+                }
+                .circular-carousel-wrapper.dragging { cursor: grabbing; }
+                .circular-carousel-scene {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    transform-style: preserve-3d;
+                    will-change: transform;
+                }
+                .circular-carousel-item {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    width: 380px;
+                    height: 215px;
+                    margin-left: -190px;
+                    margin-top: -107px;
+                    border-radius: 2.5rem;
+                    overflow: hidden;
+                    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.22);
+                    background: #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: filter 0.3s, box-shadow 0.3s;
+                }
+                .circular-carousel-item video {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 2.5rem;
+                    background: transparent;
+                    border: none;
+                    display: block;
+                    box-shadow: none;
+                }
+                .sg-fin {
+                    flex: 0 0 auto;
+                    max-width: 45vw;
+                    min-width: 220px;
+                    height: 100vh;
+                    min-height: 220px;
+                    background: none;
+                    color: var(--zinc-900);
+                    box-shadow: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1;
+                }
+                .sg-fin-inner {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 2rem;
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.97);
+                    transition: opacity 1.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+                                transform 1.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+                    margin-left: 0;
+                }
+                .sg-fin-inner.is-visible {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+                .sg-fin h2 {
+                    font-size: clamp(4rem, 12vw, 12rem);
+                    line-height: 0.85;
+                    font-weight: 500;
+                    letter-spacing: -0.05em;
+                    margin: 0;
+                }
+                @media (max-width: 1200px) {
+                    #turtle-carousel-fin-combined { flex-direction: column; }
+                    .circular-carousel-viewport-center, .sg-fin { max-width: 100vw; width: 100vw; min-width: 0; height: 50vh; min-height: 120px; }
+                    .sg-fin-inner { margin-left: 0; align-items: center; }
+                }
+                @media (max-width: 700px) {
+                    .circular-carousel-viewport-center, .sg-fin { height: 40vh; min-height: 80px; }
+                    .circular-carousel-item { width: 90vw; height: 30vw; min-width: 80px; min-height: 40px; margin-left: -45vw; margin-top: -15vw; }
+                }
+                </style>
+                <div class="circular-carousel-viewport-center">
+                    <div class="circular-carousel-wrapper" id="turtle-circular-carousel">
+                        <div class="circular-carousel-scene" id="turtle-carousel-scene"></div>
+                    </div>
+                </div>
+                <div class="sg-fin" id="sg-fin">
+                    <div class="sg-fin-inner">
+                        <div style="display: flex; align-items: baseline; gap: 0.5em;">
+                            <h2>fin.</h2>
+                            <p style="font-size: 1rem; font-weight: 400; letter-spacing: 0.05em; opacity: 0.5;">(pun intended)</p>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                (function() {
+                    const CONFIG = {
+                        radius: 400,
+                        rotationSpeed: 0.18,
+                        tiltAngle: -18,
+                        inertiaDamping: 0.94,
+                    };
+                    const VIDEOS = [
+                            { src: "assets/videos/custom_5.webm", type: "video/webm" },
+                            { src: "assets/videos/custom_1.webm", type: "video/webm" },
+                            { src: "assets/videos/custom_2.webm", type: "video/webm" },
+                            { src: "assets/videos/custom_3.webm", type: "video/webm" },
+                            { src: "assets/videos/custom_4.webm", type: "video/webm" },
+                    ];
+                    let rotation = 0;
+                    let velocity = 0;
+                    let isDragging = false;
+                    let lastX = 0;
+                    const scene = document.getElementById("turtle-carousel-scene");
+                    const wrapper = document.getElementById("turtle-circular-carousel");
+                    const angleStep = 360 / VIDEOS.length;
+                    // Create video items
+                    VIDEOS.forEach((vid, i) => {
+                        const item = document.createElement("div");
+                        item.className = "circular-carousel-item";
+                        item.style.transform = `rotateY(${angleStep * i}deg) translateZ(${CONFIG.radius}px) rotateX(${CONFIG.tiltAngle}deg)`;
+                        const video = document.createElement("video");
+                        video.muted = true;
+                        video.playsInline = true;
+                        video.preload = "none";
+                        video.src = vid.src;
+                        video.type = vid.type;
+                        video.setAttribute('tabindex', '-1');
+                        item.appendChild(video);
+                        scene.appendChild(item);
+                    });
+                    const items = Array.from(scene.children);
+                    // Drag logic
+                    wrapper.addEventListener("pointerdown", (e) => {
+                        isDragging = true;
+                        lastX = e.clientX;
+                        wrapper.classList.add("dragging");
+                        wrapper.setPointerCapture(e.pointerId);
+                    });
+                    wrapper.addEventListener("pointermove", (e) => {
+                        if (!isDragging) return;
+                        const dx = e.clientX - lastX;
+                        lastX = e.clientX;
+                        velocity = dx * 0.5;
+                        rotation += dx * 0.5;
+                    });
+                    function endDrag() {
+                        isDragging = false;
+                        wrapper.classList.remove("dragging");
+                    }
+                    wrapper.addEventListener("pointerup", endDrag);
+                    wrapper.addEventListener("pointercancel", endDrag);
+                    // Play only the frontmost video
+                    function updateActiveVideo() {
+                        // All videos play, no brightness/dark effect
+                        items.forEach((item) => {
+                            const video = item.querySelector('video');
+                            if (!video) return;
+                            if (video.preload === 'none') { video.preload = 'metadata'; video.load(); }
+                            if (video.paused) video.play().catch(()=>{});
+                            item.style.filter = '';
+                            item.style.zIndex = 1;
+                        });
+                    }
+                    function animate() {
+                        if (!isDragging) {
+                            rotation += CONFIG.rotationSpeed;
+                            if (Math.abs(velocity) > 0.01) {
+                                rotation += velocity;
+                                velocity *= CONFIG.inertiaDamping;
+                            }
+                        }
+                        scene.style.transform = `rotateY(${rotation}deg)`;
+                        updateActiveVideo();
+                        requestAnimationFrame(animate);
+                    }
+                    animate();
+                    // Pause all videos when leaving the section
+                    const observer = new IntersectionObserver(function(entries) {
+                        entries.forEach(function(entry) {
+                            if (!entry.isIntersecting) {
+                                items.forEach(item => {
+                                    const v = item.querySelector('video');
+                                    if (v) { v.pause(); v.currentTime = 0; }
+                                });
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    observer.observe(wrapper);
+                })();
+                // Fin section entrance animation (add/remove is-visible)
+                var finInner = document.querySelector('#turtle-carousel-fin-combined .sg-fin-inner');
+                if (finInner) {
+                    var finObs = new IntersectionObserver(function(entries) {
+                        entries.forEach(function(entry) {
+                            if (entry.isIntersecting) {
+                                finInner.classList.add('is-visible');
+                            } else {
+                                finInner.classList.remove('is-visible');
+                            }
+                        });
+                    }, { threshold: 0.8, rootMargin: '0px' });
+                    finObs.observe(document.getElementById('sg-fin'));
+                }
+                </script>
+            </section>
+        </section>
+    </main>
+    <a class="back-to-surface" id="back-to-surface">
+        <svg class="surface-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        <span>back to the surface</span>
+    </a>
+    <div id="crosshair-wrap">
+        <div class="crosshair-h" id="crosshair-h"></div>
+        <div class="crosshair-v" id="crosshair-v"></div>
+        <div class="crosshair-dot" id="crosshair-dot"></div>
+    </div>
+
+    <script>
+            // ===== Turtle Carousel Sticky Scroll =====
+            (function() {
+                const section = document.getElementById('turtle-carousel-fixed');
+                const sticky = document.getElementById('turtle-carousel-sticky');
+                const track = sticky ? sticky.querySelector('.turtle-carousel-track') : null;
+                const slides = track ? Array.from(track.children) : [];
+                if (!section || !sticky || !track || slides.length === 0) return;
+
+                // Set heights for scroll effect
+                const slideCount = slides.length;
+                const vh = window.innerHeight;
+                section.style.height = (slideCount * 100) + 'vh';
+                sticky.style.position = 'sticky';
+                sticky.style.top = '0';
+                sticky.style.height = '100vh';
+                sticky.style.overflow = 'hidden';
+                track.style.display = 'flex';
+                track.style.alignItems = 'center';
+                track.style.justifyContent = 'center';
+                track.style.height = '100vh';
+                track.style.transition = 'none';
+                track.style.willChange = 'transform';
+                slides.forEach(slide => {
+                    slide.style.flex = '0 0 80vw';
+                    slide.style.height = '80vh';
+                    slide.style.display = 'flex';
+                    slide.style.alignItems = 'center';
+                    slide.style.justifyContent = 'center';
+                    slide.style.margin = '0 2vw';
+                    slide.style.maxWidth = '100%';
+                    slide.style.boxSizing = 'border-box';
+                });
+                // Responsive video sizing
+                slides.forEach(slide => {
+                    const video = slide.querySelector('video');
+                    if (video) {
+                        video.style.width = '100%';
+                        video.style.height = '100%';
+                        video.style.objectFit = 'cover';
+                        video.style.borderRadius = '2.5rem';
+                        video.style.boxShadow = '0 8px 40px rgba(0,0,0,0.18)';
+                        video.style.background = 'transparent';
+                        video.style.border = 'none';
+                        video.style.display = 'block';
+                        video.style.maxWidth = '100%';
+                    }
+                });
+
+                // Scroll logic
+                function updateCarousel() {
+                    const rect = section.getBoundingClientRect();
+                    const scrollable = section.offsetHeight - vh;
+                    const scrolled = Math.min(Math.max(-rect.top, 0), scrollable);
+                    const progress = scrollable > 0 ? scrolled / scrollable : 0;
+                    const totalWidth = track.scrollWidth;
+                    const viewportWidth = window.innerWidth;
+                    const maxTranslate = totalWidth - viewportWidth;
+                    const tx = progress * maxTranslate;
+                    track.style.transform = `translateX(${-tx}px)`;
+
+                    // Find the active slide (centered in viewport)
+                    let minDist = Infinity, activeIdx = 0;
+                    slides.forEach((slide, idx) => {
+                        const slideRect = slide.getBoundingClientRect();
+                        const slideCenter = slideRect.left + slideRect.width / 2;
+                        const dist = Math.abs(slideCenter - window.innerWidth / 2);
+                        if (dist < minDist) {
+                            minDist = dist;
+                            activeIdx = idx;
+                        }
+                    });
+                    // Play only the active video
+                    slides.forEach((slide, idx) => {
+                        const video = slide.querySelector('video');
+                        if (!video) return;
+                        if (idx === activeIdx) {
+                            if (video.paused) {
+                                video.preload = 'metadata';
+                                video.play().catch(()=>{});
+                            }
+                        } else {
+                            video.pause();
+                            video.currentTime = 0;
+                        }
+                    });
+                }
+                window.addEventListener('scroll', updateCarousel, { passive: true });
+                window.addEventListener('resize', updateCarousel);
+                setTimeout(updateCarousel, 100);
+            })();
+        const ITEM_COUNT = 21; 
+        const HERO_SCROLL_FACTOR = 0.48;
+        const cylinder = document.getElementById('cylinder-world');
+        const gallerySection = document.getElementById('gallery-section');
+        const viewport = document.getElementById('gallery-viewport');
+        const centralTitle = document.getElementById('central-title');
+        const staticUi = document.getElementById('static-ui');
+
+
+        const imageAssets = Array.from({ length: ITEM_COUNT }, (_, i) => `assets/images/img_${i + 1}.webp`);
+
+        const RADIUS = 1800;
+        
+        for(let i = 0; i < ITEM_COUNT; i++) {
+            const angle = (i / ITEM_COUNT) * Math.PI * 2;
+            const yOffset = (i % 2 === 0 ? 1 : -1) * 400 + (Math.random() - 0.5) * 200; 
+            
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            
+            const tx = Math.sin(angle) * RADIUS;
+            const tz = Math.cos(angle) * RADIUS;
+            const ry = (angle * (180 / Math.PI)); 
+            
+            card.style.transform = `translate3d(${tx}px, ${yOffset}px, ${tz}px) rotateY(${ry}deg) translate(-50%, -50%)`;
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'image-wrapper';
+            
+            const img = document.createElement('img');
+            img.src = imageAssets[i];
+            img.alt = "Underwater Specimen";
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.onerror = function() {
+                this.src = 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=400';
+            };
+            
+            wrapper.style.transform = `scale(1.2) rotate(${(Math.random()-0.5)*8}deg)`;
+            wrapper.appendChild(img);
+            card.appendChild(wrapper);
+            cylinder.appendChild(card);
+        }
+
+        let mouseX = 0, mouseY = 0, targetRotY = 0, targetRotX = 0, curRotY = 0, curRotX = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+            targetRotY = mouseX * -40; 
+            targetRotX = mouseY * 20; 
+        });
+
+        window.addEventListener('scroll', () => {
+            scrollDirty = true;
+        }, { passive: true });
+
+        let scrollDirty = true;
+
+        function updateScrollEffects() {
+            const progress = getGalleryProgress();
+
+            const titleFade = Math.max(0, 1 - (progress / 0.12));
+            if (centralTitle) {
+                centralTitle.style.opacity = titleFade;
+                centralTitle.style.visibility = titleFade <= 0.02 ? 'hidden' : 'visible';
+            }
+
+            if (progress > 0.68) {
+                const uiFade = Math.max(0, 1 - (progress - 0.68) / 0.14);
+                staticUi.style.opacity = uiFade;
+                staticUi.style.visibility = uiFade <= 0.02 ? 'hidden' : 'visible';
+            } else {
+                staticUi.style.opacity = 1;
+                staticUi.style.visibility = 'visible';
+            }
+
+            if (progress > 0.92) {
+                const fade = Math.max(0, 1 - (progress - 0.92) / 0.16);
+                viewport.style.opacity = fade;
+            } else {
+                viewport.style.opacity = 1;
+            }
+        }
+
+        // Video Strip — scroll-driven horizontal
+        const vidScrollArea = document.getElementById('video-scroll-area');
+        const vidContainer = document.getElementById('video-container-fixed');
+
+        function getVideoScrollProgress() {
+            const rect = vidContainer.getBoundingClientRect();
+            const scrollableHeight = vidContainer.offsetHeight - window.innerHeight;
+            const scrolled = -rect.top;
+            return Math.max(0, Math.min(scrolled / scrollableHeight, 1));
+        }
+
+        // Smoothed horizontal scroll with lerp
+        var currentTx = 0;
+        var targetTx = 0;
+
+        function updateVideoStrip() {
+            const progress = getVideoScrollProgress();
+            const totalWidth = vidScrollArea.scrollWidth;
+            const viewportWidth = window.innerWidth;
+            const maxTranslate = totalWidth - viewportWidth;
+            targetTx = progress * maxTranslate;
+        }
+
+        function lerpVideoStrip() {
+            currentTx += (targetTx - currentTx) * 0.35;
+            vidScrollArea.style.transform = 'translateX(' + (-currentTx) + 'px)';
+            requestAnimationFrame(lerpVideoStrip);
+        }
+        lerpVideoStrip();
+
+        window.addEventListener('scroll', updateVideoStrip, { passive: true });
+
+        // Play only videos whose slides are near the visible viewport
+        const allSlides = document.querySelectorAll('.video-slide');
+
+        // Ping-pong: reverse playback when video ends, then forward again
+        const reversingVideos = new Set();
+        function startReverse(v) {
+            if (reversingVideos.has(v)) return;
+            reversingVideos.add(v);
+            var step = 1 / 30; // ~30fps step
+            function tick() {
+                if (!reversingVideos.has(v)) return;
+                v.currentTime = Math.max(0, v.currentTime - step);
+                if (v.currentTime <= 0.05) {
+                    reversingVideos.delete(v);
+                    v.currentTime = 0;
+                    v.play().catch(function() {});
+                    return;
+                }
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
+        document.querySelectorAll('#video-scroll-area video').forEach(function(v) {
+            v.addEventListener('ended', function() { startReverse(v); });
+        });
+
+        const slideObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                var v = entry.target.querySelector('video');
+                if (!v) return;
+                if (entry.isIntersecting) {
+                    // Lazy-load: switch preload from none to metadata when nearby
+                    if (v.preload === 'none') {
+                        v.preload = 'metadata';
+                        v.load();
+                    }
+                    v.play().catch(function(e) { console.warn('Video play failed:', v.querySelector('source').src, e.message); });
+                } else {
+                    reversingVideos.delete(v);
+                    v.pause();
+                    v.currentTime = 0;
+                }
+            });
+        }, { rootMargin: '0px 200% 0px 200%', threshold: 0.01 });
+        allSlides.forEach(function(slide) { slideObs.observe(slide); });
+
+        // Add slide counters
+        allSlides.forEach(function(slide, idx) {
+            var counter = document.createElement('div');
+            counter.className = 'slide-counter';
+            counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(allSlides.length).padStart(2, '0');
+            slide.appendChild(counter);
+        });
+
+        // Turtle hero video + bloom text
+        var turtleHero = document.getElementById('turtle-hero');
+        var turtleText = document.getElementById('turtle-text');
+        if (turtleHero) {
+            var turtleVid = turtleHero.querySelector('video');
+            var turtleObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        if (turtleVid.preload === 'none') {
+                            turtleVid.preload = 'metadata';
+                            turtleVid.load();
+                        }
+                        turtleVid.play().catch(function(){});
+                        if (turtleText) turtleText.classList.add('is-visible');
+                    } else {
+                        turtleVid.pause();
+                        if (turtleText) turtleText.classList.remove('is-visible');
+                    }
+                });
+            }, { threshold: 0.3 });
+            turtleObs.observe(turtleHero);
+        }
+
+        // Fin section entrance animation (add/remove is-visible)
+        var finInner = document.querySelector('.sg-fin-inner');
+        if (finInner) {
+            var finObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        finInner.classList.add('is-visible');
+                    } else {
+                        finInner.classList.remove('is-visible');
+                    }
+                });
+            }, { threshold: 0.8, rootMargin: '0px' });
+            finObs.observe(document.getElementById('sg-fin'));
+        }
+
+        // Back to surface — only visible after fin animation ends
+        var backBtn = document.getElementById('back-to-surface');
+        if (backBtn) {
+            backBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            var finInner = document.querySelector('.sg-fin-inner');
+            if (finInner) {
+                // Use MutationObserver to watch for is-visible class
+                var observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (finInner.classList.contains('is-visible')) {
+                            backBtn.classList.add('is-visible');
+                        } else {
+                            backBtn.classList.remove('is-visible');
+                        }
+                    });
+                });
+                observer.observe(finInner, { attributes: true, attributeFilter: ['class'] });
+                // Hide button initially
+                backBtn.classList.remove('is-visible');
+            }
+        }
+
+        // Crosshair cursor
+        var chH = document.getElementById('crosshair-h');
+        var chV = document.getElementById('crosshair-v');
+        var chDot = document.getElementById('crosshair-dot');
+        var chWrap = document.getElementById('crosshair-wrap');
+        var vidSection = document.getElementById('video-container-fixed');
+        if (chH && chV && chDot) {
+            document.addEventListener('mousemove', function(e) {
+                chH.style.top = e.clientY + 'px';
+                chV.style.left = e.clientX + 'px';
+                chDot.style.top = e.clientY + 'px';
+                chDot.style.left = e.clientX + 'px';
+                // Invert colour in video section
+                if (vidSection && chWrap) {
+                    var rect = vidSection.getBoundingClientRect();
+                    var inVideo = rect.top <= e.clientY && rect.bottom >= e.clientY;
+                    chWrap.classList.toggle('crosshair-invert', inVideo);
+                }
+            });
+            document.addEventListener('mouseleave', function() {
+                chH.style.opacity = '0';
+                chV.style.opacity = '0';
+                chDot.style.opacity = '0';
+            });
+            document.addEventListener('mouseenter', function() {
+                chH.style.opacity = '1';
+                chV.style.opacity = '1';
+                chDot.style.opacity = '1';
+            });
+        }
+
+        function initZoom() {
+            const initialProgress = 0.55;
+            const zoomZ = -4500 + (initialProgress * 11000);
+            cylinder.style.transform = `translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
+        }
+
+        function getGalleryProgress() {
+            const baseSpan = gallerySection ? gallerySection.offsetHeight : window.innerHeight * 3;
+            const scrollSpan = Math.max(window.innerHeight, baseSpan * HERO_SCROLL_FACTOR);
+            return Math.max(0, Math.min(window.scrollY / scrollSpan, 1));
+        }
+
+        function animate() {
+            curRotY += (targetRotY - curRotY) * 0.05;
+            curRotX += (targetRotX - curRotX) * 0.05;
+
+            const progress = getGalleryProgress();
+            const zoomZ = -4500 + (progress * 11000);
+            cylinder.style.transform = `translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
+
+            if (scrollDirty) {
+                updateScrollEffects();
+                scrollDirty = false;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('load', () => {
+            initZoom();
+            animate();
+        });
+        initZoom();
+        animate();
+    </script>
+
+    <!-- Card expansion + Scroll grid animation -->
+    <script type="module">
+        import { animate as motionAnimate, scroll, cubicBezier } from 'https://cdn.jsdelivr.net/npm/motion@11.11.16/+esm';
+
+
+
+        // ======= Scroll Grid Animation =======
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!prefersReducedMotion) {
+            const sgStage = document.querySelector('.sg-stage');
+            const sgScalerImg = document.querySelector('.sg-scaler img');
+            const sgLayers = document.querySelectorAll('.sg-grid > .sg-layer');
+
+            if (sgScalerImg && sgStage) {
+                const naturalWidth = sgScalerImg.offsetWidth;
+                const naturalHeight = sgScalerImg.offsetHeight;
+                const startWidth = window.innerWidth;
+                const startHeight = window.innerHeight;
+
+                scroll(
+                    motionAnimate(sgScalerImg, {
+                        width: [startWidth, naturalWidth],
+                        height: [startHeight, naturalHeight]
+                    }, {
+                        width: { easing: cubicBezier(0.65, 0, 0.35, 1) },
+                        height: { easing: cubicBezier(0.42, 0, 0.58, 1) }
+                    }),
+                    {
+                        target: sgStage,
+                        offset: ['start start', '80% end']
+                    }
+                );
+
+                const scaleEasings = [
+                    cubicBezier(0.42, 0, 0.58, 1),
+                    cubicBezier(0.76, 0, 0.24, 1),
+                    cubicBezier(0.87, 0, 0.13, 1),
+                    cubicBezier(0.95, 0, 0.05, 1)
+                ];
+
+                sgLayers.forEach((layer, index) => {
+                    const endOffset = `${1 - (index * 0.05)} end`;
+
+                    scroll(
+                        motionAnimate(layer, {
+                            opacity: [0, 0, 1]
+                        }, {
+                            offset: [0, 0.55, 1],
+                            easing: cubicBezier(0.61, 1, 0.88, 1)
+                        }),
+                        {
+                            target: sgStage,
+                            offset: ['start start', endOffset]
+                        }
+                    );
+
+                    scroll(
+                        motionAnimate(layer, {
+                            scale: [0, 0, 1]
+                        }, {
+                            offset: [0, 0.3, 1],
+                            easing: scaleEasings[index]
+                        }),
+                        {
+                            target: sgStage,
+                            offset: ['start start', endOffset]
+                        }
+                    );
+                });
+            }
+        }
+    </script>
+</body>
+</html>
