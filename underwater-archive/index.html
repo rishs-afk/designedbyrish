@@ -52,9 +52,19 @@
             transform-origin: center center;
         }
 
+        #scene-3d {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         #cylinder-world {
             position: absolute;
-            top: 4%;
+            top: 0;
             transform-style: preserve-3d;
             width: 100%;
             height: 100%;
@@ -67,45 +77,33 @@
 
         #central-title {
             position: absolute;
-            top: 54%;
+            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) translateZ(-100px);
-            z-index: 5;
+            transform: translate(-50%, -50%) translateZ(600px);
             pointer-events: none;
             text-align: center;
             width: 100%;
-            transform-style: preserve-3d;
         }
 
         #central-title h1 {
-            font-size: clamp(3rem, 12vw, 8rem);
+            font-size: clamp(2.2rem, 6vw, 4.2rem);
             color: var(--zinc-900);
             letter-spacing: -0.04em;
-            line-height: 0.85;
+            line-height: 1.05;
             font-weight: 400;
             margin: 0;
         }
 
         #central-title .subtitle {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
+            display: none;
         }
 
         #central-title .divider {
-            height: 1px;
-            width: 3rem;
-            background: rgba(24, 24, 27, 0.1);
+            display: none;
         }
 
         #central-title .label {
-            font-size: 9px;
-            letter-spacing: 1.4em;
-            color: rgba(24, 24, 27, 0.5);
-            font-weight: 700;
-            text-transform: uppercase;
+            display: none;
         }
 
         .image-card {
@@ -122,13 +120,14 @@
             border: 0;
             border-radius: 0;
             overflow: hidden;
+            width: 300px;
+            height: 400px;
         }
 
         .image-wrapper img {
-            width: auto;
-            height: auto;
-            max-width: 280px;
-            max-height: 380px;
+            width: 300px;
+            height: 400px;
+            object-fit: cover;
             display: block;
             pointer-events: none;
             border-radius: 1rem;
@@ -535,16 +534,13 @@
 <body>
 
     <div id="gallery-viewport">
-        <div id="cylinder-world">
+        <div id="scene-3d">
+            <div id="cylinder-world"></div>
             <div id="central-title">
                 <h1>
                     Beneath<br />
                     <span style="font-style: italic; font-weight: 300; opacity: 0.6;">the Surface</span>
                 </h1>
-                <div class="subtitle">
-                    <div class="divider"></div>
-                    <p class="label">A Visual Dive Log</p>
-                </div>
             </div>
         </div>
     </div>
@@ -987,49 +983,69 @@
         const centralTitle = document.getElementById('central-title');
         const staticUi = document.getElementById('static-ui');
 
-
         const imageAssets = Array.from({ length: ITEM_COUNT }, (_, i) => `assets/images/img_${i + 1}.webp`);
 
-        const RADIUS = 1800;
-        
-        for(let i = 0; i < ITEM_COUNT; i++) {
-            const angle = (i / ITEM_COUNT) * Math.PI * 2;
-            const yOffset = (i % 2 === 0 ? 1 : -1) * 400 + (Math.random() - 0.5) * 200; 
-            
-            const card = document.createElement('div');
-            card.className = 'image-card';
-            
-            const tx = Math.sin(angle) * RADIUS;
-            const tz = Math.cos(angle) * RADIUS;
-            const ry = (angle * (180 / Math.PI)); 
-            
-            card.style.transform = `translate3d(${tx}px, ${yOffset}px, ${tz}px) rotateY(${ry}deg) translate(-50%, -50%)`;
-            
-            const wrapper = document.createElement('div');
-            wrapper.className = 'image-wrapper';
-            
-            const img = document.createElement('img');
-            img.src = imageAssets[i];
-            img.alt = "Underwater Specimen";
-            img.loading = 'lazy';
-            img.decoding = 'async';
-            img.onerror = function() {
-                this.src = 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=400';
-            };
-            
-            wrapper.style.transform = `scale(1.2) rotate(${(Math.random()-0.5)*8}deg)`;
-            wrapper.appendChild(img);
-            card.appendChild(wrapper);
-            cylinder.appendChild(card);
+        const RADIUS = 1600;
+        const ROW_COUNT = 2;
+        const ROW_Y = [-280, 280]; // y positions for top and bottom row
+        // Split items as evenly as possible between rows
+        const itemsPerRow = [Math.ceil(ITEM_COUNT / ROW_COUNT), Math.floor(ITEM_COUNT / ROW_COUNT)];
+
+        let imgIndex = 0;
+        for (let row = 0; row < ROW_COUNT; row++) {
+            const count = itemsPerRow[row];
+            const yOffset = ROW_Y[row];
+            for (let j = 0; j < count; j++) {
+                const angle = (j / count) * Math.PI * 2;
+                const tx = Math.sin(angle) * RADIUS;
+                const tz = Math.cos(angle) * RADIUS;
+                const ry = angle * (180 / Math.PI);
+
+                const card = document.createElement('div');
+                card.className = 'image-card';
+                card.style.transform = `translate3d(${tx}px, ${yOffset}px, ${tz}px) rotateY(${ry}deg) translate(-50%, -50%)`;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'image-wrapper';
+
+                const img = document.createElement('img');
+                img.src = imageAssets[imgIndex % ITEM_COUNT];
+                img.alt = "Underwater Specimen";
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                img.onerror = function() {
+                    this.src = 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=400';
+                };
+
+                wrapper.style.transform = ``;
+                wrapper.appendChild(img);
+                card.appendChild(wrapper);
+                cylinder.appendChild(card);
+                imgIndex++;
+            }
         }
 
-        let mouseX = 0, mouseY = 0, targetRotY = 0, targetRotX = 0, curRotY = 0, curRotX = 0;
 
+        // Only the cylinder (image cards) rotates and responds to mouse/cursor
+        let mouseX = 0, mouseY = 0, targetRotY = 0, targetRotX = 0, curRotY = 0, curRotX = 0;
+        let autoRotateY = 0;
+        const AUTO_ROTATE_SPEED = 0.08;
+
+        function animateCylinder() {
+            autoRotateY += AUTO_ROTATE_SPEED;
+            curRotY += (targetRotY + autoRotateY - curRotY) * 0.08;
+            curRotX += (targetRotX - curRotX) * 0.08;
+            cylinder.style.transform = `rotateY(${curRotY}deg) rotateX(${curRotX}deg)`;
+            requestAnimationFrame(animateCylinder);
+        }
+        animateCylinder();
+
+        // Only update targetRotY/targetRotX on mousemove for the cylinder, not the hero text
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth) - 0.5;
             mouseY = (e.clientY / window.innerHeight) - 0.5;
-            targetRotY = mouseX * -40; 
-            targetRotX = mouseY * 20; 
+            targetRotY = mouseX * -40;
+            targetRotX = mouseY * 20;
         });
 
         window.addEventListener('scroll', () => {
@@ -1248,6 +1264,9 @@
             const initialProgress = 0.55;
             const zoomZ = -4500 + (initialProgress * 11000);
             cylinder.style.transform = `translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
+            if (centralTitle) {
+                centralTitle.style.transform = `translate(-50%, -50%) translateZ(${zoomZ + 600}px)`;
+            }
         }
 
         function getGalleryProgress() {
@@ -1257,12 +1276,17 @@
         }
 
         function animate() {
+
             curRotY += (targetRotY - curRotY) * 0.05;
             curRotX += (targetRotX - curRotX) * 0.05;
 
             const progress = getGalleryProgress();
             const zoomZ = -4500 + (progress * 11000);
             cylinder.style.transform = `translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
+            // Keep title stationary in 3D space — push it forward so it sits inside the cylinder ring
+            if (centralTitle) {
+                centralTitle.style.transform = `translate(-50%, -50%) translateZ(${zoomZ + 600}px)`;
+            }
 
             if (scrollDirty) {
                 updateScrollEffects();
