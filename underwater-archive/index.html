@@ -987,7 +987,7 @@
 
         const RADIUS = 1600;
         const ROW_COUNT = 2;
-        const ROW_Y = [-280, 280]; // y positions for top and bottom row
+        const ROW_Y = [-220, 220]; // y positions for top and bottom row
         // Split items as evenly as possible between rows
         const itemsPerRow = [Math.ceil(ITEM_COUNT / ROW_COUNT), Math.floor(ITEM_COUNT / ROW_COUNT)];
 
@@ -1027,7 +1027,7 @@
 
 
         // Only the cylinder (image cards) rotates and responds to mouse/cursor
-        let mouseX = 0, mouseY = 0, targetRotY = 0, targetRotX = 0, curRotY = 0, curRotX = 0;
+        let mouseX = 0, mouseY = 0, targetRotY = 0, targetRotX = 12, curRotY = 0, curRotX = 12;
         let autoRotateY = 0;
         const AUTO_ROTATE_SPEED = 0.08;
 
@@ -1041,11 +1041,12 @@
         animateCylinder();
 
         // Only update targetRotY/targetRotX on mousemove for the cylinder, not the hero text
+        const BASE_TILT_X = 12;
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth) - 0.5;
             mouseY = (e.clientY / window.innerHeight) - 0.5;
             targetRotY = mouseX * -40;
-            targetRotX = mouseY * 20;
+            targetRotX = BASE_TILT_X + mouseY * 20;
         });
 
         window.addEventListener('scroll', () => {
@@ -1263,7 +1264,7 @@
         function initZoom() {
             const initialProgress = 0.55;
             const zoomZ = -4500 + (initialProgress * 11000);
-            cylinder.style.transform = `translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
+            cylinder.style.transform = `translateY(240px) translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
             if (centralTitle) {
                 centralTitle.style.transform = `translate(-50%, -50%) translateZ(${zoomZ + 600}px)`;
             }
@@ -1282,7 +1283,7 @@
 
             const progress = getGalleryProgress();
             const zoomZ = -4500 + (progress * 11000);
-            cylinder.style.transform = `translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
+            cylinder.style.transform = `translateY(240px) translateZ(${zoomZ}px) rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
             // Keep title stationary in 3D space — push it forward so it sits inside the cylinder ring
             if (centralTitle) {
                 centralTitle.style.transform = `translate(-50%, -50%) translateZ(${zoomZ + 600}px)`;
