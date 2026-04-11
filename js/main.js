@@ -513,7 +513,7 @@ function startMobileReveal() {
   const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (noMotion) {
     gsap.set('#mob-nav, #hero, #work, #services, #statement, #testimonials, #contact-wrap', { opacity: 1, y: 0 });
-    gsap.set('.hero-line-wrap, .hwi, .hero-eyebrow, .hero-sub, #marquee, .hero-scroller, #heroPhotoStack', { opacity: 1, y: 0, scaleX: 1 });
+    gsap.set('.hero-line-wrap, .hwi, .hero-eyebrow, .hero-sub, #marquee, .hero-scroller, #hrcRecord, #heroPhotoStack, .hrc-tagline', { opacity: 1, y: 0, x: 0, scaleX: 1 });
     initSite(true);
     return;
   }
@@ -531,7 +531,9 @@ function startMobileReveal() {
 
   // 4. Hero words rise up — stack animates with the third hwi (0.55 + 2×0.08 = 0.71)
   tl.to('.hwi', { y: 0, opacity: 1, duration: 0.75, ease: 'expo.out', stagger: 0.08 }, 0.55);
-  tl.to('#heroPhotoStack', { y: 0, opacity: 1, duration: 0.75, ease: 'expo.out' }, 0.71);
+  tl.to('#hrcRecord', { y: 0, opacity: 1, duration: 0.75, ease: 'expo.out' }, 0.71);
+  tl.to('#heroPhotoStack', { y: 0, opacity: 1, duration: 0.75, ease: 'expo.out' }, 0.65);
+  tl.to('.hrc-tagline', { opacity: 1, x: 0, duration: 0.6, ease: 'expo.out' }, 0.82);
 
   // 5. Eyebrow + sub
   tl.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.85);
@@ -556,7 +558,7 @@ function startHeroReveal() {
   if (noMotion) {
     // Show everything instantly
     gsap.set('#sidebar', { opacity: 1, visibility: 'visible' });
-    gsap.set('#marquee, .hero-scroller, .hero-line-wrap, .hwi, .hero-eyebrow, .hero-sub, #heroPhotoStack', { opacity: 1, y: 0, x: 0 });
+    gsap.set('#marquee, .hero-scroller, .hero-line-wrap, .hwi, .hero-eyebrow, .hero-sub, #hrcRecord, #heroPhotoStack, .hrc-tagline', { opacity: 1, y: 0, x: 0 });
     initSite(true);
     return;
   }
@@ -575,7 +577,9 @@ function startHeroReveal() {
     y: 0, opacity: 1,
     duration: 0.85, ease: 'expo.out', stagger: 0.1
   }, 0.5);
-  tl.to('#heroPhotoStack', { y: 0, opacity: 1, duration: 0.85, ease: 'expo.out' }, 0.7);
+  tl.to('#hrcRecord', { y: 0, opacity: 1, duration: 0.85, ease: 'expo.out' }, 0.7);
+  tl.to('#heroPhotoStack', { y: 0, opacity: 1, duration: 0.85, ease: 'expo.out' }, 0.64);
+  tl.to('.hrc-tagline', { opacity: 1, x: 0, duration: 0.65, ease: 'expo.out' }, 0.82);
 
   // Step 3: Eyebrow + sub fade in
   tl.to('.hero-eyebrow', {
@@ -729,7 +733,9 @@ function initSite(skipHero) {
     gsap.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.05 });
     // Hero words stagger — stack animates with third hwi (0.15 + 2×0.13 = 0.41)
     gsap.to('.hwi', { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: 0.13, delay: 0.15 });
-    gsap.to('#heroPhotoStack', { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', delay: 0.41 });
+    gsap.to('#hrcRecord', { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', delay: 0.41 });
+    gsap.to('#heroPhotoStack', { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', delay: 0.35 });
+    gsap.to('.hrc-tagline', { opacity: 1, duration: 0.8, ease: 'expo.out', delay: 0.52 });
     // Hero sub
     gsap.to('.hero-sub', { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', delay: 1.1 });
   }
@@ -2481,4 +2487,233 @@ document.addEventListener('keydown', e => {
   setInterval(nextSlide, 2600);
 })();
 
+window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
 
+    const popup = document.getElementById('contact-success-popup');
+    const popupCloseBtn = document.getElementById('popup-close-btn');
+
+    popupCloseBtn.addEventListener('click', () => {
+      popup.style.setProperty('display', 'none', 'important');
+    });
+
+    formspree('initForm', {
+      formElement: '#contact-form',
+      formId: 'mbdpqvba',
+      onSuccess: () => {
+        popup.style.setProperty('display', 'flex', 'important');
+        setTimeout(() => {
+          popup.style.setProperty('display', 'none', 'important');
+          // Reset form
+          document.getElementById('contact-form').reset();
+        }, 2500);
+      }
+    });
+
+    formspree('initForm', {
+      formElement: '#quick-contact-form',
+      formId: 'mbdpqvba',
+      onSuccess: () => {
+        popup.style.setProperty('display', 'flex', 'important');
+        setTimeout(() => {
+          popup.style.setProperty('display', 'none', 'important');
+          // Reset form
+          document.getElementById('quick-contact-form').reset();
+        }, 2500);
+      }
+    });
+
+/* ── Record Player ── */
+(function(){
+  var record = document.getElementById('hrcRecord');
+  var arm    = document.getElementById('hrcArm'); // SVG tonearm
+  var btn    = document.getElementById('hrcPlay');
+  var icon   = document.getElementById('hrcPlayIcon');
+  if(!record || !btn) return;
+  var playing = false;
+  var PLAY  = '<path d="M8 5v14l11-7z"/>';
+  var PAUSE = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+
+  /* ── Lofi audio via Web Audio API (no external files needed) ── */
+  var ctx, masterGain, lofiInterval;
+
+  function initAudio() {
+    if (ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0.18, ctx.currentTime);
+    masterGain.connect(ctx.destination);
+  }
+
+  /* Vinyl crackle — low-pass filtered white noise bursts */
+  function startCrackle() {
+    var bufSize = ctx.sampleRate * 2;
+    var buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    var data = buf.getChannelData(0);
+    for (var i = 0; i < bufSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * (Math.random() < 0.003 ? 0.9 : 0.015);
+    }
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.loop = true;
+    var lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 3200;
+    var crackleGain = ctx.createGain();
+    crackleGain.gain.value = 0.22;
+    src.connect(lp);
+    lp.connect(crackleGain);
+    crackleGain.connect(masterGain);
+    src.start();
+    return src;
+  }
+
+  /* One lofi chord — stacked detuned sines */
+  function playChord(notes, time, dur) {
+    notes.forEach(function(freq) {
+      var osc = ctx.createOscillator();
+      var g   = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq + (Math.random() - 0.5) * 3;
+      g.gain.setValueAtTime(0, time);
+      g.gain.linearRampToValueAtTime(0.08, time + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start(time);
+      osc.stop(time + dur + 0.05);
+    });
+  }
+
+  /* Sub-bass pluck */
+  function playBass(freq, time, dur) {
+    var osc = ctx.createOscillator();
+    var g   = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, time);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.92, time + dur);
+    g.gain.setValueAtTime(0.18, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(time);
+    osc.stop(time + dur + 0.05);
+  }
+
+  /* Soft hi-hat click */
+  function playHat(time, accent) {
+    var buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
+    var d   = buf.getChannelData(0);
+    for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    var hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 8000;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(accent ? 0.07 : 0.035, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
+    src.connect(hp); hp.connect(g); g.connect(masterGain);
+    src.start(time);
+  }
+
+  /* Kick thud */
+  function playKick(time) {
+    var osc = ctx.createOscillator();
+    var g   = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(120, time);
+    osc.frequency.exponentialRampToValueAtTime(40, time + 0.15);
+    g.gain.setValueAtTime(0.5, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+    osc.connect(g); g.connect(masterGain);
+    osc.start(time); osc.stop(time + 0.3);
+  }
+
+  /* Snare snap */
+  function playSnare(time) {
+    var buf = ctx.createBuffer(1, ctx.sampleRate * 0.18, ctx.sampleRate);
+    var d   = buf.getChannelData(0);
+    for (var i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/d.length, 1.5);
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    var g = ctx.createGain();
+    g.gain.value = 0.28;
+    src.connect(g); g.connect(masterGain);
+    src.start(time);
+  }
+
+  /* Lofi chord progressions (Cmin jazz flavour) */
+  var progressions = [
+    [[130.8,196,233.1,311.1], 65.4],   // Cm7
+    [[116.5,174.6,207.7,261.6], 58.3],  // Bbmaj7
+    [[138.6,185,220,277.2], 69.3],      // Ebmaj7
+    [[123.5,185,220,293.7], 61.7]       // Fm7
+  ];
+
+  var crackleNode = null;
+  var scheduleId  = null;
+  var beatIndex   = 0;
+
+  function scheduleBeat() {
+    var now   = ctx.currentTime;
+    var bpm   = 78;
+    var beat  = 60 / bpm;
+    var bar   = beat * 4;
+    var prog  = progressions[beatIndex % progressions.length];
+
+    // Chord on beat 1
+    playChord(prog[0], now, bar * 0.9);
+    playBass(prog[1], now, beat * 0.7);
+
+    // Drums across 8 steps
+    for (var s = 0; s < 8; s++) {
+      var t = now + s * (beat / 2);
+      // Kick on 1 & sometimes 3
+      if (s === 0) playKick(t);
+      if (s === 4 && Math.random() > 0.4) playKick(t);
+      // Snare on 2 & 4
+      if (s === 2 || s === 6) playSnare(t);
+      // Hi-hats on every step, accent on odd
+      playHat(t, s % 2 === 0);
+    }
+
+    beatIndex++;
+    scheduleId = setTimeout(scheduleBeat, bar * 1000 - 40);
+  }
+
+  var crackle;
+
+  function startLofi() {
+    initAudio();
+    if (ctx.state === 'suspended') ctx.resume();
+    crackle = startCrackle();
+    scheduleBeat();
+  }
+
+  function stopLofi() {
+    if (scheduleId) { clearTimeout(scheduleId); scheduleId = null; }
+    if (crackle) { try { crackle.stop(); } catch(e){} crackle = null; }
+    if (ctx) {
+      masterGain.gain.setTargetAtTime(0, ctx.currentTime, 0.3);
+      setTimeout(function(){
+        if (ctx) ctx.suspend();
+        masterGain.gain.setValueAtTime(0.18, ctx.currentTime);
+      }, 600);
+    }
+  }
+
+  btn.addEventListener('click', function(){
+    playing = !playing;
+    if(playing){
+      record.classList.add('spinning');
+      if(arm) arm.classList.add('playing');
+      icon.innerHTML = PAUSE;
+      startLofi();
+    } else {
+      record.classList.remove('spinning');
+      if(arm) arm.classList.remove('playing');
+      icon.innerHTML = PLAY;
+      stopLofi();
+    }
+  });
+})();

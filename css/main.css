@@ -1,3 +1,4 @@
+
 :root {
   --bg: #F0EDEA;
   --ink: #111111;
@@ -1064,6 +1065,7 @@ main { margin-left: var(--sidebar-w); }
   display: inline-flex;
   white-space: nowrap;
 }
+/* heroRecordCard opacity handled on .hrc-vinyl directly */
 #heroPhotoStack {
   opacity: 0;
   transform: translateY(32px);
@@ -1145,11 +1147,11 @@ main { margin-left: var(--sidebar-w); }
   user-select: none;
   -webkit-user-drag: none;
 }
-/* Deal cards out on hover: diagonal line, right-to-left, bottom-to-top */
+/* Deal cards out on hover: diagonal line, left-to-right, bottom-to-top */
 .hero-photo-stack:hover .hps-card {
   opacity: 1;
   transform:
-    translateX(calc(var(--di, 0) * clamp(52px, 5.4vw, 90px) * -1))
+    translateX(calc(var(--di, 0) * clamp(52px, 5.4vw, 90px)))
     translateY(calc(var(--di, 0) * clamp(8px, 0.65vw, 11px) * -1));
   transition-delay: calc(var(--di, 0) * 0.045s);
 }
@@ -1159,10 +1161,10 @@ main { margin-left: var(--sidebar-w); }
   .hero-hl-row--with-stack .hwi { display: block; }
 }
 
-/* ── HERO IMAGE SCROLLER ─────────────────── */
 .hero-scroller {
-  width: 100%; overflow: hidden; flex-shrink: 0;
+  width: calc(100% + var(--sidebar-w)); overflow: hidden; flex-shrink: 0;
   padding: 0.875rem 0;
+  margin-right: calc(-1 * var(--sidebar-w));
 }
 .hero-scroller-track {
   display: flex; gap: 0.75rem;
@@ -1170,6 +1172,11 @@ main { margin-left: var(--sidebar-w); }
   width: max-content;
 }
 .hero-scroller:hover .hero-scroller-track { animation-play-state: paused; }
+/* Force horizontal layout for hero scroller at all breakpoints */
+.hero-scroller-track {
+  flex-direction: row !important;
+  align-items: center !important;
+}
 @keyframes hscroll {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -1183,8 +1190,9 @@ main { margin-left: var(--sidebar-w); }
   position: relative;
   cursor: none;
   transition: transform .4s cubic-bezier(0.16,1,0.3,1);
+  transform-origin: right center;
 }
-.hscroll-img:hover { transform: scale(1.04); }
+.hscroll-img:hover { transform: scale(1.04) translateX(16px); }
 .hscroll-img-inner {
   width: 100%; height: 100%;
   position: relative;
@@ -3965,7 +3973,10 @@ body.cs-open #sidebar  { opacity: 0; pointer-events: none; transition: opacity .
   width: 44px; height: 44px;
   margin: 0 0 0.5rem;
   padding: 0;
-  background: var(--ink); color: #fff;
+  background: linear-gradient(270deg, #ff6a00, #ee0979, #00c3ff, #43e97b, #ff6a00);
+  background-size: 800% 800%;
+  color: #fff;
+  animation: lab-gradient 6s ease-in-out infinite;
   border: none; border-radius: 50%;
   cursor: none;
   display: flex; align-items: center; justify-content: center;
@@ -3974,13 +3985,31 @@ body.cs-open #sidebar  { opacity: 0; pointer-events: none; transition: opacity .
               transform .4s cubic-bezier(0.34,1.56,0.64,1);
 }
 #sb-lab:hover {
-  background: var(--moss); color: #fff;
+  background: linear-gradient(270deg, #ffe53b, #fd3838, #43e97b, #38f9d7, #ffe53b);
+  background-size: 800% 800%;
+  color: #fff;
+  animation: lab-gradient-hover 3s ease-in-out infinite;
   transform: scale(1.08);
 }
 #sb-lab.lab-open {
-  background: var(--moss); color: #fff;
+  background: linear-gradient(270deg, #ffe53b, #fd3838, #43e97b, #38f9d7, #ffe53b);
+  background-size: 800% 800%;
+  color: #fff;
+  animation: lab-gradient-hover 3s ease-in-out infinite;
 }
 #sb-lab svg { stroke: currentColor; }
+
+@keyframes lab-gradient {
+  0% {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0% 50%}
+}
+
+@keyframes lab-gradient-hover {
+  0% {background-position:100% 50%}
+  50% {background-position:0% 50%}
+  100% {background-position:100% 50%}
+}
 
 /* ══════════════════════════════════════════════
    LAB OVERLAY
@@ -5192,4 +5221,181 @@ body.iframe-open #robot-shadow { display: none !important; }
   /* Monster footer: keep proportional but prevent overflow */
   #monster-footer-wrap { overflow-y: auto; }
   .monster-wrap { height: clamp(260px, 60vh, 600px); }
+}
+
+/* ══ HERO RECORD CARD ══════════════════════════════════════════════ */
+.hero-record-card {
+  position: relative;
+  width: clamp(130px, 13vw, 190px);
+  height: 0;
+  flex-shrink: 0;
+  overflow: visible;
+  z-index: 20;
+}
+
+/* Vinyl is absolutely positioned so it doesn't affect row height */
+.hero-record-card .hrc-vinyl {
+  position: absolute !important;
+  top: calc(clamp(130px, 13vw, 190px) / -2);
+  left: 0;
+  width: clamp(130px, 13vw, 190px) !important;
+  height: clamp(130px, 13vw, 190px) !important;
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+/* ── Vinyl disc — black record with coloured label ── */
+.hrc-vinyl {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* Black vinyl base */
+  background: #0d0d0d;
+  box-shadow:
+    0 8px 36px rgba(0,0,0,0.65),
+    0 2px 8px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  overflow: hidden;
+}
+.hrc-vinyl.spinning {
+  animation: hrc-spin 2.2s linear infinite;
+}
+@keyframes hrc-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Subtle vinyl sheen — the slight rainbow you see on black records */
+.hrc-vinyl::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255,255,255,0.03) 0deg,
+    rgba(255,255,255,0.07) 45deg,
+    rgba(255,255,255,0.02) 90deg,
+    rgba(255,255,255,0.06) 135deg,
+    rgba(255,255,255,0.03) 180deg,
+    rgba(255,255,255,0.07) 225deg,
+    rgba(255,255,255,0.02) 270deg,
+    rgba(255,255,255,0.05) 315deg,
+    rgba(255,255,255,0.03) 360deg
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Grooves — very subtle on the black body ── */
+.hrc-groove {
+  position: absolute;
+  width: var(--gs);
+  height: var(--gs);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255,255,255,0.06);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Centre label — the colourful part ── */
+.hrc-spindle {
+  position: relative;
+  width: 34%;
+  height: 34%;
+  border-radius: 50%;
+  /* Sky-blue album art label */
+  background:
+    radial-gradient(circle at 35% 32%, rgba(255,255,255,0.22) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, #D42B21 0%, #9e1f18 100%);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.6),
+    inset 0 1px 2px rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+}
+
+/* ── Play button — tiny hole in the centre of the label ── */
+.hrc-label {
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: #111;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.18s ease, transform 0.18s ease;
+  color: rgba(255,255,255,0.6);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+}
+.hrc-label:hover {
+  background: #D42B21;
+  color: #fff;
+  transform: scale(1.15);
+}
+.hrc-play-icon {
+  width: 55%;
+  height: 55%;
+  display: block;
+  margin-left: 0;
+}
+
+/* ── Tonearm SVG ── */
+.hrc-arm-svg {
+  position: absolute;
+  top: -18%;
+  right: -28%;
+  width: 60%;
+  height: 60%;
+  z-index: 10;
+  transform-origin: 82% 10%;
+  transform: rotate(22deg);
+  transition: transform 0.9s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+  overflow: visible;
+}
+.hrc-arm-svg.playing {
+  transform: rotate(5deg);
+}
+
+/* ── Floating tagline next to vinyl ── */
+.hrc-tagline {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 22px);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  pointer-events: none;
+  white-space: nowrap;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(-50%) translateX(10px);
+}
+.hrc-tagline span {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-style: italic;
+  font-size: clamp(7px, 0.7vw, 10px);
+  color: #D42B21;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 1024px) {
+  .hero-record-card { display: none; }
+  .hero-hl-row--with-stack { display: block; }
+  .hero-hl-row--with-stack .hwi { display: block; }
 }
