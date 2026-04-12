@@ -1074,7 +1074,7 @@ main { margin-left: var(--sidebar-w); }
 }
 .hero-photo-stack {
   position: relative;
-  width: clamp(100px, 12.5vw, 200px);
+  width: clamp(120px, 14vw, 210px);
   height: 0; /* removed from flex-row height so slot stays same size as others */
   flex-shrink: 0;
   overflow: visible;
@@ -1083,10 +1083,10 @@ main { margin-left: var(--sidebar-w); }
 /* Single card — contains the vertical slideshow */
 .hps-single {
   position: absolute;
-  top: calc(clamp(150px, 15.8vw, 255px) / -2); /* center on the text baseline */
+  top: calc(clamp(96px, 11vw, 160px) / -2); /* center on the text baseline */
   left: 0;
   width: 100%;
-  height: clamp(150px, 15.8vw, 255px);
+  height: clamp(96px, 11vw, 160px);
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0,0,0,0.24), 0 1px 4px rgba(0,0,0,0.1);
@@ -1123,10 +1123,10 @@ main { margin-left: var(--sidebar-w); }
 /* Individual cards — hidden at origin, dealt diagonally on hover */
 .hps-card {
   position: absolute;
-  top: calc(clamp(150px, 15.8vw, 255px) / -2);
+  top: calc(clamp(96px, 11vw, 160px) / -2);
   left: 0;
-  width: clamp(100px, 12.5vw, 200px);
-  height: clamp(150px, 15.8vw, 255px);
+  width: clamp(120px, 14vw, 210px);
+  height: clamp(96px, 11vw, 160px);
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0,0,0,0.24), 0 1px 4px rgba(0,0,0,0.1);
@@ -1151,8 +1151,8 @@ main { margin-left: var(--sidebar-w); }
 .hero-photo-stack:hover .hps-card {
   opacity: 1;
   transform:
-    translateX(calc(var(--di, 0) * clamp(52px, 5.4vw, 90px)))
-    translateY(calc(var(--di, 0) * clamp(8px, 0.65vw, 11px) * -1));
+    translateX(calc(var(--di, 0) * clamp(56px, 6vw, 88px)))
+    translateY(calc(var(--di, 0) * clamp(5px, 0.4vw, 7px) * -1));
   transition-delay: calc(var(--di, 0) * 0.045s);
 }
 @media (max-width: 1024px) {
@@ -3973,31 +3973,28 @@ body.cs-open #sidebar  { opacity: 0; pointer-events: none; transition: opacity .
   width: 44px; height: 44px;
   margin: 0 0 0.5rem;
   padding: 0;
-  background: linear-gradient(270deg, #ff6a00, #ee0979, #00c3ff, #43e97b, #ff6a00);
-  background-size: 800% 800%;
+  background: transparent;
   color: #fff;
-  animation: lab-gradient 6s ease-in-out infinite;
   border: none; border-radius: 50%;
   cursor: none;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  transition: background .25s ease, color .25s ease,
-              transform .4s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+  overflow: hidden;
+  transition: transform .4s cubic-bezier(0.34,1.56,0.64,1);
 }
-#sb-lab:hover {
-  background: linear-gradient(270deg, #ffe53b, #fd3838, #43e97b, #38f9d7, #ffe53b);
-  background-size: 800% 800%;
-  color: #fff;
-  animation: lab-gradient-hover 3s ease-in-out infinite;
-  transform: scale(1.08);
+#sb-lab:hover { transform: scale(1.08); }
+#sb-lab.lab-open { transform: scale(1.04); }
+#sb-lab svg { stroke: currentColor; position: relative; z-index: 1; }
+#lab-gradient-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50%;
+  display: block;
+  z-index: 0;
 }
-#sb-lab.lab-open {
-  background: linear-gradient(270deg, #ffe53b, #fd3838, #43e97b, #38f9d7, #ffe53b);
-  background-size: 800% 800%;
-  color: #fff;
-  animation: lab-gradient-hover 3s ease-in-out infinite;
-}
-#sb-lab svg { stroke: currentColor; }
 
 @keyframes lab-gradient {
   0% {background-position:0% 50%}
