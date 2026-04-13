@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHOP THE ARENA — DIGITAL ARCHIVE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Barlow:wght@300;400;500;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F2F2F2;
+    --black: #000000;
+    --orange: #FF4500;
+    --white: #ffffff;
+    --grey-mid: #888888;
+    --grey-light: #DADADA;
+    --border: 0.5px solid #000000;
+    --border-light: 0.5px solid #DADADA;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Barlow', sans-serif;
+    --condensed: 'Barlow Condensed', sans-serif;
+  }
+
+  html { scroll-behavior: auto; } /* overridden by Lenis */
+
+  /* ============ VENETIAN BLIND TRANSITION ============ */
+  #blind-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blind-slat {
+    flex: 1;
+    background: #2D2D2D;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  /* ============ BUTTON GLITCH ============ */
+  .filter-btn, .pdp-add-btn, .nav-link {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ghost offset layer on button hover */
+  .filter-btn.glitch-active::before {
+    content: attr(data-label);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange);
+    transform: translate(1px, -1px);
+    opacity: 0.5;
+    pointer-events: none;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ============ NOISE FLASH on image hover ============ */
+  .product-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+    mix-blend-mode: overlay;
+    transition: opacity 0.05s step-end;
+  }
+
+  .product-card.noise-flash::after { opacity: 0.18; }
+
+  /* ============ CLIP-PATH REVEAL — section headers ============ */
+  .reveal-clip {
+    overflow: hidden;
+    display: block;
+  }
+
+  .reveal-clip-inner {
+    display: block;
+    transform: translateY(100%);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-clip-inner.revealed {
+    transform: translateY(0);
+  }
+
+  /* ============ STAGGERED SCROLL REVEALS ============ */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============ WEIGHTED SCROLL (Lenis mimic via CSS) ============ */
+  html.lenis { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: hidden; }
+  .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+
+  body {
+    background: var(--bg);
+    color: var(--black);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* GRAIN OVERLAY — Cav Empt signature */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { background: none; border: none; cursor: pointer; font-family: inherit; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 2rem;
+    height: 48px;
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-right { justify-content: flex-end; }
+
+  .nav-link {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--black);
+    position: relative;
+    transition: color 0.15s;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 0.5px;
+    background: var(--orange);
+    transition: width 0.2s;
+  }
+
+  .nav-link:hover::after { width: 100%; }
+  .nav-link:hover { color: var(--orange); }
+
+  .nav-logo {
+    text-align: center;
+    font-family: var(--condensed);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .nav-search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-search-icon {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--black);
+    transition: color 0.15s;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .nav-search-icon:hover { color: var(--orange); }
+
+  .nav-search-input {
+    background: transparent;
+    border: none;
+    border-bottom: 0.5px solid transparent;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--black);
+    width: 0;
+    padding: 2px 0;
+    transition: width 0.3s ease, border-color 0.3s ease, padding 0.3s ease;
+    outline: none;
+    cursor: text;
+  }
+
+  .nav-search-input::placeholder { color: var(--grey-mid); }
+  .nav-search-input.open { width: 130px; border-bottom-color: var(--black); padding: 2px 4px; }
+
+  /* TICKER */
+  .ticker {
+    background: var(--black);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 28s linear infinite;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ============ HERO SPLIT ============ */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: var(--border);
+    height: calc(100vh - 70px);
+  }
+
+  .hero-left {
+    border-right: var(--border);
+    position: relative;
+    overflow: hidden;
+    background: #111;
+  }
+
+  .hero-film {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.75;
+    filter: grayscale(30%) contrast(1.1);
+  }
+
+  .hero-film-bg {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, #1a1a1a 0%, #2d2d2d 40%, #0a0a0a 100%);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Simulated film grain on hero */
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hero-editorial-tag {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 3;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rec-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--orange);
+    border-radius: 50%;
+    animation: blink 1.2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .hero-film-content {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2.5rem;
+  }
+
+  .hero-season-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title-large {
+    font-family: var(--condensed);
+    font-size: clamp(5rem, 10vw, 9rem);
+    font-weight: 900;
+    line-height: 0.88;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-left: -4px;
+  }
+
+  .hero-title-large span { color: var(--orange); }
+
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.12em;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 0.5px solid rgba(255,255,255,0.15);
+    display: flex;
+    gap: 2rem;
+  }
+
+  /* HERO RIGHT — DROPS LIST */
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-right-header {
+    padding: 1.5rem 2rem;
+    border-bottom: var(--border);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .drop-counter {
+    background: var(--black);
+    color: var(--bg);
+    padding: 3px 8px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .drops-list { flex: 1; overflow-y: auto; }
+
+  .drop-item {
+    border-bottom: var(--border-light);
+    padding: 1.2rem 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s;
+  }
+
+  .drop-item:hover { background: rgba(0,0,0,0.04); }
+
+  .drop-item:hover .drop-preview {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  .drop-num {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--grey-mid);
+    letter-spacing: 0.1em;
+    min-width: 28px;
+  }
+
+  .drop-info { flex: 1; }
+
+  .drop-brand {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 3px;
+  }
+
+  .drop-name {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .drop-price-col {
+    text-align: right;
+  }
+
+  .drop-price {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .drop-status {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .status-new { color: var(--orange); }
+  .status-low { color: #cc8800; }
+  .status-out {
+    color: var(--bg);
+    background: var(--black);
+    padding: 1px 4px;
+  }
+
+  .drop-preview {
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px) scale(0.96);
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+    opacity: 0;
+    transition: all 0.2s ease;
+    z-index: 10;
+    pointer-events: none;
+    border: var(--border);
+  }
+
+  /* Simulated product image */
+  .drop-preview-sim {
+    position: absolute;
+    right: calc(100% + 1rem);
+    top: 50%;
+    transform: translateY(-50%) translateX(10px) scale(0.96);
+    width: 140px;
+    height: 180px;
+    opacity: 0;
+    transition: all 0.2s ease;
+    z-index: 10;
+    pointer-events: none;
+    border: var(--border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drop-item:hover .drop-preview-sim {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+
+  .preview-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ============ SECTION DIVIDER ============ */
+  .section-header {
+    border-bottom: var(--border);
+    border-top: var(--border);
+    padding: 0.6rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg);
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .section-count {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--grey-mid);
+  }
+
+  /* EDGE-TO-EDGE TYPE — Stüssy influence */
+  .oversize-header {
+    padding: 2rem 1.5rem;
+    border-bottom: var(--border);
+    overflow: hidden;
+  }
+
+  .oversize-text {
+    font-family: var(--condensed);
+    font-size: clamp(5rem, 14vw, 12rem);
+    font-weight: 900;
+    line-height: 0.85;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    margin-left: -4px;
+  }
+
+  .oversize-text.inverted {
+    -webkit-text-stroke: 1.5px var(--black);
+    color: transparent;
+  }
+
+  /* ============ PRODUCT GRID ============ */
+  .product-section { padding: 0; }
+
+  .filter-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: var(--border);
+    overflow-x: auto;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.5rem;
+    border-right: var(--border-light);
+    white-space: nowrap;
+    transition: background 0.15s;
+    border-radius: 0;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--black);
+    color: var(--bg);
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-left: var(--border);
+  }
+
+  .product-card {
+    border-right: var(--border);
+    border-bottom: var(--border);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card:hover .product-img-primary { opacity: 0; }
+  .product-card:hover .product-img-secondary { opacity: 1; }
+  .product-card:hover .product-quick-add { opacity: 1; transform: translateY(0); }
+
+  .product-img-wrap {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+  }
+
+  .product-img-primary,
+  .product-img-secondary {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.2s;
+  }
+
+  .product-img-secondary { opacity: 0; }
+
+  /* Simulated product images with CSS */
+  .product-img-sim {
+    width: 100%;
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: filter 0.2s;
+    filter: grayscale(15%);
+  }
+
+  .product-card:hover .product-img-sim { filter: grayscale(0%); }
+
+  .product-img-sim::after {
+    content: attr(data-hover);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: inherit;
+  }
+
+  .product-card:hover .product-img-sim::after { opacity: 1; }
+
+  .product-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    z-index: 2;
+    border-radius: 0;
+  }
+
+  .tag-new { background: var(--orange); color: var(--white); }
+  .tag-sold { background: var(--black); color: var(--bg); }
+  .tag-ltd { background: var(--bg); color: var(--black); border: 0.5px solid var(--black); }
+
+  .product-quick-add {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--black);
+    color: var(--bg);
+    text-align: center;
+    padding: 0.6rem;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.2s;
+    z-index: 3;
+  }
+
+  .product-info {
+    padding: 0.8rem 1rem;
+    border-top: var(--border-light);
+  }
+
+  .product-ref {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--grey-mid);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .product-name {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .product-price {
+    font-family: var(--mono);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .price-sold {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--black);
+    padding: 2px 5px;
+  }
+
+  /* ============ EDITORIAL / ZINE — Patta/Sundae School ============ */
+  .editorial-section {
+    border-top: var(--border);
+  }
+
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: 5fr 3fr 4fr;
+    grid-template-rows: auto auto;
+    border-bottom: var(--border);
+  }
+
+  .editorial-cell {
+    border-right: var(--border);
+    border-bottom: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .editorial-cell:last-child { border-right: none; }
+
+  .editorial-large {
+    grid-row: 1 / 3;
+    min-height: 480px;
+  }
+
+  .editorial-tall { min-height: 280px; }
+  .editorial-short { min-height: 200px; }
+
+  .editorial-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+  }
+
+  .editorial-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .editorial-title {
+    font-family: var(--condensed);
+    font-size: 2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+  }
+
+  .editorial-num {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+  }
+
+  .editorial-overlap {
+    position: absolute;
+    font-family: var(--condensed);
+    font-size: 8rem;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0.07;
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+
+  /* ============ COORDINATES LOADER ============ */
+  .progress-bar-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    z-index: 9998;
+    pointer-events: none;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--orange);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  /* ============ PDP MUSEUM STYLE — Fear of God ============ */
+  .pdp-section {
+    border-top: var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pdp-image-zone {
+    border-right: var(--border);
+    padding: 6rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px;
+  }
+
+  .pdp-artifact {
+    width: 280px;
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.35);
+    border: var(--border-light);
+    position: relative;
+  }
+
+  .pdp-artifact::before {
+    content: 'ARTIFACT NO. 047';
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    color: var(--grey-mid);
+  }
+
+  .pdp-info-zone {
+    padding: 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .pdp-brand {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+
+  .pdp-title {
+    font-family: var(--condensed);
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin-top: 0.5rem;
+  }
+
+  .pdp-price-block {
+    border-top: var(--border-light);
+    border-bottom: var(--border-light);
+    padding: 1.5rem 0;
+  }
+
+  .pdp-price-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 0.5rem;
+  }
+
+  .pdp-price-amount {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .pdp-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+  }
+
+  .spec-row {
+    border-bottom: var(--border-light);
+    padding-bottom: 0.5rem;
+  }
+
+  .spec-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 3px;
+  }
+
+  .spec-value {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .pdp-add-btn {
+    background: var(--black);
+    color: var(--bg);
+    padding: 1rem 2rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    width: 100%;
+    border-radius: 0;
+    transition: background 0.2s, color 0.2s;
+    border: var(--border);
+    cursor: pointer;
+  }
+
+  .pdp-add-btn:hover {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  /* ============ GRAIL INDEX ============ */
+  .grail-section { border-top: var(--border); }
+
+  .grail-table { width: 100%; border-collapse: collapse; }
+
+  .grail-row {
+    display: grid;
+    grid-template-columns: 48px 1fr 80px 80px 80px 100px;
+    align-items: center;
+    border-bottom: var(--border-light);
+    padding: 0 2rem;
+    transition: background 0.12s;
+    cursor: pointer;
+  }
+
+  .grail-row:hover { background: rgba(0,0,0,0.04); }
+
+  .grail-row.header-row {
+    background: var(--black);
+    color: var(--bg);
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .grail-row.header-row:hover { background: var(--black); }
+
+  .grail-cell {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1rem 0.5rem 1rem 0;
+  }
+
+  .grail-cell.header { color: rgba(255,255,255,0.5); font-size: 8px; }
+
+  .grail-rank {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--grey-mid);
+  }
+
+  .grail-rank.top { color: var(--orange); }
+
+  .grail-name-block { display: flex; flex-direction: column; gap: 3px; }
+
+  .grail-brand {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--grey-mid);
+    text-transform: uppercase;
+  }
+
+  .grail-item-name {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .grail-swatch {
+    width: 20px;
+    height: 20px;
+    border: var(--border-light);
+    display: inline-block;
+  }
+
+  .grail-heat {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .heat-bar {
+    width: 5px;
+    height: 14px;
+    background: var(--grey-light);
+  }
+
+  .heat-bar.on { background: var(--orange); }
+
+  .grail-trend {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .trend-up { color: #1a7a1a; }
+  .trend-down { color: var(--orange); }
+
+  .grail-price {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .grail-score {
+    font-family: var(--mono);
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .score-bar-wrap {
+    flex: 1;
+    height: 3px;
+    background: var(--grey-light);
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    background: var(--black);
+  }
+
+  /* ============ RECENTLY VIEWED ============ */
+  .recently-section { border-top: var(--border); }
+
+  .recently-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .recently-card {
+    border-right: var(--border);
+    padding: 4rem 3.5rem 3rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .recently-card:last-child { border-right: none; }
+  .recently-card:hover { background: rgba(0,0,0,0.03); }
+
+  .recently-swatch {
+    width: 100%;
+    aspect-ratio: 3/4;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: filter 0.2s;
+    filter: grayscale(15%);
+  }
+
+  .recently-card:hover .recently-swatch { filter: grayscale(0%); }
+
+  .recently-viewed-label {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.35);
+  }
+
+  .recently-brand {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 0.6rem;
+  }
+
+  .recently-name {
+    font-family: var(--condensed);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+
+  .recently-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: var(--border-light);
+    padding-top: 0.8rem;
+  }
+
+  .recently-price {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .recently-time {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+
+  /* ============ CATEGORY GRID ============ */
+  .category-section { border-top: var(--border); }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    border-left: var(--border);
+  }
+
+  .category-cell {
+    border-right: var(--border);
+    border-bottom: var(--border);
+    aspect-ratio: 4/3;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+  }
+
+  .category-cell:hover .category-bg { transform: scale(1.04); }
+  .category-cell:hover .category-name { letter-spacing: 0.06em; }
+
+  .category-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .category-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+    z-index: 1;
+  }
+
+  .category-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .category-tag {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .category-name {
+    font-family: var(--condensed);
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    transition: letter-spacing 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ============ FOOTER NEWSLETTER ============ */
+  .footer-newsletter {
+    border-bottom: 0.5px solid rgba(255,255,255,0.12);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-nl-left {
+    padding: 2.5rem 2rem;
+    border-right: 0.5px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-nl-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+
+  .footer-nl-heading {
+    font-family: var(--condensed);
+    font-size: 1.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .footer-nl-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.7;
+  }
+
+  .footer-nl-form {
+    display: flex;
+    gap: 0;
+    margin-top: 0.5rem;
+  }
+
+  .footer-nl-input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-right: none;
+    color: rgba(255,255,255,0.9);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.7rem 1rem;
+    outline: none;
+  }
+
+  .footer-nl-input::placeholder { color: rgba(255,255,255,0.2); }
+  .footer-nl-input:focus { border-color: rgba(255,255,255,0.4); }
+
+  .footer-nl-btn {
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+
+  .footer-nl-btn:hover { background: #cc3700; }
+
+  .footer-nl-right {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .footer-brand-blurb {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.9;
+    max-width: 420px;
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 0;
+    margin-top: 1.5rem;
+  }
+
+  .footer-social-link {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 0.5rem 1rem 0.5rem 0;
+    margin-right: 1rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.1);
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .footer-social-link:hover { color: var(--orange); border-color: var(--orange); }
+
+  /* ============ PROMISES ============ */
+  .promises-section { border-top: var(--border); }
+
+  .promises-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .promise-cell {
+    border-right: var(--border);
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .promise-cell:last-child { border-right: none; }
+  .promise-cell:hover { background: rgba(0,0,0,0.03); }
+
+  .promise-index {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    text-transform: uppercase;
+  }
+
+  .promise-title {
+    font-family: var(--condensed);
+    font-size: 2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+  }
+
+  .promise-desc {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--grey-mid);
+    text-transform: uppercase;
+    line-height: 1.8;
+    border-top: var(--border-light);
+    padding-top: 1rem;
+    margin-top: auto;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: var(--border);
+    background: var(--black);
+    color: var(--bg);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 0.5px solid rgba(255,255,255,0.12);
+  }
+
+  .footer-col {
+    padding: 2.5rem 2rem;
+    border-right: 0.5px solid rgba(255,255,255,0.1);
+  }
+
+  .footer-col:last-child { border-right: none; }
+
+  .footer-col-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-link {
+    display: block;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 0.6rem;
+    transition: color 0.15s;
+  }
+
+  .footer-link:hover { color: var(--orange); }
+
+  .footer-bottom {
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .footer-coords {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ============ COORDINATE ANIMATION ============ */
+  .coord-display {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--grey-mid);
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    pointer-events: none;
+    z-index: 500;
+    opacity: 0.6;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; height: auto; }
+    .hero-left { min-height: 60vw; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .editorial-grid { grid-template-columns: 1fr; }
+    .pdp-section { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: repeat(2, 1fr); }
+    .nav-left .nav-link:not(:first-child) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- VENETIAN BLIND TRANSITION -->
+<div id="blind-wrap">
+  <div class="blind-slat" data-i="0"></div>
+  <div class="blind-slat" data-i="1"></div>
+  <div class="blind-slat" data-i="2"></div>
+  <div class="blind-slat" data-i="3"></div>
+  <div class="blind-slat" data-i="4"></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progressBar"></div>
+</div>
+
+<!-- COORDINATE DISPLAY -->
+<div class="coord-display" id="coordDisplay">X:0000 / Y:0000</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    SHOP THE ARENA DIGITAL ARCHIVE &nbsp;///&nbsp; SS25 LATEST DROPS NOW AVAILABLE &nbsp;///&nbsp; FREE DOMESTIC SHIPPING OVER ₹15,000 &nbsp;///&nbsp; NEIGHBORHOOD × WTAPS COLLAB — IN STORE NOW &nbsp;///&nbsp; ARCHIVE SALE — UP TO 40% SELECTED STYLES &nbsp;///&nbsp; NEW EDITORIAL: VOLUME 12 ONLINE NOW &nbsp;///&nbsp; SHOP THE ARENA DIGITAL ARCHIVE &nbsp;///&nbsp; SS25 LATEST DROPS NOW AVAILABLE &nbsp;///&nbsp; FREE DOMESTIC SHIPPING OVER ₹15,000 &nbsp;///&nbsp; NEIGHBORHOOD × WTAPS COLLAB — IN STORE NOW &nbsp;///&nbsp; ARCHIVE SALE — UP TO 40% SELECTED STYLES &nbsp;///&nbsp;
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="#" class="nav-link">Brands</a>
+    <a href="#" class="nav-link">Topwear</a>
+    <a href="#" class="nav-link">Bottomwear</a>
+    <a href="#" class="nav-link">Headwear</a>
+    <a href="#" class="nav-link" style="-webkit-text-stroke:0.5px var(--orange);color:var(--orange);">New Launches</a>
+  </div>
+  <div class="nav-logo">SHOP THE ARENA</div>
+  <div class="nav-right">
+    <div class="nav-search-wrap">
+      <span class="nav-search-icon" id="searchToggle">Search</span>
+      <input class="nav-search-input" id="searchInput" type="text" placeholder="Brand, style, ref..." />
+    </div>
+    <a href="#" class="nav-link">Account</a>
+    <a href="#" class="nav-link">Cart [0]</a>
+  </div>
+</nav>
+
+<!-- HERO SPLIT -->
+<section class="hero">
+  <!-- LEFT: EDITORIAL FILM -->
+  <div class="hero-left">
+    <div class="hero-film-bg"></div>
+    <div class="hero-editorial-tag">
+      <div class="rec-dot"></div>
+      Live &nbsp;///&nbsp; Editorial Feed
+    </div>
+    <div class="hero-film-content">
+      <div class="hero-season-label">SS25 — COLLECTION 012</div>
+      <div class="hero-title-large">
+        HIGH<br>
+        UTIL<span style="color: var(--orange)">ITY</span><br>
+        ARCH<span style="color:rgba(255,255,255,0.2)">IVE</span>
+      </div>
+      <div class="hero-meta">
+        <span>48.8566°N / 2.3522°E</span>
+        <span>SHOT ON 16MM</span>
+        <span>VOL. 12</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: DROPS LIST -->
+  <div class="hero-right">
+    <div class="hero-right-header">
+      <span>Latest Drops</span>
+      <span class="drop-counter">12 NEW</span>
+    </div>
+    <div class="drops-list">
+
+      <div class="drop-item">
+        <div class="drop-num">001</div>
+        <div class="drop-info">
+          <div class="drop-brand">WTAPS</div>
+          <div class="drop-name">JUNGLE STOCK / JACKET / COTTON</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹42,000</div>
+          <div class="drop-status status-new">New</div>
+        </div>
+        <div class="drop-preview-sim" style="background:#2a2a2a;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">WTAPS<br>SS25</div>
+        </div>
+      </div>
+
+      <div class="drop-item">
+        <div class="drop-num">002</div>
+        <div class="drop-info">
+          <div class="drop-brand">NEIGHBORHOOD</div>
+          <div class="drop-name">SAVAGE / C-JKT. DENIM</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹55,000</div>
+          <div class="drop-status status-new">New</div>
+        </div>
+        <div class="drop-preview-sim" style="background:#1c2a35;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">NHBD<br>SS25</div>
+        </div>
+      </div>
+
+      <div class="drop-item">
+        <div class="drop-num">003</div>
+        <div class="drop-info">
+          <div class="drop-brand">CAV EMPT</div>
+          <div class="drop-name">HEAVY BRUSHED CREWNECK</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹28,000</div>
+          <div class="drop-status status-low">2 Left</div>
+        </div>
+        <div class="drop-preview-sim" style="background:#1a1a1a;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">C.E<br>SS25</div>
+        </div>
+      </div>
+
+      <div class="drop-item">
+        <div class="drop-num">004</div>
+        <div class="drop-info">
+          <div class="drop-brand">ENGINEERED GARMENTS</div>
+          <div class="drop-name">BEDFORD JACKET — OLIVE HERRINGBONE</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹62,000</div>
+          <div class="drop-status status-new">New</div>
+        </div>
+        <div class="drop-preview-sim" style="background:#3a3228;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">EG<br>SS25</div>
+        </div>
+      </div>
+
+      <div class="drop-item">
+        <div class="drop-num">005</div>
+        <div class="drop-info">
+          <div class="drop-brand">STÜSSY</div>
+          <div class="drop-name">8 BALL FLEECE JACKET</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹32,000</div>
+          <div class="drop-status status-out"><span>Sold Out</span></div>
+        </div>
+        <div class="drop-preview-sim" style="background:#111;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">STÜ<br>SS25</div>
+        </div>
+      </div>
+
+      <div class="drop-item">
+        <div class="drop-num">006</div>
+        <div class="drop-info">
+          <div class="drop-brand">PATTA</div>
+          <div class="drop-name">CORDUROY TRACK PANT</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹22,000</div>
+          <div class="drop-status status-new">New</div>
+        </div>
+        <div class="drop-preview-sim" style="background:#2d1e2f;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">PATTA<br>SS25</div>
+        </div>
+      </div>
+
+      <div class="drop-item">
+        <div class="drop-num">007</div>
+        <div class="drop-info">
+          <div class="drop-brand">SACAI</div>
+          <div class="drop-name">MA-1 HYBRID BLOUSON</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹120,000</div>
+          <div class="drop-status status-low">1 Left</div>
+        </div>
+        <div class="drop-preview-sim" style="background:#1e2830;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">SACAI<br>SS25</div>
+        </div>
+      </div>
+
+      <div class="drop-item">
+        <div class="drop-num">008</div>
+        <div class="drop-info">
+          <div class="drop-brand">KAPITAL</div>
+          <div class="drop-name">CENTURY DENIM 5P JEANS</div>
+        </div>
+        <div class="drop-price-col">
+          <div class="drop-price">₹38,000</div>
+          <div class="drop-status status-new">New</div>
+        </div>
+        <div class="drop-preview-sim" style="background:#1e2635;">
+          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">KAP<br>SS25</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HERO RIGHT BOTTOM — manifest stats -->
+    <div style="border-top:var(--border); padding:1.2rem 2rem; display:grid; grid-template-columns:repeat(3,1fr); gap:0;">
+      <div style="border-right:var(--border-light); padding-right:1rem;">
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--grey-mid);margin-bottom:4px;">In Stock</div>
+        <div style="font-family:var(--mono);font-size:18px;font-weight:700;">312</div>
+      </div>
+      <div style="border-right:var(--border-light); padding:0 1rem;">
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--grey-mid);margin-bottom:4px;">Brands</div>
+        <div style="font-family:var(--mono);font-size:18px;font-weight:700;">48</div>
+      </div>
+      <div style="padding-left:1rem;">
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">New Today</div>
+        <div style="font-family:var(--mono);font-size:18px;font-weight:700;">12</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERSIZE HEADER — Stüssy influence -->
+<div class="oversize-header">
+  <div class="oversize-text"><span class="reveal-clip"><span class="reveal-clip-inner">NEW ARRIVALS</span></span></div>
+  <div class="oversize-text inverted"><span class="reveal-clip"><span class="reveal-clip-inner">SS25 — SEASON 012</span></span></div>
+</div>
+
+<!-- PRODUCT SECTION -->
+<section class="product-section">
+  <div class="section-header">
+    <span class="section-label">Product Feed — SS25</span>
+    <span class="section-count">Showing 1–8 of 312 items</span>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Outerwear</button>
+    <button class="filter-btn">Tops</button>
+    <button class="filter-btn">Bottoms</button>
+    <button class="filter-btn">Footwear</button>
+    <button class="filter-btn">Accessories</button>
+    <button class="filter-btn">Archive</button>
+    <button class="filter-btn">Sale</button>
+  </div>
+
+  <div class="product-grid">
+
+    <!-- Card 1 -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#1f2b1a;" data-hover="ON-BODY VIEW">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">WTAPS / JKT</span>
+      </div>
+      <span class="product-tag tag-new">New</span>
+      <div class="product-quick-add">+ Quick Add</div>
+      <div class="product-info">
+        <div class="product-ref">REF: WTP-SS25-044</div>
+        <div class="product-name">Jungle Stock Jacket</div>
+        <div class="product-price">
+          <span>₹42,000</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">WTAPS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#2a1e14;" data-hover="ON-BODY VIEW">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">KAPITAL / DENIM</span>
+      </div>
+      <span class="product-tag tag-ltd">Limited</span>
+      <div class="product-quick-add">+ Quick Add</div>
+      <div class="product-info">
+        <div class="product-ref">REF: KAP-SS25-017</div>
+        <div class="product-name">Century Denim 5P Jeans</div>
+        <div class="product-price">
+          <span>₹38,000</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">KAPITAL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#111;" data-hover="ON-BODY VIEW">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">C.E / CREW</span>
+      </div>
+      <span class="product-tag tag-new">New</span>
+      <div class="product-quick-add">+ Quick Add</div>
+      <div class="product-info">
+        <div class="product-ref">REF: CE-SS25-031</div>
+        <div class="product-name">Heavy Brushed Crewneck</div>
+        <div class="product-price">
+          <span>₹28,000</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">CAV EMPT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 — Sold Out -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#1a1a1a;opacity:0.5;" data-hover="">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">STÜ / JKT</span>
+      </div>
+      <span class="product-tag tag-sold">Sold Out</span>
+      <div class="product-info">
+        <div class="product-ref">REF: STU-SS25-008</div>
+        <div class="product-name">8 Ball Fleece Jacket</div>
+        <div class="product-price">
+          <span style="color:var(--grey-mid);">₹32,000</span>
+          <span class="price-sold">S/O</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#1c2d1c;" data-hover="ON-BODY VIEW">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">EG / JACKET</span>
+      </div>
+      <span class="product-tag tag-new">New</span>
+      <div class="product-quick-add">+ Quick Add</div>
+      <div class="product-info">
+        <div class="product-ref">REF: EG-SS25-022</div>
+        <div class="product-name">Bedford Jacket Olive HB</div>
+        <div class="product-price">
+          <span>₹62,000</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">ENG. GARMENTS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#261520;" data-hover="ON-BODY VIEW">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">PATTA / PANT</span>
+      </div>
+      <span class="product-tag tag-ltd">Limited</span>
+      <div class="product-quick-add">+ Quick Add</div>
+      <div class="product-info">
+        <div class="product-ref">REF: PAT-SS25-011</div>
+        <div class="product-name">Corduroy Track Pant</div>
+        <div class="product-price">
+          <span>₹22,000</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">PATTA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 7 -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#1c1c2e;" data-hover="ON-BODY VIEW">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">NHBD / JKT</span>
+      </div>
+      <span class="product-tag tag-new">New</span>
+      <div class="product-quick-add">+ Quick Add</div>
+      <div class="product-info">
+        <div class="product-ref">REF: NHD-SS25-039</div>
+        <div class="product-name">Savage C-JKT Denim</div>
+        <div class="product-price">
+          <span>₹55,000</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">NEIGHBORHOOD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+    <div class="product-card scroll-reveal">
+      <div class="product-img-sim" style="background:#1e1c16;" data-hover="ON-BODY VIEW">
+        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">SACAI / BLZ</span>
+      </div>
+      <span class="product-tag tag-ltd">1 Left</span>
+      <div class="product-quick-add">+ Quick Add</div>
+      <div class="product-info">
+        <div class="product-ref">REF: SAC-SS25-007</div>
+        <div class="product-name">MA-1 Hybrid Blouson</div>
+        <div class="product-price">
+          <span>₹120,000</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">SACAI</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CATEGORY GRID -->
+<section class="category-section">
+  <div class="section-header">
+    <span class="section-label">Shop By Category</span>
+    <span class="section-count">6 Categories — SS25</span>
+  </div>
+
+  <div class="category-grid">
+
+    <div class="category-cell scroll-reveal">
+      <div class="category-bg" style="background:#1a1f2e;"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-tag">01 — Tops</span>
+        <span class="category-name">T-Shirts</span>
+      </div>
+    </div>
+
+    <div class="category-cell scroll-reveal">
+      <div class="category-bg" style="background:#0f1a2e;"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-tag">02 — Tops</span>
+        <span class="category-name">Full Sleeve<br>T-Shirts</span>
+      </div>
+    </div>
+
+    <div class="category-cell scroll-reveal">
+      <div class="category-bg" style="background:#1e1a10;"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-tag">03 — Headwear</span>
+        <span class="category-name">Headwear</span>
+      </div>
+    </div>
+
+    <div class="category-cell scroll-reveal">
+      <div class="category-bg" style="background:#1a1018;"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-tag">04 — Tops</span>
+        <span class="category-name">Polos</span>
+      </div>
+    </div>
+
+    <div class="category-cell scroll-reveal">
+      <div class="category-bg" style="background:#101a18;"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-tag">05 — Bottoms</span>
+        <span class="category-name">Shorts</span>
+      </div>
+    </div>
+
+    <div class="category-cell scroll-reveal">
+      <div class="category-bg" style="background:#141a10;"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-tag">06 — Outerwear</span>
+        <span class="category-name">Jackets</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDITORIAL / ZINE — Patta/Sundae School influence -->
+<section class="editorial-section">
+  <div class="section-header">
+    <span class="section-label">Editorial — Digital Zine Vol. 12</span>
+    <span class="section-count">Community Archive</span>
+  </div>
+
+  <div class="oversize-header" style="padding:1.5rem 1.5rem 1rem;">
+    <div class="oversize-text" style="font-size:clamp(3rem,8vw,7rem);"><span class="reveal-clip"><span class="reveal-clip-inner">COMMUNITY</span></span></div>
+  </div>
+
+  <div class="editorial-grid">
+
+    <!-- Large left cell -->
+    <div class="editorial-cell editorial-large" style="background:#0a0a0a;">
+      <div class="editorial-bg" style="flex-direction:column; align-items:flex-start; justify-content:flex-end;">
+        <div class="editorial-meta" style="color:var(--orange);">Feature &nbsp;///&nbsp; Tokyo Report</div>
+        <div class="editorial-title" style="color:#fff; font-size:3rem;">THE CITY<br>NEVER STOPS.</div>
+      </div>
+      <div class="editorial-num" style="color:rgba(255,255,255,0.25);">12 / 01</div>
+    </div>
+
+    <!-- Top right -->
+    <div class="editorial-cell editorial-tall" style="background:#2a1c0e;">
+      <div class="editorial-overlap" style="top:-1rem; left:-0.5rem; color:rgba(255,255,255,0.08); font-size:5rem;">DROP</div>
+      <div class="editorial-bg">
+        <div>
+          <div class="editorial-meta" style="color:rgba(255,255,255,0.4);">Profile &nbsp;///&nbsp; Collector</div>
+          <div class="editorial-title" style="color:#fff; font-size:1.8rem;">ARCHIVE<br>OBSESSION</div>
+        </div>
+      </div>
+      <div class="editorial-num" style="color:rgba(255,255,255,0.2);">12 / 02</div>
+    </div>
+
+    <!-- Mid right — asymmetric text block -->
+    <div class="editorial-cell editorial-tall" style="background:var(--bg); border-bottom: var(--border);">
+      <div style="padding:1.5rem; height:100%; display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="editorial-meta" style="color:var(--grey-mid);">Essay &nbsp;///&nbsp; Culture</div>
+        <div>
+          <div class="editorial-title" style="font-size:1.6rem;">ON WEARING<br>UTILITY AS<br>LANGUAGE</div>
+        </div>
+        <div style="font-family:var(--mono); font-size:9px; color:var(--grey-mid); letter-spacing:0.1em;">Read More →</div>
+      </div>
+      <div class="editorial-num">12 / 03</div>
+    </div>
+
+    <!-- Bottom mid -->
+    <div class="editorial-cell editorial-short" style="background:#111;">
+      <div class="editorial-bg">
+        <div>
+          <div class="editorial-meta" style="color:var(--orange);">Drop &nbsp;///&nbsp; Exclusive</div>
+          <div class="editorial-title" style="color:#fff; font-size:1.5rem;">NHBD × WTAPS<br>COLLAB SS25</div>
+        </div>
+      </div>
+      <div class="editorial-num" style="color:rgba(255,255,255,0.2);">12 / 04</div>
+    </div>
+
+    <!-- Bottom right -->
+    <div class="editorial-cell editorial-short" style="background:#F2F2F2; border-right:none;">
+      <div style="padding:1.5rem; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+        <div class="editorial-meta" style="color:var(--grey-mid); margin-bottom:1rem;">Subscribe</div>
+        <div style="font-family:var(--condensed); font-size:1.8rem; font-weight:900; text-transform:uppercase; line-height:1;">SHOP THE ARENA<br>Newsletter</div>
+        <div style="margin-top:1rem; font-family:var(--mono); font-size:9px; letter-spacing:0.15em; color:var(--orange);">→ JOIN THE LIST</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PDP MUSEUM STYLE — Fear of God influence -->
+<section class="pdp-section">
+  <div class="pdp-image-zone">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:1.5rem; width:100%;">
+      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; color:var(--grey-mid); text-transform:uppercase; margin-bottom:2rem;">Featured Artifact</div>
+      <div class="pdp-artifact" style="background:#1f2b1a; border-color:#333;">
+        <span style="font-family:var(--mono); font-size:9px; color:rgba(255,255,255,0.2); letter-spacing:0.1em;">WTAPS / SS25</span>
+      </div>
+      <div style="display:flex; gap:0; border:var(--border);">
+        <div style="width:56px; height:72px; background:#1f2b1a; border-right:var(--border-light); cursor:pointer;"></div>
+        <div style="width:56px; height:72px; background:#2d3a28; border-right:var(--border-light); cursor:pointer;"></div>
+        <div style="width:56px; height:72px; background:#111; cursor:pointer;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdp-info-zone">
+    <div>
+      <div class="pdp-brand">WTAPS — SS25</div>
+      <div class="pdp-title">Jungle<br>Stock<br>Jacket</div>
+    </div>
+
+    <div class="pdp-price-block">
+      <div class="pdp-price-label">Retail Price</div>
+      <div class="pdp-price-amount">₹42,000</div>
+    </div>
+
+    <div class="pdp-specs">
+      <div class="spec-row">
+        <div class="spec-label">Ref. No</div>
+        <div class="spec-value">WTP-SS25-044</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Season</div>
+        <div class="spec-value">Spring / Summer 2025</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Composition</div>
+        <div class="spec-value">100% Cotton Ripstop</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Origin</div>
+        <div class="spec-value">Japan</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Fit</div>
+        <div class="spec-value">Regular / M, L, XL, XXL</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Colorway</div>
+        <div class="spec-value">Olive Drab / Black</div>
+      </div>
+    </div>
+
+    <!-- Size selector -->
+    <div>
+      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--grey-mid); margin-bottom:0.8rem;">Select Size</div>
+      <div style="display:flex; gap:0;">
+        <button style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; padding:0.6rem 1.2rem; border:var(--border); border-right:none; cursor:pointer; background:var(--bg); transition:all 0.15s;" onmouseover="this.style.background='#000';this.style.color='#F2F2F2';" onmouseout="this.style.background='var(--bg)';this.style.color='#000';">M</button>
+        <button style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; padding:0.6rem 1.2rem; border:var(--border); border-right:none; cursor:pointer; background:var(--black); color:var(--bg); transition:all 0.15s;">L</button>
+        <button style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; padding:0.6rem 1.2rem; border:var(--border); border-right:none; cursor:pointer; background:var(--bg); transition:all 0.15s;" onmouseover="this.style.background='#000';this.style.color='#F2F2F2';" onmouseout="this.style.background='var(--bg)';this.style.color='#000';">XL</button>
+        <button style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; padding:0.6rem 1.2rem; border:var(--border); cursor:pointer; opacity:0.35; text-decoration:line-through; background:var(--bg);">XXL</button>
+      </div>
+    </div>
+
+    <button class="pdp-add-btn">+ Add to Cart</button>
+
+    <div style="border-top:var(--border-light); padding-top:1.5rem;">
+      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; color:var(--grey-mid); line-height:1.8; text-transform:uppercase;">
+        REF: WTP-SS25-044 &nbsp;|&nbsp; IN STOCK: 6 UNITS &nbsp;|&nbsp; SHIPS IN 1–2 DAYS<br>
+        CONDITION: NEW &nbsp;|&nbsp; AUTHENTICATION: VERIFIED &nbsp;|&nbsp; ARCHIVE STATUS: ACTIVE
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GRAIL INDEX -->
+<section class="grail-section">
+  <div class="section-header">
+    <span class="section-label">Grail Index — Most Wanted</span>
+    <span class="section-count">Updated 14 Apr 2025 &nbsp;///&nbsp; Live Scarcity Data</span>
+  </div>
+
+  <div style="border-bottom:var(--border);">
+
+    <!-- Header row -->
+    <div class="grail-row header-row">
+      <div class="grail-cell header">#</div>
+      <div class="grail-cell header">Item</div>
+      <div class="grail-cell header">Retail</div>
+      <div class="grail-cell header">Trend</div>
+      <div class="grail-cell header">Heat</div>
+      <div class="grail-cell header">Scarcity</div>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="grail-row scroll-reveal">
+      <div class="grail-rank top">01</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">WTAPS</span>
+          <span class="grail-item-name">Jungle Stock Jacket</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price">₹42,000</span></div>
+      <div class="grail-cell"><span class="grail-trend trend-up">↑ 18%</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <div class="grail-score">
+          <span>97</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:97%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="grail-row scroll-reveal">
+      <div class="grail-rank top">02</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">NEIGHBORHOOD</span>
+          <span class="grail-item-name">Savage C-JKT Denim</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price">₹55,000</span></div>
+      <div class="grail-cell"><span class="grail-trend trend-up">↑ 12%</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <div class="grail-score">
+          <span>91</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:91%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="grail-row scroll-reveal">
+      <div class="grail-rank top">03</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">SACAI</span>
+          <span class="grail-item-name">MA-1 Hybrid Blouson</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price">₹120,000</span></div>
+      <div class="grail-cell"><span class="grail-trend trend-up">↑ 9%</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <div class="grail-score">
+          <span>88</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:88%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="grail-row scroll-reveal">
+      <div class="grail-rank">04</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">CAV EMPT</span>
+          <span class="grail-item-name">Heavy Brushed Crewneck</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price">₹28,000</span></div>
+      <div class="grail-cell"><span class="grail-trend trend-down">↓ 3%</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar"></div><div class="heat-bar"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <div class="grail-score">
+          <span>76</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:76%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div class="grail-row scroll-reveal">
+      <div class="grail-rank">05</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">ENGINEERED GARMENTS</span>
+          <span class="grail-item-name">Bedford Jacket Olive HB</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price">₹62,000</span></div>
+      <div class="grail-cell"><span class="grail-trend trend-up">↑ 5%</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar"></div><div class="heat-bar"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <div class="grail-score">
+          <span>71</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:71%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 6 -->
+    <div class="grail-row scroll-reveal">
+      <div class="grail-rank">06</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">KAPITAL</span>
+          <span class="grail-item-name">Century Denim 5P Jeans</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price">₹38,000</span></div>
+      <div class="grail-cell"><span class="grail-trend trend-up">↑ 2%</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <div class="grail-score">
+          <span>63</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:63%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 7 -->
+    <div class="grail-row scroll-reveal">
+      <div class="grail-rank">07</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">PATTA</span>
+          <span class="grail-item-name">Corduroy Track Pant</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price">₹22,000</span></div>
+      <div class="grail-cell"><span class="grail-trend trend-down">↓ 1%</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar on"></div><div class="heat-bar on"></div><div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <div class="grail-score">
+          <span>58</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:58%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 8 — Sold Out -->
+    <div class="grail-row" style="opacity:0.5;">
+      <div class="grail-rank">08</div>
+      <div class="grail-cell">
+        <div class="grail-name-block">
+          <span class="grail-brand">STÜSSY</span>
+          <span class="grail-item-name" style="text-decoration:line-through;">8 Ball Fleece Jacket</span>
+        </div>
+      </div>
+      <div class="grail-cell"><span class="grail-price" style="color:var(--grey-mid);">₹32,000</span></div>
+      <div class="grail-cell"><span class="grail-trend" style="color:var(--grey-mid);">— —</span></div>
+      <div class="grail-cell">
+        <div class="grail-heat">
+          <div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div>
+        </div>
+      </div>
+      <div class="grail-cell">
+        <span style="font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;background:var(--black);color:var(--bg);padding:2px 6px;">Sold Out</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RECENTLY VIEWED -->
+<section class="recently-section">
+  <div class="section-header">
+    <span class="section-label">Continue Browsing</span>
+    <span class="section-count">Recently Viewed — Session 04.14.25</span>
+  </div>
+
+  <div class="recently-grid">
+
+    <!-- Item 1 -->
+    <div class="recently-card scroll-reveal">
+      <div class="recently-swatch" style="background:#1f2b1a;">
+        <div class="recently-viewed-label">Viewed 4 min ago</div>
+      </div>
+      <div class="recently-brand">WTAPS</div>
+      <div class="recently-name">Jungle<br>Stock<br>Jacket</div>
+      <div class="recently-meta">
+        <span class="recently-price">₹42,000</span>
+        <span class="recently-time">SS25 — REF 044</span>
+      </div>
+    </div>
+
+    <!-- Item 2 -->
+    <div class="recently-card scroll-reveal">
+      <div class="recently-swatch" style="background:#1c1c2e;">
+        <div class="recently-viewed-label">Viewed 11 min ago</div>
+      </div>
+      <div class="recently-brand">SACAI</div>
+      <div class="recently-name">MA-1<br>Hybrid<br>Blouson</div>
+      <div class="recently-meta">
+        <span class="recently-price">₹120,000</span>
+        <span class="recently-time">SS25 — REF 007</span>
+      </div>
+    </div>
+
+    <!-- Item 3 -->
+    <div class="recently-card scroll-reveal">
+      <div class="recently-swatch" style="background:#2a1c0e;">
+        <div class="recently-viewed-label">Viewed 23 min ago</div>
+      </div>
+      <div class="recently-brand">NEIGHBORHOOD</div>
+      <div class="recently-name">Savage<br>C-JKT<br>Denim</div>
+      <div class="recently-meta">
+        <span class="recently-price">₹55,000</span>
+        <span class="recently-time">SS25 — REF 039</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMISES -->
+<section class="promises-section">
+  <div class="section-header">
+    <span class="section-label">Our Promises</span>
+    <span class="section-count">Every Order — No Exceptions</span>
+  </div>
+
+  <div class="promises-grid">
+
+    <div class="promise-cell scroll-reveal">
+      <div class="promise-index">01 / 04</div>
+      <div class="promise-title">Premium<br>Quality</div>
+      <div class="promise-desc">
+        Every item stocked is sourced<br>
+        directly from brand or authorised<br>
+        distributor. No grey market.<br>
+        No compromises.
+      </div>
+    </div>
+
+    <div class="promise-cell scroll-reveal">
+      <div class="promise-index">02 / 04</div>
+      <div class="promise-title">Pre-Shrunk<br>Products</div>
+      <div class="promise-desc">
+        Garments are verified pre-wash<br>
+        and pre-shrunk. What you order<br>
+        is what arrives. Size true,<br>
+        every time.
+      </div>
+    </div>
+
+    <div class="promise-cell scroll-reveal">
+      <div class="promise-index">03 / 04</div>
+      <div class="promise-title">100%<br>Authentic</div>
+      <div class="promise-desc">
+        Full authentication on every<br>
+        archive and deadstock unit.<br>
+        Tags, receipts, and provenance<br>
+        documented on request.
+      </div>
+    </div>
+
+    <div class="promise-cell scroll-reveal">
+      <div class="promise-index">04 / 04</div>
+      <div class="promise-title">Easy<br>Returns</div>
+      <div class="promise-desc">
+        14-day no-questions return<br>
+        window. Free reverse pickup<br>
+        on all domestic orders above<br>
+        ₹5,000.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+
+  <!-- Newsletter + Brand Blurb -->
+  <div class="footer-newsletter">
+    <div class="footer-nl-left">
+      <div class="footer-nl-label">Join The Club</div>
+      <div class="footer-nl-heading">Sign up for exclusive<br>drops & deals</div>
+      <div class="footer-nl-sub">
+        Get early access to new launches,<br>
+        archive restocks, and member-only offers.
+      </div>
+      <div class="footer-nl-form">
+        <input class="footer-nl-input" type="email" placeholder="Enter your email address" />
+        <button class="footer-nl-btn">Subscribe</button>
+      </div>
+    </div>
+    <div class="footer-nl-right">
+      <div>
+        <div class="footer-nl-label" style="margin-bottom:0.8rem;">Shop The Arena — Official Fanwear</div>
+        <div class="footer-brand-blurb">
+          Shop The Arena is an apparel merchandise brand bringing quality,<br>
+          authentic sports merchandise to fans in India. We work<br>
+          with international and domestic sports clubs to design<br>
+          and curate some of the best merchandise out there.
+        </div>
+      </div>
+      <div class="footer-socials">
+        <a href="#" class="footer-social-link">Facebook</a>
+        <a href="#" class="footer-social-link">Twitter</a>
+        <a href="#" class="footer-social-link">Instagram</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Link Columns -->
+  <div class="footer-top" style="grid-template-columns: repeat(5, 1fr);">
+    <div class="footer-col">
+      <div class="footer-col-label">Shop</div>
+      <a href="#" class="footer-link">New Launches</a>
+      <a href="#" class="footer-link">Brands</a>
+      <a href="#" class="footer-link">Topwear</a>
+      <a href="#" class="footer-link">Bottomwear</a>
+      <a href="#" class="footer-link">Headwear</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Archive</div>
+      <a href="#" class="footer-link">SS24 Archive</a>
+      <a href="#" class="footer-link">FW23 Archive</a>
+      <a href="#" class="footer-link">Deadstock</a>
+      <a href="#" class="footer-link">Grail Index</a>
+      <a href="#" class="footer-link">Price History</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">The Arena</div>
+      <a href="#" class="footer-link">About Us</a>
+      <a href="#" class="footer-link">My Account</a>
+      <a href="#" class="footer-link">Contact Us</a>
+      <a href="#" class="footer-link">Size Chart</a>
+      <a href="#" class="footer-link">FAQs</a>
+      <a href="#" class="footer-link">Rewards</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">More Info</div>
+      <a href="#" class="footer-link">Shipping Policy</a>
+      <a href="#" class="footer-link">Returns & Exchanges</a>
+      <a href="#" class="footer-link">Privacy Policy</a>
+      <a href="#" class="footer-link">T&Cs</a>
+      <a href="#" class="footer-link">Authentication</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Editorial</div>
+      <a href="#" class="footer-link">Digital Zine</a>
+      <a href="#" class="footer-link">Tokyo Report</a>
+      <a href="#" class="footer-link">Community</a>
+      <a href="#" class="footer-link">Interviews</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 SHOP THE ARENA DIGITAL ARCHIVE — ALL RIGHTS RESERVED</div>
+    <div class="footer-coords" id="footerCoords">35.6762°N / 139.6503°E — TOKYO, JP</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+/* ============================================================
+   SHOP THE ARENA MOTION IDENTITY ENGINE
+   1. Lenis Weighted Scroll
+   2. Custom Cursor + Expand Ring
+   3. Shutter Page Transition
+   4. Button Glitch Text Shuffle
+   5. Product Card Noise Flash
+   6. Clip-Path Header Reveals
+   7. Staggered Scroll Reveals
+   8. Counter / Data Point Animation
+   9. Existing: progress bar, coords, filters, cart
+   ============================================================ */
+
+/* ── 1. LENIS WEIGHTED SCROLL ─────────────────────────────── */
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smooth: true,
+  mouseMultiplier: 1.0,
+});
+
+function lenisRaf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(lenisRaf);
+}
+requestAnimationFrame(lenisRaf);
+
+lenis.on('scroll', () => {
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  progressBar.style.width = Math.min(100, pct).toFixed(1) + '%';
+});
+
+/* ── 2. COORDINATE DISPLAY ───────────────────────────────── */
+document.addEventListener('mousemove', e => {
+  const x = String(Math.round(e.clientX)).padStart(4,'0');
+  const y = String(Math.round(e.clientY)).padStart(4,'0');
+  coordDisplay.textContent = `X:${x} / Y:${y}`;
+});
+
+/* ── 3. VENETIAN BLIND TRANSITION ────────────────────────── */
+const slats = document.querySelectorAll('.blind-slat');
+const SLAT_STAGGER = 55;   // ms between each slat
+const SLAT_DUR    = 220;   // ms each slat takes to close/open
+
+function blindIn(cb) {
+  // Close: slats sweep in left→right, staggered top→bottom
+  slats.forEach((s, i) => {
+    s.style.transition = 'none';
+    s.style.transformOrigin = 'left center';
+    s.style.transform = 'scaleX(0)';
+  });
+  // Force reflow
+  slats[0].getBoundingClientRect();
+
+  slats.forEach((s, i) => {
+    setTimeout(() => {
+      s.style.transition = `transform ${SLAT_DUR}ms cubic-bezier(0.76, 0, 0.24, 1)`;
+      s.style.transform = 'scaleX(1)';
+    }, i * SLAT_STAGGER);
+  });
+
+  const total = SLAT_STAGGER * (slats.length - 1) + SLAT_DUR;
+  setTimeout(cb, total);
+}
+
+function blindOut() {
+  // Open: slats retract right→left, staggered bottom→top
+  const reversed = [...slats].reverse();
+  reversed.forEach((s, i) => {
+    setTimeout(() => {
+      s.style.transition = `transform ${SLAT_DUR}ms cubic-bezier(0.76, 0, 0.24, 1)`;
+      s.style.transformOrigin = 'right center';
+      s.style.transform = 'scaleX(0)';
+    }, i * SLAT_STAGGER);
+  });
+}
+
+// Intercept same-page anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = a.getAttribute('href');
+    blindIn(() => {
+      if (target && target !== '#') {
+        const el = document.querySelector(target);
+        if (el) lenis.scrollTo(el, { immediate: true });
+      }
+      blindOut();
+    });
+  });
+});
+
+// Fire on initial load
+blindOut();
+
+/* ── 4. BUTTON GLITCH TEXT SHUFFLE ───────────────────────── */
+const GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!%&';
+const activeIntervals = new WeakMap();
+
+function clearShuffleInterval(el) {
+  if (activeIntervals.has(el)) {
+    clearInterval(activeIntervals.get(el));
+    activeIntervals.delete(el);
+  }
+}
+
+function shuffleText(el, finalText, duration = 400, onDone) {
+  clearShuffleInterval(el);
+  const frames = Math.floor(duration / 40);
+  let frame = 0;
+  const interval = setInterval(() => {
+    if (frame >= frames) {
+      el.textContent = finalText;
+      clearInterval(interval);
+      activeIntervals.delete(el);
+      if (onDone) onDone();
+      return;
+    }
+    const progress = frame / frames;
+    el.textContent = finalText.split('').map((ch, i) => {
+      if (ch === ' ') return ' ';
+      if (i / finalText.length < progress) return ch;
+      return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+    }).join('');
+    frame++;
+  }, 40);
+  activeIntervals.set(el, interval);
+}
+
+// Exit: reverse direction — letters dissolve right-to-left back into noise, then snap to original
+function shuffleTextExit(el, finalText, duration = 300) {
+  clearShuffleInterval(el);
+  const frames = Math.floor(duration / 40);
+  let frame = 0;
+  const interval = setInterval(() => {
+    if (frame >= frames) {
+      el.textContent = finalText;
+      clearInterval(interval);
+      activeIntervals.delete(el);
+      return;
+    }
+    const progress = frame / frames;
+    el.textContent = finalText.split('').map((ch, i) => {
+      if (ch === ' ') return ' ';
+      // Exit: right-to-left resolve — tail chars glitch last
+      const norm = 1 - (i / finalText.length);
+      if (norm < progress) return ch;
+      return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+    }).join('');
+    frame++;
+  }, 40);
+  activeIntervals.set(el, interval);
+}
+
+document.querySelectorAll('.filter-btn, .pdp-add-btn').forEach(btn => {
+  const original = btn.textContent.trim();
+  btn.setAttribute('data-label', original);
+  btn.addEventListener('mouseenter', () => shuffleText(btn, original, 360));
+  btn.addEventListener('mouseleave', () => shuffleTextExit(btn, original, 280));
+});
+
+document.querySelectorAll('.nav-link').forEach(link => {
+  const original = link.textContent.trim();
+  link.addEventListener('mouseenter', () => shuffleText(link, original, 280));
+  link.addEventListener('mouseleave', () => shuffleTextExit(link, original, 220));
+});
+
+
+/* ── 5. PRODUCT CARD NOISE FLASH ─────────────────────────── */
+document.querySelectorAll('.product-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    card.classList.add('noise-flash');
+    setTimeout(() => card.classList.remove('noise-flash'), 100);
+  });
+});
+
+/* ── 6. CLIP-PATH HEADER REVEALS (IntersectionObserver) ─── */
+const clipObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const inners = entry.target.querySelectorAll('.reveal-clip-inner');
+      inners.forEach((inner, i) => {
+        setTimeout(() => inner.classList.add('revealed'), i * 80);
+      });
+      clipObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.oversize-header, .oversize-text').forEach(el => clipObserver.observe(el));
+
+/* ── 7. STAGGERED SCROLL REVEALS ─────────────────────────── */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.scroll-reveal').forEach((el, i) => {
+  // Stagger siblings in same grid
+  const siblings = el.parentElement ? [...el.parentElement.children].filter(c => c.classList.contains('scroll-reveal')) : [];
+  const idx = siblings.indexOf(el);
+  el.style.transitionDelay = `${idx * 0.08}s`;
+  revealObserver.observe(el);
+});
+
+/* ── 8. DATA COUNTER ANIMATION ───────────────────────────── */
+function animateCount(el, end, duration = 600, prefix = '') {
+  const start = 0;
+  const startTime = performance.now();
+  const update = (now) => {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.floor(eased * end);
+    el.textContent = prefix + value.toLocaleString('en-IN');
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = prefix + end.toLocaleString('en-IN');
+  };
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const raw = el.getAttribute('data-count');
+    const prefix = el.getAttribute('data-prefix') || '';
+    if (raw) animateCount(el, parseInt(raw), 700, prefix);
+    counterObserver.unobserve(el);
+  });
+}, { threshold: 0.5 });
+
+// Tag prices and scores for counting
+document.querySelectorAll('.recently-price, .grail-price, .pdp-price-amount').forEach(el => {
+  const txt = el.textContent.replace(/[₹,]/g, '').trim();
+  const num = parseInt(txt);
+  if (!isNaN(num)) {
+    el.setAttribute('data-count', num);
+    el.setAttribute('data-prefix', '₹');
+    el.textContent = '₹0';
+    counterObserver.observe(el);
+  }
+});
+
+document.querySelectorAll('.grail-score > span').forEach(el => {
+  const num = parseInt(el.textContent);
+  if (!isNaN(num)) {
+    el.setAttribute('data-count', num);
+    el.setAttribute('data-prefix', '');
+    el.textContent = '0';
+    counterObserver.observe(el);
+  }
+});
+
+/* ── 9. EXISTING: progress bar, filter btns, cart ─────────── */
+const progressBar = document.getElementById('progressBar');
+const coordDisplay = document.getElementById('coordDisplay');
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+document.querySelector('.pdp-add-btn').addEventListener('click', function() {
+  const original = this.getAttribute('data-label') || this.textContent;
+  this.textContent = 'ADDED TO CART ✓';
+  this.style.background = 'var(--orange)';
+  this.style.borderColor = 'var(--orange)';
+  setTimeout(() => {
+    this.textContent = original;
+    this.style.background = 'var(--black)';
+    this.style.borderColor = 'var(--black)';
+  }, 2000);
+});
+
+/* ── SEARCH BAR ───────────────────────────────────────────── */
+const searchToggle = document.getElementById('searchToggle');
+const searchInput  = document.getElementById('searchInput');
+searchToggle.addEventListener('click', () => {
+  searchInput.classList.toggle('open');
+  searchInput.classList.contains('open') ? searchInput.focus() : (searchInput.blur(), searchInput.value = '');
+});
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { searchInput.classList.remove('open'); searchInput.value = ''; }
+});
+</script>
+</body>
+</html>

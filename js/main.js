@@ -2717,3 +2717,96 @@ window.formspree = window.formspree || function () { (formspree.q = formspree.q 
     }
   });
 })();
+
+/* ── ShaderGradient-style WebGL canvas on #sb-lab ── */
+(function () {
+  var canvas = document.getElementById('lab-gradient-canvas');
+  if (!canvas) return;
+
+  var gl = canvas.getContext('webgl', { antialias: true, alpha: false });
+  if (!gl) return;
+
+  var W = 88, H = 88; // 2x for retina
+  canvas.width = W; canvas.height = H;
+
+  var vert = `
+    attribute vec2 a_pos;
+    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+  `;
+
+  // Animated radial gradient blobs matching the provided palette
+  var frag = `
+    precision highp float;
+    uniform float u_time;
+    uniform vec2  u_res;
+
+    // base:  #f2c5fa  -> rgb(0.949, 0.773, 0.980)
+    // blob1: #fbcde5  -> rgb(0.984, 0.804, 0.898)
+    // blob2: #ffafbe  -> rgb(1.000, 0.686, 0.745)
+    // blob3: #d0d4ff  -> rgb(0.816, 0.831, 1.000)
+
+    vec3 radialBlob(vec2 uv, vec2 center, float radius, vec3 color) {
+      float d = length(uv - center);
+      float alpha = 1.0 - smoothstep(0.0, radius, d);
+      return color * alpha;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / u_res;
+      float t = u_time * 0.25;
+
+      // Animate each blob centre gently
+      vec2 c0 = vec2(0.00, 1.00) + vec2(sin(t * 0.7) * 0.08, cos(t * 0.5) * 0.06);
+      vec2 c1 = vec2(0.23, 0.63) + vec2(cos(t * 0.6) * 0.10, sin(t * 0.8) * 0.08);
+      vec2 c2 = vec2(0.46, 0.26) + vec2(sin(t * 0.9) * 0.09, cos(t * 0.4) * 0.10);
+      vec2 c3 = vec2(0.69, 0.89) + vec2(cos(t * 0.5) * 0.11, sin(t * 0.6) * 0.07);
+
+      vec3 base = vec3(0.949, 0.773, 0.980);
+      vec3 b1   = vec3(0.984, 0.804, 0.898);
+      vec3 b2   = vec3(1.000, 0.686, 0.745);
+      vec3 b3   = vec3(0.816, 0.831, 1.000);
+
+      float r = 0.62; // blob radius (60% of canvas)
+
+      vec3 color = base;
+      color += radialBlob(uv, c0, r, b1 - base);
+      color += radialBlob(uv, c1, r, b2 - base);
+      color += radialBlob(uv, c2, r, b1 - base);
+      color += radialBlob(uv, c3, r, b3 - base);
+
+      gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+    }
+  `;
+
+  function compile(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    return s;
+  }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, vert));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, frag));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER,
+    new Float32Array([-1,-1, 1,-1, -1,1, 1,-1, 1,1, -1,1]), gl.STATIC_DRAW);
+
+  var aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  var uTime = gl.getUniformLocation(prog, 'u_time');
+  var uRes  = gl.getUniformLocation(prog, 'u_res');
+  gl.uniform2f(uRes, W, H);
+
+  var start = performance.now();
+  function render() {
+    gl.uniform1f(uTime, (performance.now() - start) / 1000);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    requestAnimationFrame(render);
+  }
+  render();
+})();

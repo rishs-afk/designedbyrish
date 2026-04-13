@@ -602,14 +602,14 @@ body {
   width: 44px; height: 44px;
   margin: 0 0 0.875rem;
   padding: 0;
-  background: var(--ink); color: #fff;
+  background: var(--moss); color: #fff;
   border: none; border-radius: 50%;
   cursor: none;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; position: relative;
   transition: background .25s ease, color .25s ease, transform .25s ease;
 }
-#sb-talk:hover { background: #D42B21; color: #fff; transform: scale(1.08); }
+#sb-talk:hover { background: var(--ink); color: var(--bg); transform: scale(1.08); }
 #sb-talk svg { stroke: currentColor; }
 @keyframes pdot {
   0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:.3; transform:scale(.6); }
@@ -3812,21 +3812,22 @@ body.cs-open #sidebar  { opacity: 0; pointer-events: none; transition: opacity .
   width: 44px; height: 44px;
   margin: 0 0 0.5rem;
   padding: 0;
-  background: #D42B21; color: #fff;
-  border: none; border-radius: 50%;
+  background: transparent; color: var(--ink);
+  border: 1px solid rgba(17,17,17,.18); border-radius: 50%;
   cursor: none;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  transition: background .25s ease, color .25s ease,
+  transition: background .25s ease, color .25s ease, border-color .25s ease,
               transform .4s cubic-bezier(0.34,1.56,0.64,1);
 }
 #sb-resume:hover {
   background: var(--ink); color: #fff;
+  border-color: var(--ink);
   transform: scale(1.08);
 }
 #sb-resume svg { stroke: currentColor; }
 #sb-resume.resume-open {
-  background: var(--ink); color: #fff;
+  background: var(--ink); color: #fff; border-color: var(--ink);
 }
 
 /* ── RESUME OVERLAY ────────────────────────────── */
@@ -3972,7 +3973,7 @@ body.cs-open #sidebar  { opacity: 0; pointer-events: none; transition: opacity .
   width: 44px; height: 44px;
   margin: 0 0 0.5rem;
   padding: 0;
-  background: #D42B21;
+  background: transparent;
   color: #fff;
   border: none; border-radius: 50%;
   cursor: none;
@@ -3980,11 +3981,20 @@ body.cs-open #sidebar  { opacity: 0; pointer-events: none; transition: opacity .
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-  transition: background .25s ease, transform .4s cubic-bezier(0.34,1.56,0.64,1);
+  transition: transform .4s cubic-bezier(0.34,1.56,0.64,1);
 }
-#sb-lab:hover { background: var(--ink); transform: scale(1.08); }
-#sb-lab.lab-open { background: var(--ink); transform: scale(1.04); }
+#sb-lab:hover { transform: scale(1.08); }
+#sb-lab.lab-open { transform: scale(1.04); }
 #sb-lab svg { stroke: currentColor; position: relative; z-index: 1; }
+#lab-gradient-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50%;
+  display: block;
+  z-index: 0;
+}
 
 @keyframes lab-gradient {
   0% {background-position:0% 50%}

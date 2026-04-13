@@ -932,7 +932,8 @@
     </svg>
   </button>
   <button id="sb-lab" aria-label="Experiments &amp; Lab projects" title="Lab">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <canvas id="lab-gradient-canvas" aria-hidden="true"></canvas>
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative;z-index:1;">
       <path d="M9 3h6M9 3v6l-4 9a1 1 0 0 0 .9 1.45h12.2A1 1 0 0 0 19 18l-4-9V3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="9.5" cy="15.5" r="0.75" fill="currentColor"/>
       <circle cx="13" cy="17" r="0.6" fill="currentColor"/>
@@ -1014,11 +1015,20 @@
       <span class="work-row-arrow">→</span>
     </div>
 
+      <div class="work-row" data-slug="arena-archive" onclick="window.open('the-arena-archive%20(2).html', '_blank')">
+        <div class="work-row-fill"></div>
+        <div class="work-row-info">
+          <div class="work-row-name">06 — Arena Archive</div>
+        </div>
+        <div class="work-row-cat">Lab</div>
+        <span class="work-row-arrow">→</span>
+      </div>
+
   </div><!-- /lab-grid -->
 
   <div id="lab-footer">
     <span id="lab-foot-note">Experiments in the browser — real, clickable,&nbsp;felt.</span>
-    <span id="lab-foot-count"><em>05</em>&nbsp;live</span>
+    <span id="lab-foot-count"><em>06</em>&nbsp;live</span>
   </div>
 </div><!-- /lab-overlay -->
 
