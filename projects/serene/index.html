@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serene — Mental Wellness</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,500&family=Audiowide&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="brand">
+        <button class="brand-orb" onclick="nav('dashboard')"></button>
+        <span class="brand-name">Serene</span>
+      </div>
+
+      <nav class="nav-group">
+        <div class="nav-label">Core</div>
+        <button class="nav-item active" onclick="nav('dashboard')">
+          <svg class="nav-icon"><use href="#ic-grid"/></svg> Dashboard
+        </button>
+        <button class="nav-item" onclick="nav('insights')">
+          <svg class="nav-icon"><use href="#ic-trending"/></svg> Daily Insights
+        </button>
+        <button class="nav-item sos-item" onclick="nav('sos')">
+          <svg class="nav-icon"><use href="#ic-alert"/></svg> SOS Panic Mode
+        </button>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-label">Relieve Anxiety</div>
+        <button class="nav-item" onclick="nav('breathing')">
+          <svg class="nav-icon"><use href="#ic-wind"/></svg> Focused Breathing
+        </button>
+        <button class="nav-item" onclick="nav('grounding')">
+          <svg class="nav-icon"><use href="#ic-mappin"/></svg> 5-4-3-2-1 Grounding
+        </button>
+        <button class="nav-item" onclick="nav('bodyscan')">
+          <svg class="nav-icon"><use href="#ic-user"/></svg> Body Scan
+        </button>
+        <button class="nav-item" onclick="nav('worry')">
+          <svg class="nav-icon"><use href="#ic-feather"/></svg> Worry Journal
+        </button>
+        <button class="nav-item" onclick="nav('pmr')">
+          <svg class="nav-icon"><use href="#ic-activity"/></svg> PMR Relaxation
+        </button>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-label">Lift Mood</div>
+        <button class="nav-item" onclick="nav('mood')">
+          <svg class="nav-icon"><use href="#ic-smile-n"/></svg> Mood Logger
+        </button>
+        <button class="nav-item" onclick="nav('gratitude')">
+          <svg class="nav-icon"><use href="#ic-sun"/></svg> Gratitude Journal
+        </button>
+        <button class="nav-item" onclick="nav('reframing')">
+          <svg class="nav-icon"><use href="#ic-brain"/></svg> Thought Reframing
+        </button>
+        <button class="nav-item" onclick="nav('activation')">
+          <svg class="nav-icon"><use href="#ic-zap"/></svg> Activation Planner
+        </button>
+        <button class="nav-item" onclick="nav('values')">
+          <svg class="nav-icon"><use href="#ic-compass"/></svg> Values Explorer
+        </button>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-label">Manage Focus</div>
+        <button class="nav-item" onclick="nav('focus')">
+          <svg class="nav-icon"><use href="#ic-clock"/></svg> Focus Timer
+        </button>
+        <button class="nav-item" onclick="nav('meditation')">
+          <svg class="nav-icon"><use href="#ic-moon"/></svg> Meditation Timer
+        </button>
+        <button class="nav-item" onclick="nav('habits')">
+          <svg class="nav-icon"><use href="#ic-check-sq"/></svg> Habit Tracker
+        </button>
+        <button class="nav-item" onclick="nav('braindump')">
+          <svg class="nav-icon"><use href="#ic-pencil"/></svg> Brain Dump
+        </button>
+        <button class="nav-item" onclick="nav('matrix')">
+          <svg class="nav-icon"><use href="#ic-grid-big"/></svg> Priority Matrix
+        </button>
+        <button class="nav-item" onclick="nav('distractions')">
+          <svg class="nav-icon"><use href="#ic-phone-off"/></svg> Distraction Log
+        </button>
+        <button class="nav-item" onclick="nav('bodydoubling')">
+          <svg class="nav-icon"><use href="#ic-users"/></svg> Body Doubling
+        </button>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-label">Self-Knowledge</div>
+        <button class="nav-item" onclick="nav('sleep')">
+          <svg class="nav-icon"><use href="#ic-moon"/></svg> Sleep Tracker
+        </button>
+        <button class="nav-item" onclick="nav('selfcare')">
+          <svg class="nav-icon"><use href="#ic-heart"/></svg> Self-Care List
+        </button>
+        <button class="nav-item" onclick="nav('emotions')">
+          <svg class="nav-icon"><use href="#ic-palette"/></svg> Emotion Wheel
+        </button>
+        <button class="nav-item" onclick="nav('energy')">
+          <svg class="nav-icon"><use href="#ic-battery"/></svg> Energy & Mood
+        </button>
+        <button class="nav-item" onclick="nav('affirmations')">
+          <svg class="nav-icon"><use href="#ic-sparkle"/></svg> Affirmations
+        </button>
+      </nav>
+
+      <nav class="nav-group">
+        <div class="nav-label">Journaling</div>
+        <button class="nav-item" onclick="nav('prompts')">
+          <svg class="nav-icon"><use href="#ic-file-text"/></svg> Guided Prompts
+        </button>
+        <button class="nav-item" onclick="nav('triggers')">
+          <svg class="nav-icon"><use href="#ic-target"/></svg> Trigger Tracker
+        </button>
+        <button class="nav-item" onclick="nav('therapy')">
+          <svg class="nav-icon"><use href="#ic-briefcase"/></svg> Therapy Notes
+        </button>
+        <button class="nav-item" onclick="nav('coping')">
+          <svg class="nav-icon"><use href="#ic-tool"/></svg> Coping Toolkit
+        </button>
+        <button class="nav-item" onclick="nav('addiction')">
+          <svg class="nav-icon"><use href="#ic-info"/></svg> Addiction Wiki
+        </button>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="crisis-box">
+        <div class="crisis-box-title">In Crisis?</div>
+        <div class="crisis-line">India: <strong>9152987821</strong></div>
+        <div class="crisis-line">USA: <strong>988</strong></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── MAIN ─── -->
+  <main class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <section id="dashboard" class="page active">
+      <div class="hero-card">
+        <div class="hero-card-content">
+          <div class="page-eyebrow">Mental Wellness</div>
+          <h1 class="hero-greeting"><span id="greeting-txt">Good morning</span></h1>
+          <p class="hero-sub" id="dash-affirm">I am enough, exactly as I am.</p>
+          <div class="quick-actions">
+            <button class="quick-btn" onclick="nav('breathing')"><span><svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-wind"/></svg></span> Breathe</button>
+            <button class="quick-btn" onclick="nav('focus')"><span><svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-clock"/></svg></span> Focus</button>
+            <button class="quick-btn" onclick="nav('mood')"><span><svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-smile"/></svg></span> Mood</button>
+            <button class="quick-btn" onclick="nav('braindump')"><span><svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-pencil"/></svg></span> Dump</button>
+          </div>
+        </div>
+        <div class="hero-card-orb">
+          <div class="hero-orb-glow"></div>
+          <div class="hero-orb-sphere"></div>
+          <div class="hero-canvas-bars">
+            <div class="hero-bar"></div><div class="hero-bar"></div><div class="hero-bar"></div>
+            <div class="hero-bar"></div><div class="hero-bar"></div><div class="hero-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num" id="s-streak">1</div>
+          <div class="stat-lbl">Days Streak</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="s-moods">0</div>
+          <div class="stat-lbl">Moods Logged</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="s-sessions">0</div>
+          <div class="stat-lbl">Focus Sessions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="s-habits">0/0</div>
+          <div class="stat-lbl">Habits Today</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recommended for you</div>
+        <div class="grid-2">
+          <button class="btn btn-ghost btn-lg" onclick="nav('activation')">Plan your day for energy</button>
+          <button class="btn btn-ghost btn-lg" onclick="nav('bodyscan')">Release physical tension</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── INSIGHTS ── -->
+    <section id="insights" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Your Journey</div>
+        <h1 class="page-title">Daily Insights</h1>
+        <p class="page-sub">Visualising your mental health patterns over the last 14 days.</p>
+      </header>
+
+      <div class="grid-2 section-gap">
+        <div class="insights-chart-wrap">
+          <div class="card-title">Mood Trend (14d)</div>
+          <canvas id="mood-chart"></canvas>
+        </div>
+        <div class="insights-chart-wrap">
+          <div class="card-title">Mood Distribution</div>
+          <div class="mood-dist" id="mood-dist">
+            <!-- Dynamic -->
+          </div>
+        </div>
+      </div>
+
+      <div class="insights-chart-wrap section-gap">
+        <div class="card-title">Sleep Patterns (7d)</div>
+        <canvas id="sleep-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- ── SOS PANIC MODE ── -->
+    <section id="sos" class="page">
+      <div class="sos-wrap">
+        <div class="sos-panel">
+          <h1 class="sos-safe-text">You are safe.</h1>
+          <p class="sos-sub">This feeling is intense, but it will pass. Just focus on the circle — breathe with it.</p>
+
+          <div class="sos-orb-wrap">
+            <div class="sos-ring"></div><div class="sos-ring"></div>
+            <div class="sos-orb"></div>
+          </div>
+
+          <div id="sos-phase-txt" class="sos-phase">Breathe in…</div>
+
+          <div style="width:100%;height:3px;background:rgba(0,0,0,0.06);border-radius:100px;margin-bottom:32px;overflow:hidden;">
+            <div id="sos-bar" style="height:100%;width:0%;background:var(--accent);transition:width 1s linear;"></div>
+          </div>
+
+          <div class="sos-steps">
+            <div class="sos-step-item">
+              <div class="sos-step-num">1</div>
+              <div class="sos-step-text">Symptoms of panic (heart racing, sweat) are not dangerous. They are just your body's alarm.</div>
+            </div>
+            <div class="sos-step-item">
+              <div class="sos-step-num">2</div>
+              <div class="sos-step-text">Watch the thoughts drift past like clouds. You don't have to follow them.</div>
+            </div>
+          </div>
+
+          <div class="sos-crisis-line">Need to talk to someone? Call or text <a href="tel:988">988</a> (USA) or <a href="tel:9152987821">91-52987821</a> (India)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BREATHING ── -->
+    <section id="breathing" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Physiology</div>
+        <h1 class="page-title">Focused Breathing</h1>
+        <p class="page-sub">Regulate your nervous system by changing your breath pattern.</p>
+      </header>
+
+      <div class="breath-layout">
+        <div class="breath-visual-card">
+          <div class="breath-orb-wrap">
+            <div class="breath-halo breath-halo-1"></div>
+            <div class="breath-halo breath-halo-2"></div>
+            <div class="breath-halo breath-halo-3"></div>
+            <div class="breath-orb" id="breath-orb">
+              <div class="breath-orb-phase" id="b-phase">Ready</div>
+              <div class="breath-orb-count" id="b-count">—</div>
+            </div>
+          </div>
+          <div id="b-cycle" class="breath-cycle-txt">Cycle 0 of 4</div>
+          <div class="breath-bar"><div class="breath-bar-fill" id="b-prog"></div></div>
+          <p class="breath-desc" id="b-desc">Inhale 4s · Hold 4s · Exhale 4s · Hold 4s</p>
+          <div style="display:flex;gap:12px;">
+            <button class="btn btn-primary btn-lg" id="b-start-btn" onclick="toggleBreath()">▶ Start</button>
+            <button class="btn btn-ghost btn-lg" onclick="resetBreath()">Reset</button>
+          </div>
+        </div>
+
+        <div class="breath-controls-card">
+          <div class="card-title">Select Technique</div>
+          <div class="tech-list">
+            <button class="tech-card active" data-tech="box" onclick="selectTech(this)">
+              <div class="tech-card-name">Box Breathing</div>
+              <div class="tech-card-desc">Equal inhale, hold, exhale, hold. Clear focus.</div>
+            </button>
+            <button class="tech-card" data-tech="478" onclick="selectTech(this)">
+              <div class="tech-card-name">4-7-8 Relax</div>
+              <div class="tech-card-desc">Short inhale, long hold, longer exhale. For sleep.</div>
+            </button>
+            <button class="tech-card" data-tech="calm" onclick="selectTech(this)">
+              <div class="tech-card-name">Calm Pacing</div>
+              <div class="tech-card-desc">Even 5s in, 5s out. Gentle flow.</div>
+            </button>
+            <button class="tech-card" data-tech="resonant" onclick="selectTech(this)">
+              <div class="tech-card-name">Resonant (6-6)</div>
+              <div class="tech-card-desc">Maximises Heart Rate Variability (HRV).</div>
+            </button>
+            <button class="tech-card" data-tech="triangle" onclick="selectTech(this)">
+              <div class="tech-card-name">Triangle Breath</div>
+              <div class="tech-card-desc">Inhale, hold, exhale. Quick reset.</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GROUNDING ── -->
+    <section id="grounding" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Perspective</div>
+        <h1 class="page-title">5-4-3-2-1 Grounding</h1>
+        <p class="page-sub">Pull your mind away from anxious future thoughts back into the present moment.</p>
+      </header>
+      <div class="card" style="max-width:600px;margin:0 auto;">
+        <div class="ground-progress" id="ground-prog"></div>
+        <div id="ground-content">
+          <!-- Dynamic -->
+        </div>
+        <div class="divider"></div>
+        <div style="display:flex;justify-content:space-between;">
+          <button class="btn btn-ghost" id="g-prev" onclick="gNav(-1)" style="display:none;">← Previous</button>
+          <button class="btn btn-primary btn-lg" id="g-next" style="margin-left:auto;" onclick="gNav(1)">Next Step →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BODY SCAN ── -->
+    <section id="bodyscan" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Awareness</div>
+        <h1 class="page-title">Guided Body Scan</h1>
+        <p class="page-sub">Release somatic tension area-by-area to quiet the mind.</p>
+      </header>
+
+      <div class="body-scan-layout">
+        <div class="body-map">
+          <div class="body-figure">
+            <!-- Simple SVG figure -->
+            <svg viewBox="0 0 100 220" style="width:100%;height:auto;fill:rgba(255,255,255,0.1);stroke:rgba(255,255,255,0.4);stroke-width:1;">
+              <circle cx="50" cy="25" r="20" class="body-zone" onclick="selBodyArea(0)"/> <!-- Head -->
+              <path d="M30 50 L70 50 L75 100 L25 100 Z" class="body-zone" onclick="selBodyArea(2)"/> <!-- Chest -->
+              <path d="M25 100 L75 100 L70 140 L30 140 Z" class="body-zone" onclick="selBodyArea(5)"/> <!-- Hips -->
+              <rect x="10" y="55" width="15" height="80" rx="5" class="body-zone" onclick="selBodyArea(3)"/> <!-- L arm -->
+              <rect x="75" y="55" width="15" height="80" rx="5" class="body-zone" onclick="selBodyArea(3)"/> <!-- R arm -->
+              <rect x="30" y="145" width="18" height="70" rx="6" class="body-zone" onclick="selBodyArea(6)"/> <!-- L leg -->
+              <rect x="52" y="145" width="18" height="70" rx="6" class="body-zone" onclick="selBodyArea(6)"/> <!-- R leg -->
+            </svg>
+          </div>
+          <div class="body-area-list" id="body-area-list"></div>
+        </div>
+
+        <div class="scan-content">
+          <div class="scan-area-title" id="scan-title">Head & Scalp</div>
+          <p class="scan-instruction" id="scan-instr">Close your eyes. Bring attention to your scalp and forehead. Notice any tightness or tingling…</p>
+
+          <div class="divider"></div>
+
+          <div class="scan-timer" id="scan-timer">60s</div>
+          <div style="display:flex;gap:12px;margin-bottom:28px;">
+            <button class="btn btn-primary btn-lg" id="scan-btn" onclick="toggleScan()">▶ Begin</button>
+            <button class="btn btn-ghost btn-lg" onclick="resetScan()">Reset</button>
+          </div>
+
+          <div class="tension-scale">
+            <div class="tension-label">Rate tension before/after (1–5)</div>
+            <div class="tension-row" id="tension-row"></div>
+          </div>
+
+          <textarea class="input scan-note-input" placeholder="Any specific sensations noted here?"></textarea>
+          <button class="btn btn-ghost" onclick="toast('Insights saved')">Save Area Insights</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WORRY JOURNAL ── -->
+    <section id="worry" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Cognitive</div>
+        <h1 class="page-title">Worry Journal</h1>
+        <p class="page-sub">Externalise what's on your mind and find a path forward.</p>
+      </header>
+
+      <div class="worry-layout">
+        <div>
+          <!-- Step 1 -->
+          <div class="wstep" id="ws-1">
+            <div class="wstep-header">
+              <div class="wstep-num">1</div>
+              <div class="wstep-label">Identify the worry</div>
+            </div>
+            <div class="wstep-body">
+              <textarea id="w-worry" class="input" placeholder="I am worried that…" oninput="wMarkStep(1,this.value)"></textarea>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div class="wstep" id="ws-2">
+            <div class="wstep-header">
+              <div class="wstep-num">2</div>
+              <div class="wstep-label">Is it actionable?</div>
+            </div>
+            <div class="wstep-body">
+              <div class="act-btn-row">
+                <button id="w-yes-btn" class="act-btn" onclick="wSetActionable(true)">Yes — it's in my control</button>
+                <button id="w-no-btn" class="act-btn" onclick="wSetActionable(false)">No — it's a possibility</button>
+              </div>
+              <div id="w-yes-hint" class="act-hint green">Great. <strong>What is one small step</strong> you can take right now? <br>
+                <input class="input" style="margin-top:8px;" id="w-action" placeholder="I will…" oninput="wMarkStep(3,this.value)">
+              </div>
+              <div id="w-no-hint" class="act-hint">Since you can't act on this, can you <strong>challenge it</strong>? Choose a cognitive question below or schedule a time to worry about it later.</div>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="wstep" id="ws-3">
+            <div class="wstep-header">
+              <div class="wstep-num">3</div>
+              <div class="wstep-label">Challenge the thought</div>
+            </div>
+            <div class="wstep-body">
+              <p style="font-size:12px;color:var(--text-3);margin-bottom:8px;">Choose a helpful prompt:</p>
+              <div class="cog-grid">
+                <div class="cog-q" onclick="wSelectCog(this)">Is this definitely true, or just possible?</div>
+                <div class="cog-q" onclick="wSelectCog(this)">What would I tell a friend?</div>
+                <div class="cog-q" onclick="wSelectCog(this)">Is this worth my energy right now?</div>
+                <div class="cog-q" onclick="wSelectCog(this)">What's the best case scenario?</div>
+              </div>
+              <textarea id="w-challenge" class="input" placeholder="Response to the challenge…" oninput="wMarkStep(3,this.value)"></textarea>
+            </div>
+          </div>
+          <!-- Step 4 -->
+          <div class="wstep" id="ws-4">
+            <div class="wstep-header">
+              <div class="wstep-num">4</div>
+              <div class="wstep-label">Containment</div>
+            </div>
+            <div class="wstep-body">
+              <p style="font-size:12px;color:var(--text-3);margin-bottom:8px;">If you can't stop thinking about it, schedule a specific "Worry Time" later.</p>
+              <div class="sched-row">
+                <input type="time" id="w-time" class="input" style="width:120px;">
+                <input type="text" id="w-dur" class="input" placeholder="Duration (e.g. 15m)">
+                <button class="btn btn-ghost" onclick="wSchedule()">Schedule</button>
+              </div>
+              <div id="w-sched-list"></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-primary btn-lg" onclick="wSave()">Reframing reflection</button>
+            <button class="btn btn-ghost btn-lg" onclick="wClear()">Clear all</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="worry-reframe" id="w-reframe">
+            Your reframed thought will appear here after completing the steps above.
+          </div>
+          <div class="divider"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div class="card-title" style="margin:0;">Recent Archive</div>
+            <button onclick="wClearArchive()" style="background:none;border:none;font-size:11px;color:var(--text-3);cursor:pointer;">Clear all</button>
+          </div>
+          <div id="w-archive"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PMR ── -->
+    <section id="pmr" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Somatic</div>
+        <h1 class="page-title">PMR Relaxation</h1>
+        <p class="page-sub">Progressive Muscle Relaxation: Tense then release muscles to force physical calm.</p>
+      </header>
+
+      <div class="pmr-track-bar" id="pmr-track"></div>
+
+      <div class="pmr-layout">
+        <div style="min-height:300px;">
+          <div id="pmr-step-cards"></div>
+          <div class="pmr-complete-card" id="pmr-complete">
+            <div style="font-size:48px;margin-bottom:12px;">🧘</div>
+            <h3>Fully Relaxed.</h3>
+            <p style="margin-bottom:24px;color:var(--text-2);">You've released tension from every major muscle group in your body.</p>
+            <button class="btn btn-primary" onclick="pmrRestart()">Restart session</button>
+          </div>
+          <div id="pmr-nav-row" style="display:flex;justify-content:space-between;margin-top:18px;">
+            <button class="btn btn-ghost" id="pmr-prev-btn" onclick="pmrNav(-1)">← Back</button>
+            <button class="btn btn-primary btn-lg" id="pmr-main-btn" style="margin-left:auto;" onclick="pmrBegin()">▶ Begin This Muscle</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="timer-ring-wrap" style="width:200px;height:200px;margin-bottom:16px;">
+             <div class="timer-sphere" style="width:160px;height:160px;"></div>
+             <svg class="pmr-timer-svg" viewBox="0 0 160 160">
+               <circle class="pmr-timer-track" cx="80" cy="80" r="75"/>
+               <circle id="pmr-ring" class="pmr-timer-fill" cx="80" cy="80" r="75"/>
+             </svg>
+             <div style="position:relative;z-index:1;text-align:center;">
+               <div id="pmr-timer-num" class="pmr-timer-num">—</div>
+               <div id="pmr-timer-lbl" class="pmr-timer-lbl">Ready</div>
+             </div>
+          </div>
+          <div class="card-title">Scientific Benefits</div>
+          <div class="pmr-info-item">
+            <div class="pmr-info-icon">⚡</div>
+            <div class="pmr-info-text"><strong>Resets</strong> your nervous system after prolonged stress.</div>
+          </div>
+          <div class="pmr-info-item">
+            <div class="pmr-info-icon">💤</div>
+            <div class="pmr-info-text">Excellent for <strong>falling asleep</strong> when the mind is racing.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MOOD LOGGER ── -->
+    <section id="mood" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Tracking</div>
+        <h1 class="page-title">Mood Logger</h1>
+        <p class="page-sub">Checking in with yourself is the first step in noticing patterns.</p>
+      </header>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">How do you feel right now?</div>
+          <div class="mood-scale">
+            <button class="mood-face-btn" data-m="5" data-e="great" onclick="selMood(this)">
+              <span class="mood-emoji-big"><svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-smile2"/></svg></span>
+              <span class="mood-face-lbl">Great</span>
+            </button>
+            <button class="mood-face-btn" data-m="4" data-e="good" onclick="selMood(this)">
+              <span class="mood-emoji-big"><svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-smile"/></svg></span>
+              <span class="mood-face-lbl">Good</span>
+            </button>
+            <button class="mood-face-btn" data-m="3" data-e="okay" onclick="selMood(this)">
+              <span class="mood-emoji-big"><svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-meh"/></svg></span>
+              <span class="mood-face-lbl">Okay</span>
+            </button>
+            <button class="mood-face-btn" data-m="2" data-e="low" onclick="selMood(this)">
+              <span class="mood-emoji-big"><svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-frown"/></svg></span>
+              <span class="mood-face-lbl">Low</span>
+            </button>
+            <button class="mood-face-btn" data-m="1" data-e="rough" onclick="selMood(this)">
+              <span class="mood-emoji-big"><svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-frown2"/></svg></span>
+              <span class="mood-face-lbl">Rough</span>
+            </button>
+          </div>
+
+          <div class="card-title">Add tags</div>
+          <div class="mood-tag-row" id="mood-tags" style="margin-bottom:20px;"></div>
+
+          <div class="card-title">Private note</div>
+          <textarea id="mood-note" class="input" style="margin-bottom:18px;" placeholder="What's causing this feeling?"></textarea>
+
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="saveMood()">Log current mood</button>
+        </div>
+
+        <div>
+          <div class="card-title">Recent History</div>
+          <div id="mood-history"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GRATITUDE ── -->
+    <section id="gratitude" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Positive Bias</div>
+        <h1 class="page-title">Gratitude Journal</h1>
+        <p class="page-sub">Rewiring the brain to notice the good things, however small.</p>
+      </header>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Today, I am grateful for…</div>
+          <div class="gratitude-3">
+            <div class="gratitude-input-row"><div class="gratitude-num">1</div><input id="g1" class="input" placeholder="A person, event, or thing…"></div>
+            <div class="gratitude-input-row"><div class="gratitude-num">2</div><input id="g2" class="input" placeholder="Something I saw, heard, or tasted…"></div>
+            <div class="gratitude-input-row"><div class="gratitude-num">3</div><input id="g3" class="input" placeholder="A win, however small…"></div>
+          </div>
+          <textarea id="gratitude-note" class="input" style="margin-bottom:18px;" placeholder="Reflection (optional)"></textarea>
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="saveGratitude()">Save gratitude entries</button>
+        </div>
+        <div>
+          <div class="card-title">History of Good Things</div>
+          <div id="gratitude-history"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── THOUGHT REFRAMING ── -->
+    <section id="reframing" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">CBT Toolkit</div>
+        <h1 class="page-title">Thought Reframing</h1>
+        <p class="page-sub">Question the stories your mind tells you to find a more balanced perspective.</p>
+      </header>
+
+      <div class="grid-2">
+        <div class="cbf-flow">
+          <div class="cbf-step">
+            <div class="cbf-step-label"><div class="cbf-badge">1</div> Automated Thought</div>
+            <textarea id="cbf-thought" class="input" placeholder="Write exactly what you're thinking (e.g. 'I'm failing at everything')"></textarea>
+          </div>
+          <div class="cbf-step">
+            <div class="cbf-step-label"><div class="cbf-badge">2</div> Evidence For</div>
+            <textarea id="cbf-for" class="input" placeholder="What facts support this thought?"></textarea>
+          </div>
+          <div class="cbf-step">
+            <div class="cbf-step-label"><div class="cbf-badge">3</div> Evidence Against</div>
+            <textarea id="cbf-against" class="input" placeholder="What facts contradict this thought?"></textarea>
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="reframe()">Reflect and Challenge</button>
+          <div id="cbf-output" class="cbf-output">Your balanced thought will appear here.</div>
+        </div>
+
+        <div>
+           <div class="card-title">Common Thinking Traps</div>
+           <div id="thinking-traps-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACTIVATION PLANNER ── -->
+    <section id="activation" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Depression Loop</div>
+        <h1 class="page-title">Activation Planner</h1>
+        <p class="page-sub">Action precedes motivation. Schedule small tasks to rebuild energy.</p>
+      </header>
+
+      <div class="ba-top">
+        <div class="card" style="padding-bottom:10px;">
+          <div class="card-title">Activity Bank</div>
+          <div id="ba-bank" style="margin-bottom:14px;max-height:300px;overflow-y:auto;"></div>
+          <div class="divider"></div>
+          <input id="ba-new-name" class="input" style="margin-bottom:8px;" placeholder="New activity…">
+          <div style="display:flex;gap:4px;margin-bottom:10px;">
+            <select id="ba-new-cat" class="input" style="flex:1;">
+              <option value="pleasure">Pleasure</option>
+              <option value="mastery">Mastery</option>
+              <option value="social">Social</option>
+              <option value="physical">Physical</option>
+              <option value="rest">Rest</option>
+              <option value="creative">Creative</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="baAddActivity()">Add</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="card-title" style="margin:0;">Weekly Plan (<span id="ba-week-label"></span>)</div>
+            <button class="btn btn-ghost btn-sm" onclick="baClearPlanner()">Clear All</button>
+          </div>
+          <div id="ba-planner" style="overflow-x:auto;"></div>
+          <div class="divider"></div>
+          <div class="card-title">Balance</div>
+          <div id="ba-cat-chips"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Impact on Mood (Done items)</div>
+        <div id="ba-mood-impact"></div>
+      </div>
+
+      <!-- Modal -->
+      <div id="ba-modal" class="ba-modal-overlay">
+        <div class="ba-modal-box">
+          <h3 style="font-family:'Fraunces',serif;margin-bottom:14px;">Schedule Activity</h3>
+          <div id="ba-modal-slot-lbl" style="font-size:12px;color:var(--text-3);margin-bottom:18px;letter-spacing:1px;text-transform:uppercase;"></div>
+          <label class="card-title" style="display:block;">Select Activity</label>
+          <select id="ba-modal-act" class="input" style="margin-bottom:20px;"></select>
+          <label class="card-title" style="display:block;">Anticipated Pleasure (1–5)</label>
+          <div style="display:flex;gap:6px;margin-bottom:20px;">
+            <button class="ba-mood-pip-btn" data-v="1" onclick="baSelMood(this)">1</button>
+            <button class="ba-mood-pip-btn" data-v="2" onclick="baSelMood(this)">2</button>
+            <button class="ba-mood-pip-btn" data-v="3" onclick="baSelMood(this)">3</button>
+            <button class="ba-mood-pip-btn" data-v="4" onclick="baSelMood(this)">4</button>
+            <button class="ba-mood-pip-btn" data-v="5" onclick="baSelMood(this)">5</button>
+          </div>
+          <label class="card-title" style="display:block;">Notes</label>
+          <textarea id="ba-modal-notes" class="input" style="height:60px;margin-bottom:24px;"></textarea>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="baSaveSlot()">Schedule</button>
+            <button class="btn btn-ghost" onclick="baCloseModal()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VALUES EXPLORER ── -->
+    <section id="values" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Direction</div>
+        <h1 class="page-title">Values Explorer</h1>
+        <p class="page-sub">Define what matters most to you to find a more meaningful direction.</p>
+      </header>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Select up to 10 core values</div>
+          <div class="values-grid" id="values-grid"></div>
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="valuesSave()">Save my values</button>
+        </div>
+        <div>
+          <div class="card-title">My Top Values</div>
+          <div id="values-empty-state" style="font-size:13px;color:var(--text-3);padding:20px 0;text-align:center;">Select and save values from the left to start.</div>
+          <div class="values-top-list" id="values-top-list"></div>
+          <div class="divider"></div>
+          <div class="card-title">Reflection</div>
+          <textarea id="values-refl" class="input" style="margin-bottom:12px;" placeholder="What does living in alignment with these values look like for you?"></textarea>
+          <button class="btn btn-ghost" onclick="valuesSaveRefl()">Save Reflection</button>
+          <div id="values-refl-list" style="margin-top:16px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOCUS TIMER ── -->
+    <section id="focus" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Productivity</div>
+        <h1 class="page-title">Focus Timer</h1>
+        <p class="page-sub">Use the Pomodoro technique to maintain sustainable effort.</p>
+      </header>
+
+      <div class="focus-layout">
+        <div class="timer-card">
+          <div class="timer-mode-row">
+            <button class="tmode-btn active" data-s="1500" onclick="setTMode(this,1500,'Focus 25')">Focus 25</button>
+            <button class="tmode-btn" data-s="3000" onclick="setTMode(this,3000,'Focus 50')">Focus 50</button>
+            <button class="tmode-btn" data-s="300" onclick="setTMode(this,300,'Short Break')">Short Break</button>
+            <button class="tmode-btn" data-s="900" onclick="setTMode(this,900,'Long Break')">Long Break</button>
+          </div>
+          <div class="timer-ring-wrap">
+            <div class="timer-sphere"></div>
+            <svg class="timer-svg" viewBox="0 0 220 220">
+              <defs>
+                <linearGradient id="tGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"/>
+                  <stop offset="100%"/>
+                </linearGradient>
+              </defs>
+              <circle class="timer-track" cx="110" cy="110" r="105"/>
+              <circle id="t-fill" class="timer-fill" cx="110" cy="110" r="105"/>
+            </svg>
+            <div class="timer-time" id="t-display">25:00</div>
+          </div>
+          <div class="timer-session-info" id="t-session">Session 1 of 4</div>
+          <div class="timer-btn-row">
+            <button class="btn btn-primary btn-lg" id="t-btn" onclick="toggleTimer()">▶ Start</button>
+            <button class="btn btn-ghost btn-lg" onclick="resetTimer()">Reset</button>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <div class="card-title">Session Tasks</div>
+          <div class="task-add-row">
+            <input type="text" id="task-inp" class="input" placeholder="What will you work on?" onkeydown="if(e.key==='Enter')addTask()">
+            <button class="btn btn-ghost" onclick="addTask()">Add</button>
+          </div>
+          <div id="task-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MEDITATION ── -->
+    <section id="meditation" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Stillness</div>
+        <h1 class="page-title">Meditation Timer</h1>
+        <p class="page-sub">Gentle timers for unguided meditation and mindfulness.</p>
+      </header>
+
+      <div class="med-center">
+        <div class="med-orb-wrap">
+          <div class="med-halo med-halo-1"></div><div class="med-halo med-halo-2"></div>
+          <div class="med-orb"></div>
+        </div>
+        <div class="med-timer" id="med-display">5:00</div>
+        <div class="dur-row">
+          <button class="dur-btn" data-dur="60" onclick="setMedDur(this)">1m</button>
+          <button class="dur-btn active" data-dur="300" onclick="setMedDur(this)">5m</button>
+          <button class="dur-btn" data-dur="600" onclick="setMedDur(this)">10m</button>
+          <button class="dur-btn" data-dur="900" onclick="setMedDur(this)">15m</button>
+          <button class="dur-btn" data-dur="1800" onclick="setMedDur(this)">30m</button>
+        </div>
+        <p class="med-prompt" id="med-prompt">Choose your duration and begin when ready.</p>
+        <div class="med-btns">
+          <button class="btn btn-primary btn-lg" id="med-btn" onclick="toggleMed()">▶ Begin</button>
+          <button class="btn btn-ghost btn-lg" onclick="resetMed()">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HABIT TRACKER ── -->
+    <section id="habits" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Consistency</div>
+        <h1 class="page-title">Habit Tracker</h1>
+        <p class="page-sub">Focus on the smallest version of each habit to maintain momentum.</p>
+      </header>
+
+      <div class="card">
+        <div class="habits-header-row">
+          <div class="card-title" id="habit-week-range"></div>
+          <span style="font-size:11px;color:var(--text-3);">Last 7 Days</span>
+        </div>
+        <div class="week-days" id="week-days-header"></div>
+        <div id="habit-rows"></div>
+        <div class="add-habit-row">
+          <input type="text" id="habit-inp" class="input" placeholder="New daily habit…">
+          <button class="btn btn-ghost" onclick="addHabit()">Add Habit</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BRAIN DUMP ── -->
+    <section id="braindump" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Mental Load</div>
+        <h1 class="page-title">Brain Dump</h1>
+        <p class="page-sub">Clear your mind by writing everything down. We sort it for you.</p>
+      </header>
+
+      <div class="dump-layout">
+        <div>
+          <textarea id="dump-raw" class="dump-textarea" placeholder="Start writing. Don't censor yourself. Tasks, worries, ideas, feelings — just get them out of your head."></textarea>
+          <div style="display:flex;gap:10px;margin-top:14px;">
+            <button class="btn btn-primary btn-lg" onclick="dumpProcess()">Process and Sort</button>
+            <button class="btn btn-ghost btn-lg" onclick="dumpClear()">Clear</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="dump-filter-row">
+            <span class="chip active" data-f="all" onclick="dumpFilter(this)">All Items</span>
+            <span class="chip" data-f="task" onclick="dumpFilter(this)">Tasks</span>
+            <span class="chip" data-f="worry" onclick="dumpFilter(this)">Worries</span>
+            <span class="chip" data-f="idea" onclick="dumpFilter(this)">Ideas</span>
+            <span class="chip" data-f="feeling" onclick="dumpFilter(this)">Feelings</span>
+          </div>
+          <div id="dump-empty-state" style="padding:40px 0;text-align:center;color:var(--text-3);">
+            Write your thoughts on the left and tap process to see them sorted.
+          </div>
+          <div id="dump-sorted-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRIORITY MATRIX ── -->
+    <section id="matrix" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Decisions</div>
+        <h1 class="page-title">Priority Matrix</h1>
+        <p class="page-sub">The Eisenhower Matrix: Sort tasks by Importance vs Urgency.</p>
+      </header>
+
+      <div class="matrix-grid">
+        <div class="matrix-quad mq-do">
+          <div class="mq-header">Do First</div>
+          <div class="mq-subtitle">Urgent & Important</div>
+          <div class="mq-items" id="mq-do"></div>
+        </div>
+        <div class="matrix-quad mq-schedule">
+          <div class="mq-header">Schedule</div>
+          <div class="mq-subtitle">Not Urgent but Important</div>
+          <div class="mq-items" id="mq-schedule"></div>
+        </div>
+        <div class="matrix-quad mq-delegate">
+          <div class="mq-header">Delegate</div>
+          <div class="mq-subtitle">Urgent but Not Important</div>
+          <div class="mq-items" id="mq-delegate"></div>
+        </div>
+        <div class="matrix-quad mq-eliminate">
+          <div class="mq-header">Eliminate</div>
+          <div class="mq-subtitle">Not Urgent, Not Important</div>
+          <div class="mq-items" id="mq-eliminate"></div>
+        </div>
+      </div>
+
+      <div class="card matrix-add-row">
+        <input type="text" id="mx-inp" class="input" style="flex:1;" placeholder="New item…">
+        <select id="mx-quad" class="matrix-quad-select">
+          <option value="do">Do First</option>
+          <option value="schedule">Schedule</option>
+          <option value="delegate">Delegate</option>
+          <option value="eliminate">Eliminate</option>
+        </select>
+        <button class="btn btn-primary" onclick="mxAdd()">Add Task</button>
+        <button class="btn btn-ghost" onclick="mxClear()">Clear All</button>
+      </div>
+    </section>
+
+    <!-- ── DISTRACTION LOG ── -->
+    <section id="distractions" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Attention</div>
+        <h1 class="page-title">Distraction Log</h1>
+        <p class="page-sub">Notice what pulls you away from focus to identify your triggers.</p>
+      </header>
+
+      <div class="dist-layout">
+        <div class="card">
+          <div class="card-title">What just happened?</div>
+          <input id="dist-what" class="input" style="margin-bottom:14px;" placeholder="I got distracted by…">
+
+          <div class="card-title">Source</div>
+          <div class="dist-cat-grid">
+            <button class="dist-cat-btn" data-cat="phone" onclick="distSelCat(this)">Phone / Notif</button>
+            <button class="dist-cat-btn" data-cat="social" onclick="distSelCat(this)">Social Media</button>
+            <button class="dist-cat-btn" data-cat="thought" onclick="distSelCat(this)">internal Thought</button>
+            <button class="dist-cat-btn" data-cat="person" onclick="distSelCat(this)">Another Person</button>
+            <button class="dist-cat-btn" data-cat="noise" onclick="distSelCat(this)">Environment Noise</button>
+            <button class="dist-cat-btn" data-cat="hunger" onclick="distSelCat(this)">Hunger / Thirst</button>
+            <button class="dist-cat-btn" data-cat="other" onclick="distSelCat(this)">Other</button>
+          </div>
+
+          <div class="card-title">Impact / Severity</div>
+          <div class="dist-sev-row">
+            <button class="dist-sev-btn" data-s="low" onclick="distSelSev(this)">Low (Seconds)</button>
+            <button class="dist-sev-btn" data-s="med" onclick="distSelSev(this)">Med (Minutes)</button>
+            <button class="dist-sev-btn" data-s="high" onclick="distSelSev(this)">High (Lost track)</button>
+          </div>
+
+          <div class="card-title">Notes</div>
+          <textarea id="dist-note" class="input" style="height:60px;margin-bottom:18px;" placeholder="Any insight? (e.g. 'happens when I'm bored')"></textarea>
+
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="distLog()">Log Distraction</button>
+        </div>
+
+        <div>
+          <div id="dist-history"></div>
+          <div id="dist-pattern-box" class="dist-pattern-box" style="display:none;">
+            <div class="dist-pattern-title">Pattern Observed</div>
+            <div id="dist-pattern-text" style="font-size:13px;color:#234F7A;line-height:1.6;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BODY DOUBLING ── -->
+    <section id="bodydoubling" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Presence</div>
+        <h1 class="page-title">Body Doubling</h1>
+        <p class="page-sub">A virtual presence to help you stay anchored during difficult tasks.</p>
+      </header>
+
+      <div class="bd-center">
+        <div class="bd-companion-wrap">
+          <div class="bd-ring bd-ring-1"></div><div class="bd-ring bd-ring-2"></div>
+          <div class="bd-orb"></div>
+        </div>
+        <div id="bd-timer" class="bd-timer">25:00</div>
+        <div id="bd-status" class="bd-status">Your companion is ready when you are.</div>
+        <div id="bd-message" class="bd-message">Pick a task below and begin your session. I'll be right here with you.</div>
+        <div id="bd-task-display" class="bd-task-display"></div>
+
+        <div id="bd-task-row" style="display:flex;gap:8px;width:100%;max-width:400px;margin-top:20px;">
+          <input id="bd-task-inp" class="input" style="flex:1;" placeholder="What will we work on together?">
+          <button class="btn btn-primary" onclick="bdStart()">Begin</button>
+        </div>
+
+        <div class="divider" style="width:100%;max-width:400px;"></div>
+        <div class="bd-dur-row">
+          <button class="btn btn-ghost btn-sm" onclick="bdSetDur(1500)">25m session</button>
+          <button class="btn btn-ghost btn-sm" onclick="bdSetDur(3000)">50m session</button>
+          <button class="btn btn-ghost btn-sm" onclick="bdReset()">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLEEP TRACKER ── -->
+    <section id="sleep" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Recovery</div>
+        <h1 class="page-title">Sleep Tracker</h1>
+        <p class="page-sub">Monitor the foundation of your mental well-being.</p>
+      </header>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Last night's sleep</div>
+          <div class="sleep-hours-display" id="sleep-hours-display">7.5 hrs</div>
+          <input type="range" id="sleep-slider" class="hours-slider" min="0" max="14" step="0.5" value="7.5" oninput="updateSleepHours()">
+
+          <div class="card-title">Quality</div>
+          <div class="sleep-quality-row">
+            <button class="sq-btn" data-q="1" onclick="selSQ(this)">Poor</button>
+            <button class="sq-btn" data-q="2" onclick="selSQ(this)">Restless</button>
+            <button class="sq-btn" data-q="3" onclick="selSQ(this)">Okay</button>
+            <button class="sq-btn" data-q="4" onclick="selSQ(this)">Good</button>
+            <button class="sq-btn" data-q="5" onclick="selSQ(this)">Great</button>
+          </div>
+
+          <textarea id="sleep-note" class="input" style="margin-bottom:18px;" placeholder="Notes (dreams, wake-ups, caffeine, etc.)"></textarea>
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="saveSleep()">Log sleep</button>
+        </div>
+        <div>
+          <div class="card-title">Sleep History</div>
+          <div id="sleep-history"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EMOTION WHEEL ── -->
+    <section id="emotions" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Nuance</div>
+        <h1 class="page-title">Emotion Wheel</h1>
+        <p class="page-sub">Expand your emotional vocabulary to better understand what you're feeling.</p>
+      </header>
+
+      <div class="emotions-layout">
+        <div class="emotion-wheel-wrap">
+          <canvas id="emotion-canvas" width="460" height="460" onclick="emotionClick(event)"></canvas>
+        </div>
+        <div class="emotion-detail-card">
+          <div id="emotion-icon"></div>
+          <div id="emotion-name" class="emotion-selected-name">Select an emotion</div>
+          <div id="emotion-parent" class="emotion-selected-parent">Explore the wheel on the left</div>
+          <div class="divider"></div>
+          <div id="emotion-desc" class="emotion-description">Learning to name exactly what we feel — not just "bad" or "good" — helps us regulate our response.</div>
+          <div id="emotion-coping" class="emotion-coping-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ENERGY & MOOD ── -->
+    <section id="energy" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Capacity</div>
+        <h1 class="page-title">Energy & Mood</h1>
+        <p class="page-sub">Track how your physical battery correlates with your mental state.</p>
+      </header>
+
+      <div class="em-layout">
+        <div class="card">
+          <div class="em-slider-row">
+            <div class="em-slider-label">Energy</div>
+            <input type="range" id="em-energy" class="em-range" min="1" max="10" value="5" oninput="emUpdate()">
+            <div id="em-energy-val" class="em-slider-val">5</div>
+          </div>
+          <div class="em-slider-row" style="margin-bottom:24px;">
+            <div class="em-slider-label">Mood</div>
+            <input type="range" id="em-mood" class="em-range" min="1" max="10" value="5" oninput="emUpdate()">
+            <div id="em-mood-val" class="em-slider-val">5</div>
+          </div>
+
+          <div class="card-title">Current Factors</div>
+          <div id="em-factor-chips" style="margin-bottom:20px;">
+            <span class="chip" onclick="toggleMoodTag(this)">Productive</span>
+            <span class="chip" onclick="toggleMoodTag(this)">Stressed</span>
+            <span class="chip" onclick="toggleMoodTag(this)">Hydrated</span>
+            <span class="chip" onclick="toggleMoodTag(this)">Ate well</span>
+            <span class="chip" onclick="toggleMoodTag(this)">Overslept</span>
+            <span class="chip" onclick="toggleMoodTag(this)">Caffeine</span>
+            <span class="chip" onclick="toggleMoodTag(this)">Exercise</span>
+            <span class="chip" onclick="toggleMoodTag(this)">Meds</span>
+          </div>
+
+          <textarea id="em-note" class="input" style="height:70px;margin-bottom:18px;" placeholder="Any additional context?"></textarea>
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="emSave()">Log check-in</button>
+        </div>
+
+        <div class="insights-chart-wrap" style="margin:0;">
+          <div class="card-title">Today's Fluctuations</div>
+          <canvas id="em-today-chart"></canvas>
+          <div id="em-insight" class="em-insight-box" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="card-title">Recent Logs</div>
+      <div id="em-history"></div>
+    </section>
+
+    <!-- ── AFFIRMATIONS ── -->
+    <section id="affirmations" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Self-Talk</div>
+        <h1 class="page-title">Affirmations</h1>
+        <p class="page-sub">Gentle reminders for when the inner critic gets too loud.</p>
+      </header>
+
+      <div class="affirm-hero">
+        <div id="affirm-text" class="affirm-text">I am worthy of love, kindness, and belonging exactly as I am.</div>
+        <div id="affirm-cat-label" class="affirm-cat-label">Self Worth</div>
+      </div>
+
+      <div id="affirm-cat-filter" class="affirm-cat-filter"></div>
+
+      <div class="affirm-controls">
+        <button class="btn btn-ghost btn-lg" onclick="affirmPrev()">← Previous</button>
+        <button class="btn btn-primary btn-lg" onclick="affirmSaveCurrent()"><span><svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;"><use href="#ic-heart"/></svg></span> Save to My List</button>
+        <button class="btn btn-ghost btn-lg" onclick="affirmNext()">Next One →</button>
+      </div>
+
+      <div class="divider"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="card-title" style="margin:0;">My Saved Affirmations</div>
+        <button onclick="affirmClearSaved()" style="background:none;border:none;font-size:11px;color:var(--text-3);cursor:pointer;">Clear all</button>
+      </div>
+      <div id="affirm-saved-list"></div>
+    </section>
+
+    <!-- ── GUIDED PROMPTS ── -->
+    <section id="prompts" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Self-Inquiry</div>
+        <h1 class="page-title">Guided Prompts</h1>
+        <p class="page-sub">Deepen your self-awareness with targeted journaling questions.</p>
+      </header>
+
+      <div id="prompt-cat-filter" class="prompt-cat-filter"></div>
+
+      <div class="prompt-card">
+        <div>
+          <span id="prompt-badge" class="prompt-cat-badge">Reflection</span>
+          <div id="prompt-text" class="prompt-text">What is my anxiety trying to protect me from right now?</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="promptPrev()">← Prev</button>
+          <button class="btn btn-ghost btn-sm" onclick="promptNext()">Next →</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:28px;">
+        <textarea id="prompt-resp" class="prompt-response-area" placeholder="Write your reflection here…"></textarea>
+        <div style="display:flex;justify-content:flex-end;margin-top:14px;">
+          <button class="btn btn-primary btn-lg" onclick="promptSave()">Save Reflection</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="card-title" style="margin:0;">Reflection History</div>
+        <button onclick="promptClearSaved()" style="background:none;border:none;font-size:11px;color:var(--text-3);cursor:pointer;">Clear all</button>
+      </div>
+      <div id="prompt-saved-list"></div>
+    </section>
+
+    <!-- ── TRIGGER TRACKER ── -->
+    <section id="triggers" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Patterns</div>
+        <h1 class="page-title">Trigger Tracker</h1>
+        <p class="page-sub">Identify common situations that disrupt your peace.</p>
+      </header>
+
+      <div class="trig-layout">
+        <div class="card">
+          <div class="card-title">What triggered you?</div>
+          <input id="trig-trigger" class="input" style="margin-bottom:14px;" placeholder="Situation, person, or thought…">
+
+          <div class="card-title">Severity</div>
+          <div class="trig-sev-row">
+            <button class="trig-sev-btn" data-s="mild" onclick="trigSelSev(this)">Mild</button>
+            <button class="trig-sev-btn sel-mod" data-s="mod" onclick="trigSelSev(this)">Moderate</button>
+            <button class="trig-sev-btn" data-s="intense" onclick="trigSelSev(this)">Intense</button>
+          </div>
+
+          <div class="card-title">Context & Initial Response</div>
+          <textarea id="trig-context" class="input" style="height:60px;margin-bottom:10px;" placeholder="When/where did it happen?"></textarea>
+          <textarea id="trig-response" class="input" style="height:60px;margin-bottom:18px;" placeholder="What was your immediate reaction?"></textarea>
+
+          <div class="card-title">What helped? (Coping)</div>
+          <textarea id="trig-coping" class="input" style="height:60px;margin-bottom:18px;" placeholder="Did you use any tools? Did they help?"></textarea>
+
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="trigSave()">Log Trigger</button>
+        </div>
+
+        <div>
+           <div id="trig-history"></div>
+           <div class="trig-pattern-box">
+             <div class="trig-pattern-title">Pattern Observed</div>
+             <div id="trig-pattern-text" style="font-size:13px;color:#234F7A;line-height:1.6;">Log at least 5 triggers to see analysis.</div>
+           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── THERAPY NOTES ── -->
+    <section id="therapy" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Professional Support</div>
+        <h1 class="page-title">Therapy Notes</h1>
+        <p class="page-sub">Keep track of your sessions, insights, and homework.</p>
+      </header>
+
+      <div class="therapy-layout">
+        <div class="card">
+          <div class="grid-2 therapy-form-row">
+            <div>
+              <div class="therapy-field-label">Date</div>
+              <input type="date" id="therapy-date" class="input">
+            </div>
+            <div>
+              <div class="therapy-field-label">Therapist</div>
+              <input type="text" id="therapy-therapist" class="input" placeholder="Name">
+            </div>
+          </div>
+
+          <div class="therapy-field-label">Focus Areas</div>
+          <div class="mood-tag-row" style="margin-bottom:16px;">
+            <span class="mood-tag" onclick="toggleMoodTag(this)">Anxiety</span>
+            <span class="mood-tag" onclick="toggleMoodTag(this)">Trauma</span>
+            <span class="mood-tag" onclick="toggleMoodTag(this)">Relationships</span>
+            <span class="mood-tag" onclick="toggleMoodTag(this)">Self-Esteem</span>
+            <span class="mood-tag" onclick="toggleMoodTag(this)">Work</span>
+            <span class="mood-tag" onclick="toggleMoodTag(this)">Habits</span>
+            <span class="mood-tag" onclick="toggleMoodTag(this)">Burnout</span>
+          </div>
+
+          <div class="therapy-field-label">Key Insights & Takeaways</div>
+          <textarea id="therapy-insights" class="input" style="height:120px;margin-bottom:16px;" placeholder="What was the most important thing discussed?"></textarea>
+
+          <div class="grid-2 therapy-form-row">
+            <div>
+              <div class="therapy-field-label">Homework / Actions</div>
+              <textarea id="therapy-homework" class="input" style="height:80px;" placeholder="What do you need to try before next time?"></textarea>
+            </div>
+            <div>
+              <div class="therapy-field-label">For Next Session</div>
+              <textarea id="therapy-questions" class="input" style="height:80px;" placeholder="Questions or topics to bring up."></textarea>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg" style="width:100%;" onclick="therapySave()">Save Session Note</button>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="card-title" style="margin:0;">Session History</div>
+            <button onclick="therapyClear()" style="background:none;border:none;font-size:11px;color:var(--text-3);cursor:pointer;">Clear all</button>
+          </div>
+          <div id="therapy-history"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COPING TOOLKIT ── -->
+    <section id="coping" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Inventory</div>
+        <h1 class="page-title">Coping Toolkit</h1>
+        <p class="page-sub">A personalised library of tools that work for you.</p>
+      </header>
+
+      <div class="coping-filter-row" id="coping-filter-row"></div>
+
+      <div class="grid-2">
+        <div id="coping-items-list"></div>
+
+        <div>
+          <div class="coping-add-form">
+            <div class="card-title">Add New Tool</div>
+            <input id="cope-name" class="input" style="margin-bottom:10px;" placeholder="Tool name (e.g. 'Play Guitar')">
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <select id="cope-cat" class="input" style="flex:1;">
+                <option value="anxiety">Anxiety</option>
+                <option value="depression">Depression</option>
+                <option value="adhd">ADHD</option>
+                <option value="anger">Anger</option>
+                <option value="sleep">Sleep</option>
+                <option value="general">General</option>
+              </select>
+              <input id="cope-icon" class="input" style="flex:1;" placeholder="Icon name (e.g. 'music')">
+            </div>
+            <textarea id="cope-desc" class="input" style="height:80px;margin-bottom:14px;" placeholder="How do you do it? Why does it help?"></textarea>
+            <button class="btn btn-primary" style="width:100%;" onclick="copeAdd()">Add to Toolkit</button>
+          </div>
+          <div class="divider"></div>
+          <div class="card-title">Pro Tip</div>
+          <p style="font-size:13px;color:var(--text-3);line-height:1.6;">The best coping tools are the ones you can do with <strong>zero preparation</strong> when things get difficult.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ADDICTION WIKI ── -->
+    <section id="addiction" class="page">
+      <header class="page-header">
+        <div class="page-eyebrow">Education</div>
+        <h1 class="page-title">Understanding Addiction</h1>
+        <p class="page-sub">A comprehensive guide to the science, psychology, and recovery of addiction.</p>
+      </header>
+
+      <div class="wiki-hero">
+        <h2 style="font-family:'Fraunces',serif;font-size:32px;margin-bottom:12px;">Knowledge is Power.</h2>
+        <p style="font-size:16px;color:var(--text-2);font-weight:300;max-width:540px;">Understanding the neurobiology of cravings and the psychology of triggers reduces shame and empowers recovery.</p>
+      </div>
+
+      <div class="wiki-disclaimer">
+        <span style="font-size:18px;">ℹ️</span>
+        <div><strong>Disclaimer:</strong> This wiki is for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health providers.</div>
+      </div>
+
+      <div class="wiki-toc">
+        <div class="wiki-toc-title">Guide Contents</div>
+        <div class="wiki-toc-list">
+          <a class="wiki-toc-item" onclick="wikiOpen('w-intro')"><span class="wiki-toc-num">01</span> What is Addiction?</a>
+          <a class="wiki-toc-item" onclick="wikiOpen('w-brain')"><span class="wiki-toc-num">02</span> The Rewired Brain</a>
+          <a class="wiki-toc-item" onclick="wikiOpen('w-cycle')"><span class="wiki-toc-num">03</span> The Cycle of Use</a>
+          <a class="wiki-toc-item" onclick="wikiOpen('w-urges')"><span class="wiki-toc-num">04</span> Navigating Urges</a>
+          <a class="wiki-toc-item" onclick="wikiOpen('w-recovery')"><span class="wiki-toc-num">05</span> Path to Recovery</a>
+          <a class="wiki-toc-item" onclick="wikiOpen('w-support')"><span class="wiki-toc-num">06</span> Finding Support</a>
+        </div>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="wiki-section" id="w-intro">
+        <div class="wiki-section-header" onclick="wikiToggle('w-intro')">
+          <div class="wiki-section-num">01</div>
+          <div class="wiki-section-title">
+            What is Addiction?
+            <div class="wiki-section-subtitle">Defining the complex nature of dependence.</div>
+          </div>
+          <svg class="wiki-section-chevron"><use href="#ic-chevron-down"/></svg>
+        </div>
+        <div class="wiki-section-body">
+          <p class="wiki-lead">Addiction is a chronic, relapsing disorder characterised by compulsive drug seeking and use despite adverse consequences.</p>
+          <div class="wiki-callout key">
+            <div class="wiki-callout-label">Key Concept</div>
+            It is considered a <strong>brain disorder</strong> because it involves functional changes to brain circuits involved in reward, stress, and self-control.
+          </div>
+          <h3 class="wiki-h3">Substance vs. Behavioural</h3>
+          <p class="wiki-p">While often associated with drugs or alcohol, addiction can also be <strong>behavioural</strong> (process addictions) such as gambling, internet use, gaming, or shopping. These behaviours trigger the same reward systems in the brain as substances.</p>
+          <div class="wiki-facts">
+            <div class="wiki-fact-card"><div class="wiki-fact-num">40-60%</div><div class="wiki-fact-label">Genetic vulnerability to addiction.</div></div>
+            <div class="wiki-fact-card"><div class="wiki-fact-num">20m+</div><div class="wiki-fact-label">Americans with a substance use disorder.</div></div>
+            <div class="wiki-fact-card"><div class="wiki-fact-num">1 in 4</div><div class="wiki-fact-label">Deaths globally attributed to substance use.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="wiki-section" id="w-brain">
+        <div class="wiki-section-header" onclick="wikiToggle('w-brain')">
+          <div class="wiki-section-num">02</div>
+          <div class="wiki-section-title">
+            The Rewired Brain
+            <div class="wiki-section-subtitle">How substances hijack the reward system.</div>
+          </div>
+          <svg class="wiki-section-chevron"><use href="#ic-chevron-down"/></svg>
+        </div>
+        <div class="wiki-section-body">
+          <h3 class="wiki-h3">The Dopamine Hijack</h3>
+          <p class="wiki-p">Our brains are wired to ensure we repeat life-sustaining activities by associating them with pleasure. This involves the neurotransmitter <strong>dopamine</strong>.</p>
+          <p class="wiki-p">Addictive substances can release 2 to 10 times the amount of dopamine that natural rewards do. Over time, the brain adjusts by producing less dopamine or reducing dopamine receptors. This is known as <strong>tolerance</strong>.</p>
+          <div class="wiki-callout science">
+            <div class="wiki-callout-label">Neurobiology</div>
+            The <strong>Prefrontal Cortex</strong> (the choice center) becomes weakened, while the <strong>Amygdala</strong> (the stress/emotion center) becomes overactive. This makes "just saying no" biologically difficult.
+          </div>
+          <h3 class="wiki-h3">Anhedonia</h3>
+          <p class="wiki-p">As tolerance builds, a person may find that natural pleasures (food, socialising, hobbies) no longer provide enjoyment. They may need the substance just to feel "normal."</p>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="wiki-section" id="w-cycle">
+        <div class="wiki-section-header" onclick="wikiToggle('w-cycle')">
+          <div class="wiki-section-num">03</div>
+          <div class="wiki-section-title">
+            The Cycle of Use
+            <div class="wiki-section-subtitle">Understanding the stages of a craving.</div>
+          </div>
+          <svg class="wiki-section-chevron"><use href="#ic-chevron-down"/></svg>
+        </div>
+        <div class="wiki-section-body">
+          <p class="wiki-p">Addiction usually follows a predictable physical and psychological loop:</p>
+          <div class="wiki-steps">
+            <div class="wiki-step active"><div class="wiki-step-dot">1</div><div class="wiki-step-text"><strong>Trigger:</strong> An internal or external cue (stress, a place, a person) that sparks the thought of use.</div></div>
+            <div class="wiki-step"><div class="wiki-step-dot">2</div><div class="wiki-step-text"><strong>Craving:</strong> An intense psychological and physical "itch" or urge to consume.</div></div>
+            <div class="wiki-step"><div class="wiki-step-dot">3</div><div class="wiki-step-text"><strong>Ritual:</strong> The habitual actions taken to obtain and prepare the substance.</div></div>
+            <div class="wiki-step"><div class="wiki-step-dot">4</div><div class="wiki-step-text"><strong>Use/Release:</strong> The momentary dampening of craving, often followed by guilt or shame.</div></div>
+          </div>
+          <div class="wiki-quote">"It's not the drug that's the problem, it's the solution the person has found to a deeper problem."</div>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="wiki-section" id="w-urges">
+        <div class="wiki-section-header" onclick="wikiToggle('w-urges')">
+          <div class="wiki-section-num">04</div>
+          <div class="wiki-section-title">
+            Navigating Urges (Urge Surfing)
+            <div class="wiki-section-subtitle">Practical tools for the moment of crisis.</div>
+          </div>
+          <svg class="wiki-section-chevron"><use href="#ic-chevron-down"/></svg>
+        </div>
+        <div class="wiki-section-body">
+          <p class="wiki-p">Urges are like waves. They start small, grow in intensity, peak, and finally dissipate. <strong>Urge Surfing</strong> is a technique to ride the wave without giving in.</p>
+
+          <div class="wiki-urge-timer">
+            <div class="wiki-urge-arc">
+              <svg class="wiki-urge-svg" viewBox="0 0 120 120">
+                <circle class="wiki-urge-track" cx="60" cy="60" r="55"></circle>
+                <circle id="urge-fill" class="wiki-urge-fill" cx="60" cy="60" r="55"></circle>
+              </svg>
+              <div style="position:relative;z-index:1;">
+                <div id="urge-time" class="wiki-urge-time">5:00</div>
+                <div id="urge-label" class="wiki-urge-label">Ready</div>
+              </div>
+            </div>
+            <div id="urge-message" class="wiki-urge-message">Press Start and observe the craving without acting. Just watch it.</div>
+            <div style="display:flex;gap:10px;justify-content:center;">
+              <button id="urge-btn" class="btn btn-primary" onclick="urgeToggle()">▶ Start</button>
+              <button class="btn btn-ghost" onclick="urgeReset()">Reset</button>
+            </div>
+          </div>
+
+          <h3 class="wiki-h3">HALT: Check Your Basics</h3>
+          <p class="wiki-p">Cravings are more likely when you are:</p>
+          <div class="wiki-techniques">
+            <div class="wiki-technique"><div class="wiki-technique-name">Hungry</div><div class="wiki-technique-desc">Low blood sugar mimics anxiety and irritability.</div></div>
+            <div class="wiki-technique"><div class="wiki-technique-name">Angry</div><div class="wiki-technique-desc">Anger triggers the stress response, seeking release.</div></div>
+            <div class="wiki-technique"><div class="wiki-technique-name">Lonely</div><div class="wiki-technique-desc">Isolation is a primary driver of compulsive behaviour.</div></div>
+            <div class="wiki-technique"><div class="wiki-technique-name">Tired</div><div class="wiki-technique-desc">Exhaustion weakens self-control and decision-making.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="wiki-section" id="w-recovery">
+        <div class="wiki-section-header" onclick="wikiToggle('w-recovery')">
+          <div class="wiki-section-num">05</div>
+          <div class="wiki-section-title">
+            Path to Recovery
+            <div class="wiki-section-subtitle">Long-term strategies for sustainable change.</div>
+          </div>
+          <svg class="wiki-section-chevron"><use href="#ic-chevron-down"/></svg>
+        </div>
+        <div class="wiki-section-body">
+          <div class="wiki-callout practice">
+            <div class="wiki-callout-label">Recovery Pillar</div>
+            <strong>Connection is the opposite of addiction.</strong> Building a safe social network is the #1 predictor of success.
+          </div>
+          <h3 class="wiki-h3">Stages of Change</h3>
+          <p class="wiki-p">Recovery isn't an "on/off" switch. It's a process:</p>
+          <ul class="wiki-p" style="padding-left:18px;">
+            <li><strong>Contemplation:</strong> Acknowledging there's a problem but unsure about change.</li>
+            <li><strong>Preparation:</strong> Making a plan and gathering resources.</li>
+            <li><strong>Action:</strong> actively changing behaviours and environments.</li>
+            <li><strong>Maintenance:</strong> Consolidating gains and preventing relapse.</li>
+          </ul>
+          <h3 class="wiki-h3">Neuroplasticity</h3>
+          <p class="wiki-p">The good news: the brain can heal. Through abstinence and healthy habits, dopamine receptors gradually recover, and the prefrontal cortex regains strength. This takes time (often 6-18 months for full regulation).</p>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="wiki-section" id="w-support">
+        <div class="wiki-section-header" onclick="wikiToggle('w-support')">
+          <div class="wiki-section-num">06</div>
+          <div class="wiki-section-title">
+            Finding Support
+            <div class="wiki-section-subtitle">Resources for those ready to reach out.</div>
+          </div>
+          <svg class="wiki-section-chevron"><use href="#ic-chevron-down"/></svg>
+        </div>
+        <div class="wiki-section-body">
+          <div class="wiki-callout warning">
+            <div class="wiki-callout-label">Safety First</div>
+            For some substances (alcohol, benzodiazepines), <strong>withdrawal can be life-threatening</strong>. Medical detox is essential.
+          </div>
+          <h3 class="wiki-h3">Resource List</h3>
+          <div class="grid-2">
+            <div class="crisis-resource-card">
+              <div class="crisis-resource-name">SAMHSA Helpline</div>
+              <div class="crisis-resource-num">1-800-662-4357</div>
+              <div class="crisis-resource-desc">USA (24/7, English & Spanish)</div>
+            </div>
+            <div class="crisis-resource-card">
+              <div class="crisis-resource-name">Vandrevala Foundation</div>
+              <div class="crisis-resource-num">9999-666-555</div>
+              <div class="crisis-resource-desc">India (24/7 Counseling)</div>
+            </div>
+          </div>
+          <h3 class="wiki-h3">Shared Support</h3>
+          <p class="wiki-p">Joining a group of people with shared experience can be transformative:</p>
+          <ul class="wiki-p" style="padding-left:18px;">
+            <li><strong>SMART Recovery:</strong> Science-based, self-empowerment approach.</li>
+            <li><strong>AA / NA:</strong> 12-step spiritual fellowship.</li>
+            <li><strong>Refuge Recovery:</strong> Buddhist-oriented path to recovery.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-gap"></div>
+  </main>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div id="toast" class="toast">Action completed</div>
+
+<!-- ─── SVG SYMBOLS ─── -->
+<svg style="display:none;">
+  <symbol id="ic-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
+  <symbol id="ic-trending" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+  <symbol id="ic-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+  <symbol id="ic-wind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></symbol>
+  <symbol id="ic-mappin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="ic-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="ic-feather" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></symbol>
+  <symbol id="ic-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+  <symbol id="ic-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
+  <symbol id="ic-smile2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M2 12h20"/></symbol>
+  <symbol id="ic-meh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
+  <symbol id="ic-frown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
+  <symbol id="ic-frown2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 17s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M2 12h20"/></symbol>
+  <symbol id="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+  <symbol id="ic-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54z"/></symbol>
+  <symbol id="ic-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="ic-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="ic-check-sq" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <symbol id="ic-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></symbol>
+  <symbol id="ic-grid-big" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></symbol>
+  <symbol id="ic-phone-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M17 11V5.5A2.5 2.5 0 0 0 14.5 3h-5A2.5 2.5 0 0 0 7 5.5v2.5"/><path d="M7 13.5v5.5a2.5 2.5 0 0 0 2.5 2.5h5a2.5 2.5 0 0 0 2.5-2.5v-2.5"/><path d="M12 15h.01"/></symbol>
+  <symbol id="ic-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="ic-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+  <symbol id="ic-tool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="ic-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+  <symbol id="ic-smile-n" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
+  <symbol id="ic-battery" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/></symbol>
+  <symbol id="ic-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.5-.58 1.5-1.5 0-.43-.17-.83-.44-1.12-.27-.3-.44-.71-.44-1.13 0-.92.58-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-4.97-4.48-9-10-9z"/></symbol>
+  <symbol id="ic-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3m0 12v3M5.31 5.31l2.12 2.12m9.14 9.14l2.12 2.12M3 12h3m12 0h3M5.31 18.69l2.12-2.12m9.14-9.14l2.12-2.12"/></symbol>
+  <symbol id="ic-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 22 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></symbol>
+  <symbol id="ic-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="ic-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="ic-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.256 1.189-3.103 1.442 2.103 3.467 3.987 4.311 5.103z"/></symbol>
+  <symbol id="ic-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></symbol>
+  <symbol id="ic-shower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v2H4zM14 6L14 18M6 10L6 18M10 8L10 18M18 10L18 18"/></symbol>
+  <symbol id="ic-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="ic-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="ic-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+  <symbol id="ic-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></symbol>
+  <symbol id="ic-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+  <symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="ic-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22c-1.1 0-2-.9-2-2v-4H6c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2h-2v4c0 1.1-.9 2-2 2h-4z"/><line x1="12" y1="4" x2="12" y2="16"/><line x1="4" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="20" y2="10"/></symbol>
+  <symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  <symbol id="ic-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17M14 14.66V17M18 2h-12v7c0 3.31 2.69 6 6 6s6-2.69 6-6V2z"/></symbol>
+  <symbol id="ic-home2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="ic-eye2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+</svg>
+
+<script src="js/scripts.js"></script>
+</body>
+</html>

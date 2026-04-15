@@ -2337,7 +2337,7 @@ function openSerenePoster() {
     const labBtn = document.getElementById('sb-lab');
     if (labBtn) labBtn.classList.remove('lab-open');
   }
-  if (!frame.src || frame.src === 'about:blank' || frame.src === window.location.href) frame.src = 'serene.html';
+  if (!frame.src || frame.src === 'about:blank' || frame.src === window.location.href) frame.src = 'projects/serene/index.html';
   poster.style.display = 'block';
   requestAnimationFrame(() => {
     requestAnimationFrame(() => { poster.classList.add('sp-open'); });
@@ -2369,7 +2369,7 @@ function openFitnessDashboard() {
     const labBtn = document.getElementById('sb-lab');
     if (labBtn) labBtn.classList.remove('lab-open');
   }
-  if (!frame.src || frame.src === 'about:blank' || frame.src === window.location.href) frame.src = 'fitness-dashboard.html';
+  if (!frame.src || frame.src === 'about:blank' || frame.src === window.location.href) frame.src = 'projects/fitness-dashboard/index.html';
   poster.style.display = 'block';
   requestAnimationFrame(() => {
     requestAnimationFrame(() => { poster.classList.add('fp-open'); });

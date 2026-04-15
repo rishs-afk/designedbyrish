@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Dashboard | RM Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<canvas id="meshBg"></canvas>
+
+<button class="dark-toggle" id="darkToggle" onclick="toggleDark()">☀️</button>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main" id="main"></main>
+</div>
+
+<nav class="mobile-nav" id="mobnav"></nav>
+
+<div id="timer-widget">
+  <div class="timer-label">REST TIMER</div>
+  <div class="timer-ring" id="timerRing">
+    <svg width="84" height="84">
+      <defs>
+        <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#e8453c" />
+          <stop offset="100%" style="stop-color:#f59080" />
+        </linearGradient>
+      </defs>
+      <circle class="bg" cx="42" cy="42" r="38"></circle>
+      <circle class="fg" id="timerArc" cx="42" cy="42" r="38" stroke-dasharray="238.76" stroke-dashoffset="0"></circle>
+    </svg>
+    <div class="timer-display" id="timerDisplay">1:00</div>
+  </div>
+  <div class="timer-presets">
+    <button class="timer-preset" onclick="setPreset(60,this)">1m</button>
+    <button class="timer-preset" onclick="setPreset(90,this)">90s</button>
+    <button class="timer-preset sel" onclick="setPreset(120,this)">2m</button>
+    <button class="timer-preset" onclick="setPreset(180,this)">3m</button>
+  </div>
+  <div class="timer-btns">
+    <button class="timer-btn secondary" onclick="timerReset()">RESET</button>
+    <button class="timer-btn primary" id="timerStartBtn" onclick="timerToggle()">START</button>
+    <button class="timer-btn secondary" onclick="closeTimer()">CLOSE</button>
+  </div>
+</div>
+
+<button class="timer-fab" id="timerFab" onclick="openTimer()">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <polyline points="12 6 12 12 16 14"></polyline>
+  </svg>
+</button>
+
+<script src="js/scripts.js"></script>
+</body>
+</html>
