@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE DEPOT — DIGITAL ARCHIVE</title>
+<title>THE DEPOT /// DIGITAL ARCHIVE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Barlow:wght@300;400;500;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
@@ -23,6 +23,7 @@
     --mono: 'JetBrains Mono', monospace;
     --sans: 'Barlow', sans-serif;
     --condensed: 'Barlow Condensed', sans-serif;
+    --hero-offset: 77px;
   }
 
   html { scroll-behavior: auto; } /* overridden by Lenis */
@@ -127,7 +128,26 @@
     font-size: 14px;
     line-height: 1.4;
     overflow-x: hidden;
-    cursor: default;
+    cursor: none;
+  }
+
+  /* Custom cursor dot */
+  #cursor-dot {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: var(--orange);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999999;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s;
+    will-change: transform;
+  }
+
+  /* Restore default cursor on interactive elements that already have cursor:none */
+  a, button, [role="button"], input, textarea, select, label {
+    cursor: none;
   }
 
   /* GRAIN OVERLAY — Cav Empt signature */
@@ -192,11 +212,22 @@
 
   .nav-logo {
     text-align: center;
-    font-family: var(--condensed);
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-logo a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+  }
+
+  .nav-logo svg {
+    height: 28px;
+    width: auto;
+    display: block;
   }
 
   .nav-search-wrap {
@@ -252,9 +283,17 @@
     white-space: nowrap;
   }
 
-  .ticker-inner {
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 36s linear infinite;
+  }
+
+  .ticker-segment {
     display: inline-block;
-    animation: ticker 28s linear infinite;
+    padding-right: 0;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   @keyframes ticker {
@@ -266,8 +305,11 @@
   .hero {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
     border-bottom: var(--border);
-    height: calc(100vh - 70px);
+    height: calc(100dvh - var(--hero-offset) + 1px);
+    max-height: calc(100dvh - var(--hero-offset) + 1px);
+    overflow: hidden;
   }
 
   .hero-left {
@@ -386,8 +428,11 @@
 
   /* HERO RIGHT — DROPS LIST */
   .hero-right {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .hero-right-header {
@@ -411,7 +456,11 @@
     letter-spacing: 0.1em;
   }
 
-  .drops-list { flex: 1; overflow-y: auto; }
+  .drops-list {
+    overflow-y: auto;
+    min-height: 0;
+    align-self: start;
+  }
 
   .drop-item {
     border-bottom: var(--border-light);
@@ -424,6 +473,22 @@
     position: relative;
     transition: background 0.15s;
   }
+
+  /* Left border heartbeat reveal */
+  .drop-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--orange);
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .drop-item:hover::before { transform: scaleY(1); }
 
   .drop-item:hover { background: rgba(0,0,0,0.04); }
 
@@ -547,6 +612,7 @@
     justify-content: space-between;
     align-items: center;
     background: var(--bg);
+    overflow: hidden;
   }
 
   .section-label {
@@ -554,12 +620,44 @@
     font-size: 9px;
     letter-spacing: 0.25em;
     text-transform: uppercase;
+    flex-shrink: 0;
   }
 
   .section-count {
     font-family: var(--mono);
     font-size: 9px;
     color: var(--grey-mid);
+  }
+
+  /* Section header marquee */
+  .section-header-marquee {
+    overflow: hidden;
+    flex: 1;
+    max-width: 50%;
+    display: flex;
+    mask-image: linear-gradient(to left, transparent 0%, black 15%);
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, black 15%);
+  }
+
+  .section-header-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: section-marquee 22s linear infinite;
+  }
+
+  .section-header-marquee-inner {
+    display: inline-block;
+    white-space: nowrap;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+
+  @keyframes section-marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 
   /* EDGE-TO-EDGE TYPE — Stüssy influence */
@@ -626,64 +724,47 @@
     overflow: hidden;
   }
 
-  .product-card:hover .product-img-primary { opacity: 0; }
-  .product-card:hover .product-img-secondary { opacity: 1; }
   .product-card:hover .product-quick-add { opacity: 1; transform: translateY(0); }
-
-  .product-img-wrap {
-    position: relative;
-    aspect-ratio: 3/4;
-    overflow: hidden;
-  }
-
-  .product-img-primary,
-  .product-img-secondary {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.2s;
-  }
-
-  .product-img-secondary { opacity: 0; }
 
   /* Simulated product images with CSS */
   .product-img-sim {
     width: 100%;
     aspect-ratio: 3/4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     position: relative;
     overflow: hidden;
-    transition: filter 0.2s;
-    filter: grayscale(15%);
+    background-color: #111;
   }
 
-  .product-card:hover .product-img-sim { filter: grayscale(0%); }
-
-  .product-img-sim::after {
-    content: attr(data-hover);
+  .product-img-sim::before {
+    content: '';
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity 0.2s;
-    background: inherit;
+    background-image: var(--bg-img);
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(100%);
+    transition: filter 0.4s ease;
+    z-index: 1;
   }
 
-  .product-card:hover .product-img-sim::after { opacity: 1; }
+  .product-card:hover .product-img-sim::before {
+    filter: grayscale(100%); /* Keep background BW to show the reveal */
+  }
+
+  .product-img-sim img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 2;
+    /* Mask will be set via JS */
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 0%);
+    mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 0%);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
 
   .product-tag {
     position: absolute;
@@ -704,21 +785,27 @@
 
   .product-quick-add {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 12px;
+    right: 12px;
     background: var(--black);
     color: var(--bg);
     text-align: center;
-    padding: 0.6rem;
+    padding: 0.45rem 0.8rem;
     font-family: var(--mono);
     font-size: 9px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     opacity: 0;
-    transform: translateY(100%);
-    transition: all 0.2s;
+    transform: translateY(-8px);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 3;
+    border: 0.5px solid rgba(255,255,255,0.15);
+  }
+
+  .product-quick-add:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    color: #fff !important;
   }
 
   .product-info {
@@ -770,7 +857,7 @@
   .editorial-grid {
     display: grid;
     grid-template-columns: 5fr 3fr 4fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: 280px 200px;
     border-bottom: var(--border);
   }
 
@@ -784,12 +871,12 @@
   .editorial-cell:last-child { border-right: none; }
 
   .editorial-large {
+    grid-column: 1;
     grid-row: 1 / 3;
-    min-height: 480px;
   }
 
-  .editorial-tall { min-height: 280px; }
-  .editorial-short { min-height: 200px; }
+  .editorial-tall { /* sized by grid row */ }
+  .editorial-short { /* sized by grid row */ }
 
   .editorial-bg {
     position: absolute;
@@ -885,6 +972,7 @@
     color: rgba(0,0,0,0.35);
     border: var(--border-light);
     position: relative;
+    overflow: hidden;
   }
 
   .pdp-artifact::before {
@@ -896,6 +984,31 @@
     font-size: 8px;
     letter-spacing: 0.12em;
     color: var(--grey-mid);
+    z-index: 2;
+  }
+
+  .pdp-thumbs-wrap {
+    display: flex;
+    width: 280px;
+    border: var(--border-light);
+    border-right: none;
+  }
+
+  .pdp-thumb {
+    flex: 1;
+    min-width: 0;
+    height: auto;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+    border-right: var(--border-light);
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.2s ease;
+  }
+
+  .pdp-thumb.active, .pdp-thumb:hover {
+    opacity: 1;
   }
 
   .pdp-info-zone {
@@ -908,7 +1021,7 @@
   .pdp-brand {
     font-family: var(--mono);
     font-size: 9px;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--grey-mid);
   }
@@ -1107,6 +1220,8 @@
   .score-bar-fill {
     height: 100%;
     background: var(--black);
+    width: 0;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   /* ============ RECENTLY VIEWED ============ */
@@ -1489,18 +1604,288 @@
     color: rgba(255,255,255,0.2);
   }
 
-  /* ============ COORDINATE ANIMATION ============ */
-  .coord-display {
+  /* ============ DROP IMAGE STRIP ============ */
+  .drops-image-strip {
+    border-top: var(--border);
+    border-bottom: var(--border);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .drops-image-cell {
+    border-right: var(--border);
+    padding: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--black);
+  }
+
+  .drops-image-cell:last-child { border-right: none; }
+
+  .drops-image-cell img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(15%);
+    transition: filter 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .drops-image-cell:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.02);
+  }
+
+  .drops-image-caption {
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .drops-image-caption-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .drops-image-caption-ref {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+
+  /* ============ HERO IMAGE STRIP (inside hero-right) ============ */
+  .hero-drops-images {
+    border-top: var(--border);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--black);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hero-drop-img-cell {
+    border-right: var(--border);
+    overflow: hidden;
+    position: relative;
+    background: #111;
+  }
+
+  .hero-drop-img-cell:last-child { border-right: none; }
+
+  .hero-drop-img-stage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .hero-drop-img-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(12%);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    z-index: 1;
+  }
+
+  .hero-drop-img-cell::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 42%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .hero-drop-img-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 4;
+  }
+
+  .hero-drop-img-label {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .hero-drop-img-ref {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+
+  /* ============ GRAIL ROW HOVER IMAGE ============ */
+  .grail-row {
+    position: relative;
+  }
+
+  .grail-hover-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.92);
+    width: 130px;
+    height: 170px;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+    border: var(--border);
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .grail-row:not(.header-row):hover .grail-hover-img {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* ============ CART DROPDOWN ============ */
+  .cart-dropdown {
+    position: absolute;
+    top: 48px; /* Height of nav */
+    right: 2rem;
+    width: 320px;
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: var(--border);
+    border-top: none;
+    z-index: 101;
+    padding: 1.5rem;
+    display: none; /* Open via class */
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .cart-dropdown.open { display: flex; }
+
+  .cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.8rem;
+  }
+
+  .cart-header-title {
     font-family: var(--mono);
     font-size: 9px;
-    letter-spacing: 0.12em;
-    color: var(--grey-mid);
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
-    pointer-events: none;
-    z-index: 500;
-    opacity: 0.6;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .cart-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .cart-item-img {
+    width: 50px;
+    aspect-ratio: 3/4;
+    background: #222;
+    object-fit: cover;
+    border: 0.5px solid rgba(255,255,255,0.1);
+  }
+
+  .cart-item-details { flex: 1; }
+
+  .cart-item-name {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .cart-item-meta {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.05em;
+  }
+
+  .cart-item-price {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--orange);
+    margin-top: 6px;
+  }
+
+  .cart-footer {
+    border-top: 0.5px solid rgba(255,255,255,0.1);
+    padding-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--white);
+  }
+
+  .checkout-btn {
+    width: 100%;
+    background: var(--black);
+    color: var(--bg);
+    padding: 0.8rem;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: center;
+    border: 0.5px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .checkout-btn:hover {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
   }
 
   /* ============ RESPONSIVE ============ */
@@ -1526,38 +1911,68 @@
   <div class="blind-slat" data-i="4"></div>
 </div>
 
+<!-- CUSTOM CURSOR DOT -->
+<div id="cursor-dot"></div>
+
 <!-- PROGRESS BAR -->
 <div class="progress-bar-wrap">
   <div class="progress-bar-fill" id="progressBar"></div>
 </div>
 
-<!-- COORDINATE DISPLAY -->
-<div class="coord-display" id="coordDisplay">X:0000 / Y:0000</div>
-
 <!-- TICKER -->
 <div class="ticker">
-  <div class="ticker-inner">
-    THE DEPOT DIGITAL ARCHIVE &nbsp;///&nbsp; SS25 LATEST DROPS NOW AVAILABLE &nbsp;///&nbsp; FREE DOMESTIC SHIPPING OVER ₹15,000 &nbsp;///&nbsp; NEIGHBORHOOD × WTAPS COLLAB — IN STORE NOW &nbsp;///&nbsp; ARCHIVE SALE — UP TO 40% SELECTED STYLES &nbsp;///&nbsp; NEW EDITORIAL: VOLUME 12 ONLINE NOW &nbsp;///&nbsp; THE DEPOT DIGITAL ARCHIVE &nbsp;///&nbsp; SS25 LATEST DROPS NOW AVAILABLE &nbsp;///&nbsp; FREE DOMESTIC SHIPPING OVER ₹15,000 &nbsp;///&nbsp; NEIGHBORHOOD × WTAPS COLLAB — IN STORE NOW &nbsp;///&nbsp; ARCHIVE SALE — UP TO 40% SELECTED STYLES &nbsp;///&nbsp;
+  <div class="ticker-track">
+    <span class="ticker-segment">THE DEPOT DIGITAL ARCHIVE &nbsp;///&nbsp; SS25 LATEST DROPS NOW AVAILABLE &nbsp;///&nbsp; FREE DOMESTIC SHIPPING OVER ₹5,000 &nbsp;///&nbsp; NEIGHBORHOOD × WTAPS COLLAB /// IN STORE NOW &nbsp;///&nbsp; ARCHIVE SALE /// UP TO 40% SELECTED STYLES &nbsp;///&nbsp; NEW EDITORIAL: VOLUME 12 ONLINE NOW &nbsp;///&nbsp;</span><span class="ticker-segment">THE DEPOT DIGITAL ARCHIVE &nbsp;///&nbsp; SS25 LATEST DROPS NOW AVAILABLE &nbsp;///&nbsp; FREE DOMESTIC SHIPPING OVER ₹5,000 &nbsp;///&nbsp; NEIGHBORHOOD × WTAPS COLLAB /// IN STORE NOW &nbsp;///&nbsp; ARCHIVE SALE /// UP TO 40% SELECTED STYLES &nbsp;///&nbsp; NEW EDITORIAL: VOLUME 12 ONLINE NOW &nbsp;///&nbsp;</span>
   </div>
 </div>
 
 <!-- NAV -->
 <nav>
   <div class="nav-left">
-    <a href="#" class="nav-link">Brands</a>
     <a href="#" class="nav-link">Topwear</a>
     <a href="#" class="nav-link">Bottomwear</a>
     <a href="#" class="nav-link">Headwear</a>
     <a href="#" class="nav-link" style="-webkit-text-stroke:0.5px var(--orange);color:var(--orange);">New Launches</a>
   </div>
-  <div class="nav-logo">THE DEPOT</div>
+  <div class="nav-logo"><img href="images/stussy.png">THE DEPOT</img></div>
   <div class="nav-right">
     <div class="nav-search-wrap">
       <span class="nav-search-icon" id="searchToggle">Search</span>
       <input class="nav-search-input" id="searchInput" type="text" placeholder="Brand, style, ref..." />
     </div>
-    <a href="#" class="nav-link">Account</a>
-    <a href="#" class="nav-link">Cart [0]</a>
+    <a href="#" class="nav-link" id="cartToggle">Cart [2]</a>
+  </div>
+
+  <!-- CART DROPDOWN -->
+  <div class="cart-dropdown" id="cartDropdown">
+    <div class="cart-header">
+      <span class="cart-header-title">Your Archive [2]</span>
+    </div>
+    <div class="cart-item-list">
+      <div class="cart-item">
+        <img src="images/drop-1a.webp" class="cart-item-img" alt="WTAPS" />
+        <div class="cart-item-details">
+          <div class="cart-item-name">Jungle Stock Jacket</div>
+          <div class="cart-item-meta">Size: L | Ref: WTP-044</div>
+          <div class="cart-item-price">₹4,200</div>
+        </div>
+      </div>
+      <div class="cart-item">
+        <img src="images/drop-2a.webp" class="cart-item-img" alt="NHBD" />
+        <div class="cart-item-details">
+          <div class="cart-item-name">Savage Denim C-JKT</div>
+          <div class="cart-item-meta">Size: XL | Ref: NHBD-002</div>
+          <div class="cart-item-price">₹5,500</div>
+        </div>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <span>₹9,700</span>
+      </div>
+      <button class="checkout-btn">Proceed to Checkout</button>
+    </div>
   </div>
 </nav>
 
@@ -1566,12 +1981,14 @@
   <!-- LEFT: EDITORIAL FILM -->
   <div class="hero-left">
     <div class="hero-film-bg"></div>
+    <!-- LIQUID WEBGL HERO -->
+    <canvas id="heroLiquidCanvas" class="hero-film" style="display:block;cursor:none;"></canvas>
     <div class="hero-editorial-tag">
       <div class="rec-dot"></div>
       Live &nbsp;///&nbsp; Editorial Feed
     </div>
     <div class="hero-film-content">
-      <div class="hero-season-label">SS25 — COLLECTION 012</div>
+      <div class="hero-season-label">SS25 /// COLLECTION 012</div>
       <div class="hero-title-large">
         HIGH<br>
         UTIL<span style="color: var(--orange)">ITY</span><br>
@@ -1593,130 +2010,161 @@
     </div>
     <div class="drops-list">
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-1a.webp" data-img2="images/drop-1b.webp" data-img3="images/drop-1c.jpg" data-label1="WTAPS /// SS25" data-label2="WTAPS /// SS25" data-label3="WTAPS /// SS25" data-ref1="001" data-ref2="001" data-ref3="001">
         <div class="drop-num">001</div>
         <div class="drop-info">
           <div class="drop-brand">WTAPS</div>
           <div class="drop-name">JUNGLE STOCK / JACKET / COTTON</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹42,000</div>
+          <div class="drop-price">₹4,200</div>
           <div class="drop-status status-new">New</div>
         </div>
         <div class="drop-preview-sim" style="background:#2a2a2a;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">WTAPS<br>SS25</div>
+          <img src="images/drop-1a.webp" alt="Depot Drop 1" style="width:100%;height:100%;object-fit:cover;" />
         </div>
       </div>
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-2a.webp" data-img2="images/drop-2b.webp" data-img3="images/drop-2c.webp" data-label1="NHBD /// SS25" data-label2="NHBD /// SS25" data-label3="NHBD /// SS25" data-ref1="002" data-ref2="002" data-ref3="002">
         <div class="drop-num">002</div>
         <div class="drop-info">
           <div class="drop-brand">NEIGHBORHOOD</div>
           <div class="drop-name">SAVAGE / C-JKT. DENIM</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹55,000</div>
+          <div class="drop-price">₹6,850</div>
           <div class="drop-status status-new">New</div>
         </div>
         <div class="drop-preview-sim" style="background:#1c2a35;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">NHBD<br>SS25</div>
+          <img src="images/drop-2a.webp" alt="Depot Drop 2" style="width:100%;height:100%;object-fit:cover;" />
         </div>
       </div>
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-3a.webp" data-img2="images/drop-3b.webp" data-img3="images/drop-3c.webp" data-label1="CAV EMPT /// SS25" data-label2="CAV EMPT /// SS25" data-label3="CAV EMPT /// SS25" data-ref1="003" data-ref2="003" data-ref3="003">
         <div class="drop-num">003</div>
         <div class="drop-info">
           <div class="drop-brand">CAV EMPT</div>
           <div class="drop-name">HEAVY BRUSHED CREWNECK</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹28,000</div>
+          <div class="drop-price">₹2,300</div>
           <div class="drop-status status-low">2 Left</div>
         </div>
         <div class="drop-preview-sim" style="background:#1a1a1a;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">C.E<br>SS25</div>
+          <img src="images/drop-3a.webp" alt="Depot Drop 3" style="width:100%;height:100%;object-fit:cover;" />
         </div>
       </div>
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-4a.webp" data-img2="images/drop-4b.webp" data-img3="images/drop-4c.webp" data-label1="EG /// SS25" data-label2="EG /// SS25" data-label3="EG /// SS25" data-ref1="004" data-ref2="004" data-ref3="004">
         <div class="drop-num">004</div>
         <div class="drop-info">
           <div class="drop-brand">ENGINEERED GARMENTS</div>
-          <div class="drop-name">BEDFORD JACKET — OLIVE HERRINGBONE</div>
+          <div class="drop-name">BEDFORD JACKET /// OLIVE HERRINGBONE</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹62,000</div>
+          <div class="drop-price">₹5,900</div>
           <div class="drop-status status-new">New</div>
         </div>
         <div class="drop-preview-sim" style="background:#3a3228;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">EG<br>SS25</div>
+          <img src="images/drop-4a.webp" alt="Depot Drop 4" style="width:100%;height:100%;object-fit:cover;" />
         </div>
       </div>
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-5a.webp" data-img2="images/drop-5b.webp" data-img3="images/drop-5c.webp" data-label1="STÜSSY /// SS25" data-label2="STÜSSY /// SS25" data-label3="STÜSSY /// SS25" data-ref1="005" data-ref2="005" data-ref3="005">
         <div class="drop-num">005</div>
         <div class="drop-info">
           <div class="drop-brand">STÜSSY</div>
           <div class="drop-name">8 BALL FLEECE JACKET</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹32,000</div>
+          <div class="drop-price">₹3,150</div>
           <div class="drop-status status-out"><span>Sold Out</span></div>
         </div>
         <div class="drop-preview-sim" style="background:#111;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">STÜ<br>SS25</div>
+          <img src="images/drop-5a.webp" alt="Depot Drop 5" style="width:100%;height:100%;object-fit:cover;opacity:0.6;" />
         </div>
       </div>
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-6a.webp" data-img2="images/drop-6b.webp" data-img3="images/drop-6c.webp" data-label1="PATTA /// SS25" data-label2="PATTA /// SS25" data-label3="PATTA /// SS25" data-ref1="006" data-ref2="006" data-ref3="006">
         <div class="drop-num">006</div>
         <div class="drop-info">
           <div class="drop-brand">PATTA</div>
           <div class="drop-name">CORDUROY TRACK PANT</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹22,000</div>
+          <div class="drop-price">₹1,800</div>
           <div class="drop-status status-new">New</div>
         </div>
         <div class="drop-preview-sim" style="background:#2d1e2f;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">PATTA<br>SS25</div>
+          <img src="images/drop-6a.webp" alt="Depot Drop 6" style="width:100%;height:100%;object-fit:cover;" />
         </div>
       </div>
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-7a.webp" data-img2="images/drop-7b.webp" data-img3="images/drop-7c.webp" data-label1="SACAI /// SS25" data-label2="SACAI /// SS25" data-label3="SACAI /// SS25" data-ref1="007" data-ref2="007" data-ref3="007">
         <div class="drop-num">007</div>
         <div class="drop-info">
           <div class="drop-brand">SACAI</div>
           <div class="drop-name">MA-1 HYBRID BLOUSON</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹120,000</div>
+          <div class="drop-price">₹9,200</div>
           <div class="drop-status status-low">1 Left</div>
         </div>
         <div class="drop-preview-sim" style="background:#1e2830;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">SACAI<br>SS25</div>
+          <img src="images/drop-7a.webp" alt="Depot Drop 7" style="width:100%;height:100%;object-fit:cover;" />
         </div>
       </div>
 
-      <div class="drop-item">
+      <div class="drop-item" data-img1="images/drop-8a.webp" data-img2="images/drop-8b.webp" data-img3="images/drop-8c.webp" data-label1="KAPITAL /// SS25" data-label2="KAPITAL /// SS25" data-label3="KAPITAL /// SS25" data-ref1="008" data-ref2="008" data-ref3="008">
         <div class="drop-num">008</div>
         <div class="drop-info">
           <div class="drop-brand">KAPITAL</div>
           <div class="drop-name">CENTURY DENIM 5P JEANS</div>
         </div>
         <div class="drop-price-col">
-          <div class="drop-price">₹38,000</div>
+          <div class="drop-price">₹4,500</div>
           <div class="drop-status status-new">New</div>
         </div>
         <div class="drop-preview-sim" style="background:#1e2635;">
-          <div class="preview-inner" style="color:rgba(255,255,255,0.4);">KAP<br>SS25</div>
+          <img src="images/drop-8a.webp" alt="Depot Drop 8" style="width:100%;height:100%;object-fit:cover;" />
         </div>
       </div>
 
     </div>
 
+    <!-- HERO DROP IMAGE STRIP -->
+  <div class="hero-drops-images" id="heroDropImages">
+      <div class="hero-drop-img-cell" data-drop-img="0">
+        <div class="hero-drop-img-stage">
+          <img class="hero-drop-img-layer active-img" src="images/drop-1a.webp" alt="WTAPS Drop A" />
+        </div>
+        <div class="hero-drop-img-caption">
+          <span class="hero-drop-img-label">WTAPS /// SS25</span>
+          <span class="hero-drop-img-ref">001</span>
+        </div>
+      </div>
+      <div class="hero-drop-img-cell" data-drop-img="1">
+        <div class="hero-drop-img-stage">
+          <img class="hero-drop-img-layer active-img" src="images/drop-1b.webp" alt="WTAPS Drop B" />
+        </div>
+        <div class="hero-drop-img-caption">
+          <span class="hero-drop-img-label">WTAPS /// SS25</span>
+          <span class="hero-drop-img-ref">001</span>
+        </div>
+      </div>
+      <div class="hero-drop-img-cell" data-drop-img="2">
+        <div class="hero-drop-img-stage">
+          <img class="hero-drop-img-layer active-img" src="images/drop-1c.jpg" alt="WTAPS Drop C" />
+        </div>
+        <div class="hero-drop-img-caption">
+          <span class="hero-drop-img-label">WTAPS /// SS25</span>
+          <span class="hero-drop-img-ref">001</span>
+        </div>
+      </div>
+    </div>
+
     <!-- HERO RIGHT BOTTOM — manifest stats -->
-    <div style="border-top:var(--border); padding:1.2rem 2rem; display:grid; grid-template-columns:repeat(3,1fr); gap:0;">
+    <div style="border-top:var(--border); padding:1.2rem 2rem; display:grid; grid-template-columns:repeat(3,1fr); gap:0; flex-shrink:0;">
       <div style="border-right:var(--border-light); padding-right:1rem;">
         <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--grey-mid);margin-bottom:4px;">In Stock</div>
         <div style="font-family:var(--mono);font-size:18px;font-weight:700;">312</div>
@@ -1733,17 +2181,21 @@
   </div>
 </section>
 
-<!-- OVERSIZE HEADER — Stüssy influence -->
+<!-- OVERSIZE HEADER -->
 <div class="oversize-header">
   <div class="oversize-text"><span class="reveal-clip"><span class="reveal-clip-inner">NEW ARRIVALS</span></span></div>
-  <div class="oversize-text inverted"><span class="reveal-clip"><span class="reveal-clip-inner">SS25 — SEASON 012</span></span></div>
+  <div class="oversize-text inverted"><span class="reveal-clip"><span class="reveal-clip-inner">SS25 /// SEASON 012</span></span></div>
 </div>
 
 <!-- PRODUCT SECTION -->
 <section class="product-section">
   <div class="section-header">
-    <span class="section-label">Product Feed — SS25</span>
-    <span class="section-count">Showing 1–8 of 312 items</span>
+    <span class="section-label">Product Feed /// SS25</span>
+    <div class="section-header-marquee">
+      <div class="section-header-marquee-track">
+        <span class="section-header-marquee-inner">SS25 &nbsp;///&nbsp; 312 ITEMS &nbsp;///&nbsp; ARCHIVE &nbsp;///&nbsp; NEW ARRIVALS &nbsp;///&nbsp; SS25 &nbsp;///&nbsp; 312 ITEMS &nbsp;///&nbsp; ARCHIVE &nbsp;///&nbsp; NEW ARRIVALS &nbsp;///&nbsp;</span><span class="section-header-marquee-inner">SS25 &nbsp;///&nbsp; 312 ITEMS &nbsp;///&nbsp; ARCHIVE &nbsp;///&nbsp; NEW ARRIVALS &nbsp;///&nbsp; SS25 &nbsp;///&nbsp; 312 ITEMS &nbsp;///&nbsp; ARCHIVE &nbsp;///&nbsp; NEW ARRIVALS &nbsp;///&nbsp;</span>
+      </div>
+    </div>
   </div>
 
   <!-- FILTER BAR -->
@@ -1763,7 +2215,7 @@
     <!-- Card 1 -->
     <div class="product-card scroll-reveal">
       <div class="product-img-sim" style="background:#1f2b1a;" data-hover="ON-BODY VIEW">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">WTAPS / JKT</span>
+        <img src="images/depot-drop-1.jpg" alt="Depot Drop 1" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <span class="product-tag tag-new">New</span>
       <div class="product-quick-add">+ Quick Add</div>
@@ -1771,7 +2223,7 @@
         <div class="product-ref">REF: WTP-SS25-044</div>
         <div class="product-name">Jungle Stock Jacket</div>
         <div class="product-price">
-          <span>₹42,000</span>
+          <span>₹4,200</span>
           <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">WTAPS</span>
         </div>
       </div>
@@ -1780,7 +2232,7 @@
     <!-- Card 2 -->
     <div class="product-card scroll-reveal">
       <div class="product-img-sim" style="background:#2a1e14;" data-hover="ON-BODY VIEW">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">KAPITAL / DENIM</span>
+        <img src="images/depot-drop-2.jpg" alt="Depot Drop 2" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <span class="product-tag tag-ltd">Limited</span>
       <div class="product-quick-add">+ Quick Add</div>
@@ -1788,7 +2240,7 @@
         <div class="product-ref">REF: KAP-SS25-017</div>
         <div class="product-name">Century Denim 5P Jeans</div>
         <div class="product-price">
-          <span>₹38,000</span>
+          <span>₹4,500</span>
           <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">KAPITAL</span>
         </div>
       </div>
@@ -1796,32 +2248,32 @@
 
     <!-- Card 3 -->
     <div class="product-card scroll-reveal">
-      <div class="product-img-sim" style="background:#111;" data-hover="ON-BODY VIEW">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">C.E / CREW</span>
+      <div class="product-img-sim" style="background:#3a3228;" data-hover="ON-BODY VIEW">
+        <img src="images/depot-drop-3.jpg" alt="Depot Drop 3" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <span class="product-tag tag-new">New</span>
       <div class="product-quick-add">+ Quick Add</div>
       <div class="product-info">
-        <div class="product-ref">REF: CE-SS25-031</div>
-        <div class="product-name">Heavy Brushed Crewneck</div>
+        <div class="product-ref">REF: EG-SS25-022</div>
+        <div class="product-name">Bedford Jacket /// Olive HB</div>
         <div class="product-price">
-          <span>₹28,000</span>
-          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">CAV EMPT</span>
+          <span>₹5,900</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">ENG. GARMENTS</span>
         </div>
       </div>
     </div>
 
-    <!-- Card 4 — Sold Out -->
+    <!-- Card 4 -->
     <div class="product-card scroll-reveal">
-      <div class="product-img-sim" style="background:#1a1a1a;opacity:0.5;" data-hover="">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">STÜ / JKT</span>
+      <div class="product-img-sim" style="background:#1a1a1a;opacity:0.5;" data-hover="ON-BODY VIEW">
+        <img src="images/depot-drop-4.jpg" alt="Depot Drop 4" style="width:100%;height:100%;object-fit:cover;opacity:0.5;" />
       </div>
       <span class="product-tag tag-sold">Sold Out</span>
       <div class="product-info">
         <div class="product-ref">REF: STU-SS25-008</div>
         <div class="product-name">8 Ball Fleece Jacket</div>
         <div class="product-price">
-          <span style="color:var(--grey-mid);">₹32,000</span>
+          <span style="color:var(--grey-mid);">₹3,150</span>
           <span class="price-sold">S/O</span>
         </div>
       </div>
@@ -1830,15 +2282,15 @@
     <!-- Card 5 -->
     <div class="product-card scroll-reveal">
       <div class="product-img-sim" style="background:#1c2d1c;" data-hover="ON-BODY VIEW">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">EG / JACKET</span>
+        <img src="images/depot-drop-5.jpg" alt="Depot Drop 5" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <span class="product-tag tag-new">New</span>
       <div class="product-quick-add">+ Quick Add</div>
       <div class="product-info">
         <div class="product-ref">REF: EG-SS25-022</div>
-        <div class="product-name">Bedford Jacket Olive HB</div>
+        <div class="product-name">Bedford Jacket /// Olive HB</div>
         <div class="product-price">
-          <span>₹62,000</span>
+          <span>₹5,900</span>
           <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">ENG. GARMENTS</span>
         </div>
       </div>
@@ -1847,7 +2299,7 @@
     <!-- Card 6 -->
     <div class="product-card scroll-reveal">
       <div class="product-img-sim" style="background:#261520;" data-hover="ON-BODY VIEW">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">PATTA / PANT</span>
+        <img src="images/depot-drop-6.jpg" alt="Depot Drop 6" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <span class="product-tag tag-ltd">Limited</span>
       <div class="product-quick-add">+ Quick Add</div>
@@ -1855,7 +2307,7 @@
         <div class="product-ref">REF: PAT-SS25-011</div>
         <div class="product-name">Corduroy Track Pant</div>
         <div class="product-price">
-          <span>₹22,000</span>
+          <span>₹1,800</span>
           <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">PATTA</span>
         </div>
       </div>
@@ -1864,7 +2316,7 @@
     <!-- Card 7 -->
     <div class="product-card scroll-reveal">
       <div class="product-img-sim" style="background:#1c1c2e;" data-hover="ON-BODY VIEW">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">NHBD / JKT</span>
+        <img src="images/depot-drop-7.jpg" alt="Depot Drop 7" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <span class="product-tag tag-new">New</span>
       <div class="product-quick-add">+ Quick Add</div>
@@ -1872,7 +2324,7 @@
         <div class="product-ref">REF: NHD-SS25-039</div>
         <div class="product-name">Savage C-JKT Denim</div>
         <div class="product-price">
-          <span>₹55,000</span>
+          <span>₹6,850</span>
           <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">NEIGHBORHOOD</span>
         </div>
       </div>
@@ -1881,7 +2333,7 @@
     <!-- Card 8 -->
     <div class="product-card scroll-reveal">
       <div class="product-img-sim" style="background:#1e1c16;" data-hover="ON-BODY VIEW">
-        <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">SACAI / BLZ</span>
+        <img src="images/depot-drop-8.jpg" alt="Depot Drop 8" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <span class="product-tag tag-ltd">1 Left</span>
       <div class="product-quick-add">+ Quick Add</div>
@@ -1889,7 +2341,7 @@
         <div class="product-ref">REF: SAC-SS25-007</div>
         <div class="product-name">MA-1 Hybrid Blouson</div>
         <div class="product-price">
-          <span>₹120,000</span>
+          <span>₹9,200</span>
           <span style="font-family:var(--mono);font-size:8px;color:var(--grey-mid);">SACAI</span>
         </div>
       </div>
@@ -1902,61 +2354,65 @@
 <section class="category-section">
   <div class="section-header">
     <span class="section-label">Shop By Category</span>
-    <span class="section-count">6 Categories — SS25</span>
+    <div class="section-header-marquee">
+      <div class="section-header-marquee-track">
+        <span class="section-header-marquee-inner">SS25 &nbsp;///&nbsp; 6 CATEGORIES &nbsp;///&nbsp; OUTERWEAR &nbsp;///&nbsp; TOPS &nbsp;///&nbsp; BOTTOMS &nbsp;///&nbsp; FOOTWEAR &nbsp;///&nbsp; HEADWEAR &nbsp;///&nbsp; SS25 &nbsp;///&nbsp; 6 CATEGORIES &nbsp;///&nbsp; OUTERWEAR &nbsp;///&nbsp; TOPS &nbsp;///&nbsp; BOTTOMS &nbsp;///&nbsp; FOOTWEAR &nbsp;///&nbsp; HEADWEAR &nbsp;///&nbsp;</span><span class="section-header-marquee-inner">SS25 &nbsp;///&nbsp; 6 CATEGORIES &nbsp;///&nbsp; OUTERWEAR &nbsp;///&nbsp; TOPS &nbsp;///&nbsp; BOTTOMS &nbsp;///&nbsp; FOOTWEAR &nbsp;///&nbsp; HEADWEAR &nbsp;///&nbsp; SS25 &nbsp;///&nbsp; 6 CATEGORIES &nbsp;///&nbsp; OUTERWEAR &nbsp;///&nbsp; TOPS &nbsp;///&nbsp; BOTTOMS &nbsp;///&nbsp; FOOTWEAR &nbsp;///&nbsp; HEADWEAR &nbsp;///&nbsp;</span>
+      </div>
+    </div>
   </div>
 
   <div class="category-grid">
 
     <div class="category-cell scroll-reveal">
-      <div class="category-bg" style="background:#1a1f2e;"></div>
+      <img class="category-bg" src="images/depot-category-1.jpg" alt="Category 1" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
       <div class="category-overlay"></div>
       <div class="category-content">
-        <span class="category-tag">01 — Tops</span>
+        <span class="category-tag">01 /// Tops</span>
         <span class="category-name">T-Shirts</span>
       </div>
     </div>
 
     <div class="category-cell scroll-reveal">
-      <div class="category-bg" style="background:#0f1a2e;"></div>
+      <img class="category-bg" src="images/depot-category-2.jpg" alt="Category 2" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
       <div class="category-overlay"></div>
       <div class="category-content">
-        <span class="category-tag">02 — Tops</span>
+        <span class="category-tag">02 /// Tops</span>
         <span class="category-name">Full Sleeve<br>T-Shirts</span>
       </div>
     </div>
 
     <div class="category-cell scroll-reveal">
-      <div class="category-bg" style="background:#1e1a10;"></div>
+      <img class="category-bg" src="images/depot-category-3.jpg" alt="Category 3" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
       <div class="category-overlay"></div>
       <div class="category-content">
-        <span class="category-tag">03 — Headwear</span>
+        <span class="category-tag">03 /// Headwear</span>
         <span class="category-name">Headwear</span>
       </div>
     </div>
 
     <div class="category-cell scroll-reveal">
-      <div class="category-bg" style="background:#1a1018;"></div>
+      <img class="category-bg" src="images/depot-category-4.jpg" alt="Category 4" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
       <div class="category-overlay"></div>
       <div class="category-content">
-        <span class="category-tag">04 — Tops</span>
+        <span class="category-tag">04 /// Tops</span>
         <span class="category-name">Polos</span>
       </div>
     </div>
 
     <div class="category-cell scroll-reveal">
-      <div class="category-bg" style="background:#101a18;"></div>
+      <img class="category-bg" src="images/depot-category-5.jpg" alt="Category 5" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
       <div class="category-overlay"></div>
       <div class="category-content">
-        <span class="category-tag">05 — Bottoms</span>
+        <span class="category-tag">05 /// Bottoms</span>
         <span class="category-name">Shorts</span>
       </div>
     </div>
 
     <div class="category-cell scroll-reveal">
-      <div class="category-bg" style="background:#141a10;"></div>
+      <img class="category-bg" src="images/depot-category-6.jpg" alt="Category 6" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
       <div class="category-overlay"></div>
       <div class="category-content">
-        <span class="category-tag">06 — Outerwear</span>
+        <span class="category-tag">06 /// Outerwear</span>
         <span class="category-name">Jackets</span>
       </div>
     </div>
@@ -1967,8 +2423,12 @@
 <!-- EDITORIAL / ZINE — Patta/Sundae School influence -->
 <section class="editorial-section">
   <div class="section-header">
-    <span class="section-label">Editorial — Digital Zine Vol. 12</span>
-    <span class="section-count">Community Archive</span>
+    <span class="section-label">Editorial /// Digital Zine Vol. 12</span>
+    <div class="section-header-marquee">
+      <div class="section-header-marquee-track">
+        <span class="section-header-marquee-inner">VOL.12 &nbsp;///&nbsp; COMMUNITY ARCHIVE &nbsp;///&nbsp; TOKYO REPORT &nbsp;///&nbsp; ESSAYS &nbsp;///&nbsp; DROPS &nbsp;///&nbsp; VOL.12 &nbsp;///&nbsp; COMMUNITY ARCHIVE &nbsp;///&nbsp; TOKYO REPORT &nbsp;///&nbsp; ESSAYS &nbsp;///&nbsp; DROPS &nbsp;///&nbsp;</span><span class="section-header-marquee-inner">VOL.12 &nbsp;///&nbsp; COMMUNITY ARCHIVE &nbsp;///&nbsp; TOKYO REPORT &nbsp;///&nbsp; ESSAYS &nbsp;///&nbsp; DROPS &nbsp;///&nbsp; VOL.12 &nbsp;///&nbsp; COMMUNITY ARCHIVE &nbsp;///&nbsp; TOKYO REPORT &nbsp;///&nbsp; ESSAYS &nbsp;///&nbsp; DROPS &nbsp;///&nbsp;</span>
+      </div>
+    </div>
   </div>
 
   <div class="oversize-header" style="padding:1.5rem 1.5rem 1rem;">
@@ -1979,9 +2439,12 @@
 
     <!-- Large left cell -->
     <div class="editorial-cell editorial-large" style="background:#0a0a0a;">
+      <img src="images/depot-editorial-1.jpg" alt="Editorial 1" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.45;" />
       <div class="editorial-bg" style="flex-direction:column; align-items:flex-start; justify-content:flex-end;">
-        <div class="editorial-meta" style="color:var(--orange);">Feature &nbsp;///&nbsp; Tokyo Report</div>
-        <div class="editorial-title" style="color:#fff; font-size:3rem;">THE CITY<br>NEVER STOPS.</div>
+        <div style="position:relative;z-index:1;">
+          <div class="editorial-meta" style="color:var(--orange);">Feature &nbsp;///&nbsp; Tokyo Report</div>
+          <div class="editorial-title" style="color:#fff; font-size:3rem;">THE CITY<br>NEVER STOPS.</div>
+        </div>
       </div>
       <div class="editorial-num" style="color:rgba(255,255,255,0.25);">12 / 01</div>
     </div>
@@ -1989,8 +2452,9 @@
     <!-- Top right -->
     <div class="editorial-cell editorial-tall" style="background:#2a1c0e;">
       <div class="editorial-overlap" style="top:-1rem; left:-0.5rem; color:rgba(255,255,255,0.08); font-size:5rem;">DROP</div>
+      <img src="images/depot-editorial-2.jpg" alt="Editorial 2" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.85;" />
       <div class="editorial-bg">
-        <div>
+        <div style="position:relative;z-index:1;">
           <div class="editorial-meta" style="color:rgba(255,255,255,0.4);">Profile &nbsp;///&nbsp; Collector</div>
           <div class="editorial-title" style="color:#fff; font-size:1.8rem;">ARCHIVE<br>OBSESSION</div>
         </div>
@@ -2000,7 +2464,8 @@
 
     <!-- Mid right — asymmetric text block -->
     <div class="editorial-cell editorial-tall" style="background:var(--bg); border-bottom: var(--border);">
-      <div style="padding:1.5rem; height:100%; display:flex; flex-direction:column; justify-content:space-between;">
+      <img src="images/depot-editorial-3.jpg" alt="Editorial 3" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.85;" />
+      <div style="padding:1.5rem; height:100%; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:1;">
         <div class="editorial-meta" style="color:var(--grey-mid);">Essay &nbsp;///&nbsp; Culture</div>
         <div>
           <div class="editorial-title" style="font-size:1.6rem;">ON WEARING<br>UTILITY AS<br>LANGUAGE</div>
@@ -2012,8 +2477,9 @@
 
     <!-- Bottom mid -->
     <div class="editorial-cell editorial-short" style="background:#111;">
+      <img src="images/depot-editorial-4.jpg" alt="Editorial 4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.85;" />
       <div class="editorial-bg">
-        <div>
+        <div style="position:relative;z-index:1;">
           <div class="editorial-meta" style="color:var(--orange);">Drop &nbsp;///&nbsp; Exclusive</div>
           <div class="editorial-title" style="color:#fff; font-size:1.5rem;">NHBD × WTAPS<br>COLLAB SS25</div>
         </div>
@@ -2023,7 +2489,8 @@
 
     <!-- Bottom right -->
     <div class="editorial-cell editorial-short" style="background:#F2F2F2; border-right:none;">
-      <div style="padding:1.5rem; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+      <img src="images/depot-editorial-5.jpg" alt="Editorial 5" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.25;" />
+      <div style="padding:1.5rem; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; z-index:1;">
         <div class="editorial-meta" style="color:var(--grey-mid); margin-bottom:1rem;">Subscribe</div>
         <div style="font-family:var(--condensed); font-size:1.8rem; font-weight:900; text-transform:uppercase; line-height:1;">THE DEPOT<br>Newsletter</div>
         <div style="margin-top:1rem; font-family:var(--mono); font-size:9px; letter-spacing:0.15em; color:var(--orange);">→ JOIN THE LIST</div>
@@ -2039,25 +2506,26 @@
     <div style="display:flex; flex-direction:column; align-items:center; gap:1.5rem; width:100%;">
       <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; color:var(--grey-mid); text-transform:uppercase; margin-bottom:2rem;">Featured Artifact</div>
       <div class="pdp-artifact" style="background:#1f2b1a; border-color:#333;">
-        <span style="font-family:var(--mono); font-size:9px; color:rgba(255,255,255,0.2); letter-spacing:0.1em;">WTAPS / SS25</span>
+        <img id="pdpMainImage" src="images/depot-pdp-main.jpg" alt="PDP Main" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;opacity:0.7;" />
+        <span style="font-family:var(--mono); font-size:9px; color:rgba(255,255,255,0.2); letter-spacing:0.1em;position:relative;z-index:1;">WTAPS /// SS25</span>
       </div>
-      <div style="display:flex; gap:0; border:var(--border);">
-        <div style="width:56px; height:72px; background:#1f2b1a; border-right:var(--border-light); cursor:pointer;"></div>
-        <div style="width:56px; height:72px; background:#2d3a28; border-right:var(--border-light); cursor:pointer;"></div>
-        <div style="width:56px; height:72px; background:#111; cursor:pointer;"></div>
+      <div id="pdp-thumbs-wrap" class="pdp-thumbs-wrap">
+        <img src="images/depot-pdp-thumb-1.jpg" data-full="images/depot-pdp-main.jpg" alt="PDP Thumb 1" class="pdp-thumb active" />
+        <img src="images/depot-pdp-thumb-2.jpg" data-full="images/depot-pdp-thumb-2.jpg" alt="PDP Thumb 2" class="pdp-thumb" />
+        <img src="images/depot-pdp-thumb-3.jpg" data-full="images/depot-pdp-thumb-3.jpg" alt="PDP Thumb 3" class="pdp-thumb" />
       </div>
     </div>
   </div>
 
   <div class="pdp-info-zone">
     <div>
-      <div class="pdp-brand">WTAPS — SS25</div>
+      <div class="pdp-brand">WTAPS /// SS25</div>
       <div class="pdp-title">Jungle<br>Stock<br>Jacket</div>
     </div>
 
     <div class="pdp-price-block">
       <div class="pdp-price-label">Retail Price</div>
-      <div class="pdp-price-amount">₹42,000</div>
+      <div class="pdp-price-amount">₹4,200</div>
     </div>
 
     <div class="pdp-specs">
@@ -2112,8 +2580,12 @@
 <!-- GRAIL INDEX -->
 <section class="grail-section">
   <div class="section-header">
-    <span class="section-label">Grail Index — Most Wanted</span>
-    <span class="section-count">Updated 14 Apr 2025 &nbsp;///&nbsp; Live Scarcity Data</span>
+    <span class="section-label">Grail Index /// Most Wanted</span>
+    <div class="section-header-marquee">
+      <div class="section-header-marquee-track">
+        <span class="section-header-marquee-inner">LIVE SCARCITY DATA &nbsp;///&nbsp; UPDATED 14 APR 2025 &nbsp;///&nbsp; GRAIL INDEX &nbsp;///&nbsp; ARCHIVE RANKING &nbsp;///&nbsp; LIVE SCARCITY DATA &nbsp;///&nbsp; UPDATED 14 APR 2025 &nbsp;///&nbsp; GRAIL INDEX &nbsp;///&nbsp; ARCHIVE RANKING &nbsp;///&nbsp;</span><span class="section-header-marquee-inner">LIVE SCARCITY DATA &nbsp;///&nbsp; UPDATED 14 APR 2025 &nbsp;///&nbsp; GRAIL INDEX &nbsp;///&nbsp; ARCHIVE RANKING &nbsp;///&nbsp; LIVE SCARCITY DATA &nbsp;///&nbsp; UPDATED 14 APR 2025 &nbsp;///&nbsp; GRAIL INDEX &nbsp;///&nbsp; ARCHIVE RANKING &nbsp;///&nbsp;</span>
+      </div>
+    </div>
   </div>
 
   <div style="border-bottom:var(--border);">
@@ -2130,6 +2602,7 @@
 
     <!-- Row 1 -->
     <div class="grail-row scroll-reveal">
+      <img class="grail-hover-img" src="images/depot-drop-1.jpg" alt="WTAPS Jungle Stock" />
       <div class="grail-rank top">01</div>
       <div class="grail-cell">
         <div class="grail-name-block">
@@ -2137,7 +2610,7 @@
           <span class="grail-item-name">Jungle Stock Jacket</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price">₹42,000</span></div>
+      <div class="grail-cell"><span class="grail-price">₹4,200</span></div>
       <div class="grail-cell"><span class="grail-trend trend-up">↑ 18%</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
@@ -2154,6 +2627,7 @@
 
     <!-- Row 2 -->
     <div class="grail-row scroll-reveal">
+      <img class="grail-hover-img" src="images/depot-drop-7.jpg" alt="NEIGHBORHOOD Savage" />
       <div class="grail-rank top">02</div>
       <div class="grail-cell">
         <div class="grail-name-block">
@@ -2161,7 +2635,7 @@
           <span class="grail-item-name">Savage C-JKT Denim</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price">₹55,000</span></div>
+      <div class="grail-cell"><span class="grail-price">₹6,850</span></div>
       <div class="grail-cell"><span class="grail-trend trend-up">↑ 12%</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
@@ -2178,6 +2652,7 @@
 
     <!-- Row 3 -->
     <div class="grail-row scroll-reveal">
+      <img class="grail-hover-img" src="images/depot-drop-8.jpg" alt="Sacai MA-1" />
       <div class="grail-rank top">03</div>
       <div class="grail-cell">
         <div class="grail-name-block">
@@ -2185,7 +2660,7 @@
           <span class="grail-item-name">MA-1 Hybrid Blouson</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price">₹120,000</span></div>
+      <div class="grail-cell"><span class="grail-price">₹9,200</span></div>
       <div class="grail-cell"><span class="grail-trend trend-up">↑ 9%</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
@@ -2202,6 +2677,7 @@
 
     <!-- Row 4 -->
     <div class="grail-row scroll-reveal">
+      <img class="grail-hover-img" src="images/depot-drop-3.jpg" alt="Cav Empt Crewneck" />
       <div class="grail-rank">04</div>
       <div class="grail-cell">
         <div class="grail-name-block">
@@ -2209,7 +2685,7 @@
           <span class="grail-item-name">Heavy Brushed Crewneck</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price">₹28,000</span></div>
+      <div class="grail-cell"><span class="grail-price">₹2,300</span></div>
       <div class="grail-cell"><span class="grail-trend trend-down">↓ 3%</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
@@ -2226,14 +2702,15 @@
 
     <!-- Row 5 -->
     <div class="grail-row scroll-reveal">
+      <img class="grail-hover-img" src="images/depot-drop-5.jpg" alt="EG Bedford Jacket" />
       <div class="grail-rank">05</div>
       <div class="grail-cell">
         <div class="grail-name-block">
           <span class="grail-brand">ENGINEERED GARMENTS</span>
-          <span class="grail-item-name">Bedford Jacket Olive HB</span>
+          <span class="grail-item-name">Bedford Jacket /// Olive HB</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price">₹62,000</span></div>
+      <div class="grail-cell"><span class="grail-price">₹5,900</span></div>
       <div class="grail-cell"><span class="grail-trend trend-up">↑ 5%</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
@@ -2250,6 +2727,7 @@
 
     <!-- Row 6 -->
     <div class="grail-row scroll-reveal">
+      <img class="grail-hover-img" src="images/depot-drop-2.jpg" alt="Kapital Century Denim" />
       <div class="grail-rank">06</div>
       <div class="grail-cell">
         <div class="grail-name-block">
@@ -2257,7 +2735,7 @@
           <span class="grail-item-name">Century Denim 5P Jeans</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price">₹38,000</span></div>
+      <div class="grail-cell"><span class="grail-price">₹4,500</span></div>
       <div class="grail-cell"><span class="grail-trend trend-up">↑ 2%</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
@@ -2274,6 +2752,7 @@
 
     <!-- Row 7 -->
     <div class="grail-row scroll-reveal">
+      <img class="grail-hover-img" src="images/depot-drop-6.jpg" alt="Patta Track Pant" />
       <div class="grail-rank">07</div>
       <div class="grail-cell">
         <div class="grail-name-block">
@@ -2281,7 +2760,7 @@
           <span class="grail-item-name">Corduroy Track Pant</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price">₹22,000</span></div>
+      <div class="grail-cell"><span class="grail-price">₹1,800</span></div>
       <div class="grail-cell"><span class="grail-trend trend-down">↓ 1%</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
@@ -2298,6 +2777,7 @@
 
     <!-- Row 8 — Sold Out -->
     <div class="grail-row" style="opacity:0.5;">
+      <img class="grail-hover-img" src="images/depot-drop-4.jpg" alt="Stussy 8 Ball" />
       <div class="grail-rank">08</div>
       <div class="grail-cell">
         <div class="grail-name-block">
@@ -2305,8 +2785,8 @@
           <span class="grail-item-name" style="text-decoration:line-through;">8 Ball Fleece Jacket</span>
         </div>
       </div>
-      <div class="grail-cell"><span class="grail-price" style="color:var(--grey-mid);">₹32,000</span></div>
-      <div class="grail-cell"><span class="grail-trend" style="color:var(--grey-mid);">— —</span></div>
+      <div class="grail-cell"><span class="grail-price" style="color:var(--grey-mid);">₹3,150</span></div>
+      <div class="grail-cell"><span class="grail-trend" style="color:var(--grey-mid);">/// ///</span></div>
       <div class="grail-cell">
         <div class="grail-heat">
           <div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div><div class="heat-bar"></div>
@@ -2324,7 +2804,11 @@
 <section class="recently-section">
   <div class="section-header">
     <span class="section-label">Continue Browsing</span>
-    <span class="section-count">Recently Viewed — Session 04.14.25</span>
+    <div class="section-header-marquee">
+      <div class="section-header-marquee-track">
+        <span class="section-header-marquee-inner">RECENTLY VIEWED &nbsp;///&nbsp; SESSION 04.14.25 &nbsp;///&nbsp; 3 ITEMS &nbsp;///&nbsp; CONTINUE BROWSING &nbsp;///&nbsp; RECENTLY VIEWED &nbsp;///&nbsp; SESSION 04.14.25 &nbsp;///&nbsp; 3 ITEMS &nbsp;///&nbsp; CONTINUE BROWSING &nbsp;///&nbsp;</span><span class="section-header-marquee-inner">RECENTLY VIEWED &nbsp;///&nbsp; SESSION 04.14.25 &nbsp;///&nbsp; 3 ITEMS &nbsp;///&nbsp; CONTINUE BROWSING &nbsp;///&nbsp; RECENTLY VIEWED &nbsp;///&nbsp; SESSION 04.14.25 &nbsp;///&nbsp; 3 ITEMS &nbsp;///&nbsp; CONTINUE BROWSING &nbsp;///&nbsp;</span>
+      </div>
+    </div>
   </div>
 
   <div class="recently-grid">
@@ -2332,39 +2816,42 @@
     <!-- Item 1 -->
     <div class="recently-card scroll-reveal">
       <div class="recently-swatch" style="background:#1f2b1a;">
+        <img src="images/depot-recent-1.jpg" alt="Recently Viewed 1" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
         <div class="recently-viewed-label">Viewed 4 min ago</div>
       </div>
       <div class="recently-brand">WTAPS</div>
       <div class="recently-name">Jungle<br>Stock<br>Jacket</div>
       <div class="recently-meta">
-        <span class="recently-price">₹42,000</span>
-        <span class="recently-time">SS25 — REF 044</span>
+        <span class="recently-price">₹4,200</span>
+        <span class="recently-time">SS25 /// REF 044</span>
       </div>
     </div>
 
     <!-- Item 2 -->
     <div class="recently-card scroll-reveal">
       <div class="recently-swatch" style="background:#1c1c2e;">
+        <img src="images/depot-recent-2.jpg" alt="Recently Viewed 2" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
         <div class="recently-viewed-label">Viewed 11 min ago</div>
       </div>
       <div class="recently-brand">SACAI</div>
       <div class="recently-name">MA-1<br>Hybrid<br>Blouson</div>
       <div class="recently-meta">
-        <span class="recently-price">₹120,000</span>
-        <span class="recently-time">SS25 — REF 007</span>
+        <span class="recently-price">₹9,200</span>
+        <span class="recently-time">SS25 /// REF 007</span>
       </div>
     </div>
 
     <!-- Item 3 -->
     <div class="recently-card scroll-reveal">
       <div class="recently-swatch" style="background:#2a1c0e;">
+        <img src="images/depot-recent-3.jpg" alt="Recently Viewed 3" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;" />
         <div class="recently-viewed-label">Viewed 23 min ago</div>
       </div>
       <div class="recently-brand">NEIGHBORHOOD</div>
       <div class="recently-name">Savage<br>C-JKT<br>Denim</div>
       <div class="recently-meta">
-        <span class="recently-price">₹55,000</span>
-        <span class="recently-time">SS25 — REF 039</span>
+        <span class="recently-price">₹6,850</span>
+        <span class="recently-time">SS25 /// REF 039</span>
       </div>
     </div>
 
@@ -2375,7 +2862,11 @@
 <section class="promises-section">
   <div class="section-header">
     <span class="section-label">Our Promises</span>
-    <span class="section-count">Every Order — No Exceptions</span>
+    <div class="section-header-marquee">
+      <div class="section-header-marquee-track">
+        <span class="section-header-marquee-inner">EVERY ORDER &nbsp;///&nbsp; NO EXCEPTIONS &nbsp;///&nbsp; AUTHENTIC &nbsp;///&nbsp; VERIFIED &nbsp;///&nbsp; PRE-SHRUNK &nbsp;///&nbsp; FREE RETURNS &nbsp;///&nbsp; EVERY ORDER &nbsp;///&nbsp; NO EXCEPTIONS &nbsp;///&nbsp; AUTHENTIC &nbsp;///&nbsp; VERIFIED &nbsp;///&nbsp; PRE-SHRUNK &nbsp;///&nbsp; FREE RETURNS &nbsp;///&nbsp;</span><span class="section-header-marquee-inner">EVERY ORDER &nbsp;///&nbsp; NO EXCEPTIONS &nbsp;///&nbsp; AUTHENTIC &nbsp;///&nbsp; VERIFIED &nbsp;///&nbsp; PRE-SHRUNK &nbsp;///&nbsp; FREE RETURNS &nbsp;///&nbsp; EVERY ORDER &nbsp;///&nbsp; NO EXCEPTIONS &nbsp;///&nbsp; AUTHENTIC &nbsp;///&nbsp; VERIFIED &nbsp;///&nbsp; PRE-SHRUNK &nbsp;///&nbsp; FREE RETURNS &nbsp;///&nbsp;</span>
+      </div>
+    </div>
   </div>
 
   <div class="promises-grid">
@@ -2446,7 +2937,7 @@
     </div>
     <div class="footer-nl-right">
       <div>
-        <div class="footer-nl-label" style="margin-bottom:0.8rem;">The Depot — Official Fanwear</div>
+        <div class="footer-nl-label" style="margin-bottom:0.8rem;">The Depot /// Official Fanwear</div>
         <div class="footer-brand-blurb">
           The Depot is an apparel merchandise brand bringing quality,<br>
           authentic sports merchandise to fans in India. We work<br>
@@ -2507,8 +2998,8 @@
   </div>
 
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 THE DEPOT DIGITAL ARCHIVE — ALL RIGHTS RESERVED</div>
-    <div class="footer-coords" id="footerCoords">35.6762°N / 139.6503°E — TOKYO, JP</div>
+    <div class="footer-copy">© 2025 THE DEPOT DIGITAL ARCHIVE /// ALL RIGHTS RESERVED</div>
+    <div class="footer-coords" id="footerCoords">35.6762°N / 139.6503°E /// TOKYO, JP</div>
   </div>
 </footer>
 
@@ -2546,12 +3037,44 @@ lenis.on('scroll', () => {
   progressBar.style.width = Math.min(100, pct).toFixed(1) + '%';
 });
 
-/* ── 2. COORDINATE DISPLAY ───────────────────────────────── */
-document.addEventListener('mousemove', e => {
-  const x = String(Math.round(e.clientX)).padStart(4,'0');
-  const y = String(Math.round(e.clientY)).padStart(4,'0');
-  coordDisplay.textContent = `X:${x} / Y:${y}`;
-});
+/* ── 2. CURSOR DOT ───────────────────────────────────────── */
+(function() {
+  const dot = document.getElementById('cursor-dot');
+  let realX = -20, realY = -20;
+  let dotX  = -20, dotY  = -20;
+  const LAG = 80; // ms
+  const queue = [];
+
+  document.addEventListener('mousemove', e => {
+    queue.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+    realX = e.clientX; realY = e.clientY;
+  });
+
+  function renderDot(ts) {
+    // Drain queue entries older than LAG
+    while (queue.length > 1 && queue[1].t <= ts - LAG) queue.shift();
+    if (queue.length) {
+      const entry = queue[0];
+      // Interpolate between queue[0] and queue[1] if available
+      if (queue.length >= 2) {
+        const a = queue[0], b = queue[1];
+        const lag_t = ts - LAG;
+        const t = Math.max(0, Math.min(1, (lag_t - a.t) / (b.t - a.t || 1)));
+        dotX = a.x + (b.x - a.x) * t;
+        dotY = a.y + (b.y - a.y) * t;
+      } else {
+        dotX = entry.x; dotY = entry.y;
+      }
+      dot.style.left = dotX + 'px';
+      dot.style.top  = dotY + 'px';
+    }
+    requestAnimationFrame(renderDot);
+  }
+  requestAnimationFrame(renderDot);
+
+  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; });
+})();
 
 /* ── 3. VENETIAN BLIND TRANSITION ────────────────────────── */
 const slats = document.querySelectorAll('.blind-slat');
@@ -2591,8 +3114,8 @@ function blindOut() {
   });
 }
 
-// Intercept same-page anchor links
-document.querySelectorAll('a[href^="#"]').forEach(a => {
+// Intercept same-page anchor links (excluding UI toggles like cart)
+document.querySelectorAll('a[href^="#"]:not(#cartToggle)').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
     const target = a.getAttribute('href');
@@ -2668,27 +3191,72 @@ function shuffleTextExit(el, finalText, duration = 300) {
   activeIntervals.set(el, interval);
 }
 
-document.querySelectorAll('.filter-btn, .pdp-add-btn').forEach(btn => {
-  const original = btn.textContent.trim();
-  btn.setAttribute('data-label', original);
-  btn.addEventListener('mouseenter', () => shuffleText(btn, original, 360));
-  btn.addEventListener('mouseleave', () => shuffleTextExit(btn, original, 280));
-});
-
-document.querySelectorAll('.nav-link').forEach(link => {
-  const original = link.textContent.trim();
-  link.addEventListener('mouseenter', () => shuffleText(link, original, 280));
-  link.addEventListener('mouseleave', () => shuffleTextExit(link, original, 220));
+document.querySelectorAll('.filter-btn, .pdp-add-btn, .nav-link, .footer-link, .footer-social-link, .footer-nl-btn, .product-quick-add, button').forEach(el => {
+  const original = el.textContent.trim();
+  el.addEventListener('mouseenter', () => shuffleText(el, original, 300));
+  el.addEventListener('mouseleave', () => shuffleTextExit(el, original, 240));
 });
 
 
-/* ── 5. PRODUCT CARD NOISE FLASH ─────────────────────────── */
-document.querySelectorAll('.product-card').forEach(card => {
-  card.addEventListener('mouseenter', () => {
-    card.classList.add('noise-flash');
-    setTimeout(() => card.classList.remove('noise-flash'), 100);
+/* ── 5. PRODUCT CARD REVEAL EFFECT ───────────────────────── */
+(function() {
+  const cards = document.querySelectorAll('.product-card');
+  cards.forEach(card => {
+    const sim = card.querySelector('.product-img-sim');
+    const img = sim ? sim.querySelector('img') : null;
+    if (!sim || !img) return;
+
+    // Set background image variable for the B&W base
+    sim.style.setProperty('--bg-img', `url("${img.src}")`);
+    
+    let radius = 0;
+    let targetRadius = 0;
+    let animId = null;
+    let mx = 50, my = 50;
+
+    const animate = () => {
+      // Easing factor - 0.05 for a nice gradual spread
+      radius += (targetRadius - radius) * 0.05;
+      
+      const mask = `radial-gradient(circle at ${mx}% ${my}%, #000 0%, #000 ${radius}%, transparent ${radius + 15}%)`;
+      img.style.webkitMaskImage = mask;
+      img.style.maskImage = mask;
+      
+      // Continue if moving or if the radius is significant
+      if (Math.abs(targetRadius - radius) > 0.1 || (targetRadius === 200 && radius < 199)) {
+        animId = requestAnimationFrame(animate);
+      } else {
+        // Complete the state
+        if (targetRadius > 100) {
+          img.style.webkitMaskImage = 'none'; // Fully color
+          img.style.maskImage = 'none';
+        } else {
+          img.style.webkitMaskImage = `radial-gradient(circle at ${mx}% ${my}%, #000 0%, transparent 0%)`; // Fully BW
+          img.style.maskImage = `radial-gradient(circle at ${mx}% ${my}%, #000 0%, transparent 0%)`;
+        }
+        animId = null;
+      }
+    };
+
+    card.addEventListener('mouseenter', (e) => {
+      const rect = sim.getBoundingClientRect();
+      mx = ((e.clientX - rect.left) / rect.width) * 100;
+      my = ((e.clientY - rect.top) / rect.height) * 100;
+      targetRadius = 200; 
+      if (!animId) animate();
+    });
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = sim.getBoundingClientRect();
+      mx = ((e.clientX - rect.left) / rect.width) * 100;
+      my = ((e.clientY - rect.top) / rect.height) * 100;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      targetRadius = 0;
+    });
   });
-});
+})();
 
 /* ── 6. CLIP-PATH HEADER REVEALS (IntersectionObserver) ─── */
 const clipObserver = new IntersectionObserver(entries => {
@@ -2772,9 +3340,28 @@ document.querySelectorAll('.grail-score > span').forEach(el => {
   }
 });
 
+/* ── SCORE BAR FILL ANIMATION ─────────────────────────────── */
+const scoreBarObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const fill = entry.target;
+    const finalWidth = fill.getAttribute('data-width');
+    if (finalWidth) {
+      setTimeout(() => { fill.style.width = finalWidth; }, 120);
+    }
+    scoreBarObserver.unobserve(fill);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.score-bar-fill').forEach(fill => {
+  const w = fill.style.width || '0%';
+  fill.setAttribute('data-width', w);
+  fill.style.width = '0';
+  scoreBarObserver.observe(fill);
+});
+
 /* ── 9. EXISTING: progress bar, filter btns, cart ─────────── */
 const progressBar = document.getElementById('progressBar');
-const coordDisplay = document.getElementById('coordDisplay');
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', function() {
@@ -2805,6 +3392,442 @@ searchToggle.addEventListener('click', () => {
 searchInput.addEventListener('keydown', e => {
   if (e.key === 'Escape') { searchInput.classList.remove('open'); searchInput.value = ''; }
 });
+
+/* ── CART TOGGLE & CLICK-OUTSIDE ─────────────────────────── */
+(function() {
+  const cartToggle   = document.getElementById('cartToggle');
+  const cartDropdown = document.getElementById('cartDropdown');
+  if (!cartToggle || !cartDropdown) return;
+
+  cartToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    cartDropdown.classList.toggle('open');
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!cartDropdown.contains(e.target) && !cartToggle.contains(e.target)) {
+      cartDropdown.classList.remove('open');
+    }
+  });
+
+  // Also close on ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') cartDropdown.classList.remove('open');
+  });
+})();
+
+/* ── PDP THUMBNAIL CLICK & AUTO-SLIDE ─────────────────────── */
+(function() {
+  const thumbs   = document.querySelectorAll('.pdp-thumb');
+  const mainImg  = document.getElementById('pdpMainImage');
+  if (!thumbs.length || !mainImg) return;
+
+  let currentIndex = 0;
+  let autoSlideInterval = null;
+
+  function setActive(index) {
+    const thumb = thumbs[index];
+    mainImg.src = thumb.dataset.full || thumb.src;
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    currentIndex = index;
+  }
+
+  thumbs.forEach((thumb, index) => {
+    thumb.addEventListener('click', () => {
+      setActive(index);
+      if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+      }
+    });
+  });
+
+  autoSlideInterval = setInterval(() => {
+    let nextIndex = (currentIndex + 1) % thumbs.length;
+    setActive(nextIndex);
+  }, 4000);
+})();
+
+/* ── LIQUID HERO EFFECT (WebGL) ──────────────────────────── */
+(function() {
+
+const VERT = `
+  attribute vec2 a_position;
+  varying vec2 v_uv;
+  void main() {
+    v_uv = a_position * 0.5 + 0.5;
+    gl_Position = vec4(a_position, 0.0, 1.0);
+  }
+`;
+
+const FRAG = `
+  precision highp float;
+  varying vec2 v_uv;
+  uniform sampler2D u_image;
+  uniform vec2      u_mouse;
+  uniform float     u_time;
+  uniform float     u_strength;
+  uniform float     u_speed;
+  uniform float     u_maskRadius;
+
+  #define MAX_WAKE 8
+  uniform int   u_wakeCount;
+  uniform vec3  u_wake[MAX_WAKE];
+
+  void main() {
+    vec2 uv = v_uv;
+
+    // Wake trail ripples
+    for (int i = 0; i < MAX_WAKE; i++) {
+      if (i >= u_wakeCount) break;
+      vec2  w    = u_wake[i].xy;
+      float age  = u_time - u_wake[i].z;
+      float dist = distance(uv, w);
+      float amp  = exp(-dist * 16.0) * exp(-age * 1.2);
+      float ripple = sin(32.0 * dist - age * 8.0 * u_speed) * 0.04;
+      vec2 dir = normalize(uv - w);
+      uv += dir * ripple * u_strength * amp * 2.0;
+    }
+
+    // Live mouse ripple
+    if (u_mouse.x >= 0.0 && u_mouse.x <= 1.0 &&
+        u_mouse.y >= 0.0 && u_mouse.y <= 1.0) {
+      float dist   = distance(uv, u_mouse);
+      float ripple = sin(32.0 * dist - u_time * 8.0 * u_speed) * 0.04;
+      float effect = exp(-dist * 12.0);
+      vec2 dir = normalize(uv - u_mouse);
+      uv += dir * ripple * u_strength * effect * 2.0;
+    }
+
+    uv = clamp(uv, 0.0, 1.0);
+    vec4 color = texture2D(u_image, uv);
+
+    // Grayscale
+    float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+
+    // Color reveal mask — spreads out from cursor
+    float mask = 0.0;
+    if (u_mouse.x >= 0.0 && u_mouse.x <= 1.0 &&
+        u_mouse.y >= 0.0 && u_mouse.y <= 1.0 && u_maskRadius > 0.0) {
+      float d = distance(uv, u_mouse);
+      mask = max(mask, smoothstep(u_maskRadius, u_maskRadius * 0.8, d));
+    }
+    for (int i = 0; i < MAX_WAKE; i++) {
+      if (i >= u_wakeCount) break;
+      float d = distance(uv, u_wake[i].xy);
+      mask = max(mask, smoothstep(u_maskRadius, u_maskRadius * 0.8, d));
+    }
+
+    vec3 finalColor = mix(vec3(gray), color.rgb, mask);
+    gl_FragColor = vec4(finalColor, color.a);
+  }
+`;
+
+
+class HeroLiquid {
+  constructor(canvas) {
+    this.canvas    = canvas;
+    this.dpr       = window.devicePixelRatio || 1;
+    this.mouse     = { x: -10, y: -10, active: false };
+    this.wake      = [];
+    this.hovered   = false;
+    this.maskRadius = 0;
+    this.startTime = performance.now();
+    this.loaded    = false;
+    this.animId    = null;
+
+    this._initGL();
+    this._loadImage();
+    this._bindEvents();
+    this._watchResize();
+    this._animateMask();
+  }
+
+  _initGL() {
+    const gl = this.canvas.getContext('webgl');
+    if (!gl) return;
+    this.gl = gl;
+
+    const compile = (type, src) => {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    };
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+    this.prog = prog;
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a_position');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    this.u = {
+      time:       gl.getUniformLocation(prog, 'u_time'),
+      mouse:      gl.getUniformLocation(prog, 'u_mouse'),
+      strength:   gl.getUniformLocation(prog, 'u_strength'),
+      speed:      gl.getUniformLocation(prog, 'u_speed'),
+      maskRadius: gl.getUniformLocation(prog, 'u_maskRadius'),
+      wake:       gl.getUniformLocation(prog, 'u_wake'),
+      wakeCount:  gl.getUniformLocation(prog, 'u_wakeCount'),
+      image:      gl.getUniformLocation(prog, 'u_image'),
+    };
+
+    this.tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, this.tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.uniform1i(this.u.image, 0);
+  }
+
+  _loadImage() {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      this.img = img;
+      this._resize();
+      this._uploadTexture();
+      this.loaded = true;
+      this._render();
+    };
+    img.onerror = () => {
+      // Fallback: draw a dark placeholder so canvas isn't blank
+      const off = document.createElement('canvas');
+      off.width = 900; off.height = 1200;
+      const ctx = off.getContext('2d');
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0, 0, 900, 1200);
+      off.naturalWidth = 900; off.naturalHeight = 1200;
+      this.img = off;
+      this._resize();
+      this._uploadTexture();
+      this.loaded = true;
+      this._render();
+    };
+    img.src = 'images/hero-left.jpg';
+  }
+
+  _uploadTexture() {
+    const { gl, tex, img, canvas } = this;
+    if (!img) return;
+    const w = canvas.width, h = canvas.height;
+    if (w === 0 || h === 0) return;
+    const off = document.createElement('canvas');
+    off.width = w; off.height = h;
+    const ctx = off.getContext('2d');
+    const iw = img.naturalWidth || img.width;
+    const ih = img.naturalHeight || img.height;
+    const scale = Math.max(w / iw, h / ih);
+    const sw = iw * scale, sh = ih * scale;
+    const sx = (w - sw) / 2, sy = (h - sh) / 2;
+    ctx.drawImage(img, sx, sy, sw, sh);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, off);
+  }
+
+  _resize() {
+    const { canvas, dpr, gl } = this;
+    const w = Math.round(canvas.offsetWidth  * dpr);
+    const h = Math.round(canvas.offsetHeight * dpr);
+    if (w === 0 || h === 0) return;
+    canvas.width  = w;
+    canvas.height = h;
+    if (gl) gl.viewport(0, 0, w, h);
+    if (this.loaded) this._uploadTexture();
+  }
+
+  _render() {
+    if (!this.loaded || !this.gl) return;
+    const { gl, u, canvas, startTime, mouse, wake } = this;    const t = (performance.now() - startTime) / 1000;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(u.time, t);
+    gl.uniform1f(u.strength, 0.15 * 2.5);
+    gl.uniform1f(u.speed, 0.18);
+    gl.uniform1f(u.maskRadius, this.maskRadius);
+
+    const mx = mouse.active ? mouse.x : -10;
+    const my = mouse.active ? 1 - mouse.y : -10;
+    gl.uniform2f(u.mouse, mx, my);
+
+    const cutoff = performance.now() - 1200;
+    this.wake = wake.filter(w => w.t > cutoff).slice(-8);
+    const wakeData = new Float32Array(8 * 3);
+    this.wake.forEach((w, i) => {
+      wakeData[i*3+0] = w.x;
+      wakeData[i*3+1] = 1 - w.y;
+      wakeData[i*3+2] = (w.t - startTime) / 1000;
+    });
+    gl.uniform1i(u.wakeCount, this.wake.length);
+    gl.uniform3fv(u.wake, wakeData);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+    this.animId = requestAnimationFrame(() => this._render());
+  }
+
+  _animateMask() {
+    let lastHovered = false, from = 0, to = 0, start = null;
+    const dur = 650;
+    const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+    const step = (ts) => {
+      if (this.hovered !== lastHovered) {
+        lastHovered = this.hovered;
+        from  = this.maskRadius;
+        to    = this.hovered ? 1.5 : 0;
+        start = ts;
+      }
+      if (start !== null) {
+        const elapsed = Math.min((ts - start) / dur, 1);
+        this.maskRadius = from + (to - from) * ease(elapsed);
+      }
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  _bindEvents() {
+    const el = this.canvas.parentElement;
+    const onMove = (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      let cx = e.touches ? e.touches[0].clientX : e.clientX;
+      let cy = e.touches ? e.touches[0].clientY : e.clientY;
+      const x = Math.max(0, Math.min(1, (cx - rect.left)  / rect.width));
+      const y = Math.max(0, Math.min(1, (cy - rect.top)   / rect.height));
+      this.mouse  = { x, y, active: true };
+      this.hovered = true;
+      this.wake.push({ x, y, t: performance.now() });
+    };
+    const onLeave = () => { this.mouse = { ...this.mouse, active: false }; this.hovered = false; };
+    el.addEventListener('mousemove',  onMove);
+    el.addEventListener('mouseleave', onLeave);
+    el.addEventListener('touchmove',  onMove, { passive: true });
+    el.addEventListener('touchend',   onLeave);
+  }
+
+  _watchResize() {
+    const ro = new ResizeObserver(() => this._resize());
+    ro.observe(this.canvas.parentElement);
+  }
+}
+
+// Boot
+const heroCanvas = document.getElementById('heroLiquidCanvas');
+if (heroCanvas) new HeroLiquid(heroCanvas);
+})();
+
+// ============ HERO HEIGHT OFFSET ============
+(function() {
+  const root = document.documentElement;
+  const ticker = document.querySelector('.ticker');
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+
+  const updateHeroOffset = () => {
+    const tickerHeight = ticker ? ticker.getBoundingClientRect().height : 0;
+    const navHeight = nav.getBoundingClientRect().height;
+    root.style.setProperty('--hero-offset', `${Math.ceil(tickerHeight + navHeight)}px`);
+  };
+
+  updateHeroOffset();
+  window.addEventListener('resize', updateHeroOffset, { passive: true });
+  window.addEventListener('load', updateHeroOffset, { passive: true });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(updateHeroOffset);
+  }
+})();
+
+// ============ DROP ROW HOVER → STAGGERED UPWARD HERO STRIP ============
+(function() {
+  const dropItems = document.querySelectorAll('.drop-item[data-img1]');
+  const imgStrip = document.getElementById('heroDropImages');
+  if (!imgStrip || !dropItems.length) return;
+
+  const cells = Array.from(imgStrip.querySelectorAll('.hero-drop-img-cell')).map(cell => ({
+    stage: cell.querySelector('.hero-drop-img-stage'),
+    label: cell.querySelector('.hero-drop-img-label'),
+    ref: cell.querySelector('.hero-drop-img-ref')
+  }));
+
+  let activeKey = '';
+
+  function updateStripForRow(row) {
+    const states = [
+      { src: row.dataset.img1, label: row.dataset.label1, ref: row.dataset.ref1 },
+      { src: row.dataset.img2, label: row.dataset.label2, ref: row.dataset.ref2 },
+      { src: row.dataset.img3, label: row.dataset.label3, ref: row.dataset.ref3 },
+    ];
+
+    states.forEach((state, index) => {
+      const cell = cells[index];
+      const stage = cell.stage;
+      const currentImg = stage.querySelector('.active-img');
+
+      // Avoid re-animating if it's the same image sequence triggering
+      if (currentImg && currentImg.getAttribute('src') === state.src) return;
+
+      // Spawn new image dynamically
+      const newImg = document.createElement('img');
+      newImg.src = state.src;
+      newImg.className = 'hero-drop-img-layer';
+      newImg.style.transform = 'translate3d(0, 100%, 0)';
+      newImg.style.transition = `transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${index * 80}ms`;
+      newImg.style.zIndex = '2';
+
+      stage.appendChild(newImg);
+
+      // Stagger text sync
+      setTimeout(() => {
+        cell.label.textContent = state.label;
+        cell.ref.textContent = state.ref;
+      }, index * 80 + 300);
+
+      // Force layout reflow
+      void newImg.offsetWidth;
+
+      // Swap and destroy old image
+      if (currentImg) {
+        currentImg.style.transition = `transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${index * 80}ms`;
+        currentImg.style.transform = 'translate3d(0, -100%, 0)';
+        currentImg.classList.remove('active-img');
+        setTimeout(() => {
+            if(currentImg.parentNode) currentImg.remove()
+        }, index * 80 + 700);
+      }
+
+      newImg.style.transform = 'translate3d(0, 0, 0)';
+      newImg.classList.add('active-img');
+    });
+  }
+
+  dropItems.forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      const nextKey = [
+        row.dataset.img1, row.dataset.img2, row.dataset.img3,
+        row.dataset.label1, row.dataset.label2, row.dataset.label3,
+        row.dataset.ref1, row.dataset.ref2, row.dataset.ref3,
+      ].join('|');
+
+      if (nextKey === activeKey) return;
+      activeKey = nextKey;
+      updateStripForRow(row);
+    });
+  });
+})();
+
 </script>
+<div id="root"></div>
 </body>
 </html>
