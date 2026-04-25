@@ -10,8 +10,413 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      * {
+        cursor: none !important;
+      }
+
+      #grain {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 99999;
+        opacity: 0.08;
+        mix-blend-mode: overlay;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      #robot-shadow {
+        position: fixed;
+        width: 50px;
+        height: 16px;
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 50%;
+        filter: blur(7px);
+        pointer-events: none;
+        z-index: 9997;
+        transform: translate(-50%, -50%);
+      }
+
+      #robot-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 105px;
+        height: 105px;
+        pointer-events: none;
+        z-index: 10001;
+        margin-left: -52px;
+        margin-top: -52px;
+        will-change: transform;
+      }
+
+      .robot-body-wrapper {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .antenna-base {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        margin-left: -2px;
+        width: 3px;
+        height: 20px;
+        background: #f5bc02;
+        transform-origin: bottom center;
+        z-index: 1;
+      }
+
+      .antenna-tip {
+        position: absolute;
+        top: -5px;
+        left: -3px;
+        width: 9px;
+        height: 9px;
+        background: #f5bc02;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+      }
+
+      .ear {
+        position: absolute;
+        width: 13px;
+        height: 28px;
+        background: #f5bc02;
+        border-radius: 8px;
+        z-index: 1;
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .ear-l {
+        left: -4px;
+        top: 28px;
+        transform-origin: right center;
+      }
+
+      .ear-r {
+        right: -4px;
+        top: 28px;
+        transform-origin: left center;
+      }
+
+      .robot-head {
+        position: relative;
+        width: 82px;
+        height: 82px;
+        perspective: 700px;
+        z-index: 10;
+      }
+
+      .head-casing {
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        background: #f5bc02;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: inset 0 -5px 7px rgba(0, 0, 0, 0.12), inset 0 3px 5px rgba(255, 240, 100, 0.9), 0 12px 28px rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        box-sizing: border-box;
+        z-index: 5;
+      }
+
+      .screen-face {
+        width: 100%;
+        height: 100%;
+        background: #080808;
+        border-radius: 16px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        box-shadow: inset 0 0 12px rgba(0, 0, 0, 1);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        z-index: 6;
+      }
+
+      .glitch-active {
+        animation: glitch-shake 0.15s infinite;
+      }
+
+      @keyframes glitch-shake {
+        0% {
+          transform: translate(0);
+        }
+
+        20% {
+          transform: translate(-2px, 2px);
+        }
+
+        40% {
+          transform: translate(-2px, -2px);
+        }
+
+        60% {
+          transform: translate(2px, 2px);
+        }
+
+        80% {
+          transform: translate(2px, -2px);
+        }
+
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      .screen-fx-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        pointer-events: none;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 80%);
+        background-size: 100% 4px, 100% 100%;
+      }
+
+      #scan-line {
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #fca103;
+        box-shadow: 0 0 10px #fca103;
+        opacity: 0;
+        z-index: 6;
+      }
+
+      .is-scanning #scan-line {
+        animation: scan-move 1.5s linear infinite;
+        opacity: 0.5;
+      }
+
+      @keyframes scan-move {
+        0% {
+          top: -10%;
+        }
+
+        100% {
+          top: 110%;
+        }
+      }
+
+      #boot-text {
+        color: #fca103;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 7px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 40;
+        opacity: 0;
+      }
+
+      .expression-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 30;
+        margin-top: -8px;
+        transition: opacity 0.15s ease, transform 0.1s ease-out;
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+        width: 100%;
+        height: 33px;
+      }
+
+      .eyes-container {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .eye {
+        width: 11px;
+        height: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+        position: relative;
+      }
+
+      .is-clicked .eyes-container {
+        gap: 0;
+      }
+
+      .is-clicked .eye {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 3px solid #ffffff;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.4);
+        margin-top: 8px;
+      }
+
+      .is-clicked #eye-r {
+        width: 0;
+        height: 0;
+        border: none;
+        opacity: 0;
+      }
+
+      .face-happy .eye {
+        border-radius: 50% 50% 20% 20%;
+        height: 14px;
+      }
+
+      .face-neutral .eye {
+        border-radius: 8px;
+        height: 20px;
+      }
+
+      .face-focus .eye {
+        height: 26px;
+        width: 13px;
+        border-radius: 9px;
+      }
+
+      .face-sleep .eye {
+        height: 5px !important;
+        width: 18px;
+        border-radius: 3px;
+        opacity: 0.7;
+        margin-top: 5px;
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+      }
+
+      .blink .eye {
+        height: 2px !important;
+        border-radius: 1px;
+        margin-top: 9px;
+      }
+
+      .screen-text {
+        position: absolute;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: #ffffff;
+        font-weight: 700;
+        opacity: 0;
+        z-index: 35;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+        text-align: center;
+        width: 100%;
+      }
+
+      .screen-text.active {
+        opacity: 1;
+      }
+
+      .screen-icon {
+        position: absolute;
+        z-index: 35;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+      }
+
+      .screen-face.mode-pointer #screen-pointer {
+        opacity: 1;
+      }
+
+      .screen-face.mode-type #screen-type {
+        opacity: 1;
+      }
+
+      .type-bar {
+        display: block;
+        width: 2px;
+        height: 20px;
+        background: #ffffff;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        border-radius: 1px;
+        animation: type-blink 1s step-end infinite;
+      }
+
+      @keyframes type-blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 1024px), (pointer: coarse) {
+        * {
+          cursor: auto !important;
+        }
+
+        #robot-cursor,
+        #robot-shadow {
+          display: none;
+        }
+      }
+    </style>
   </head>
   <body class="m-0 p-0">
+    <canvas id="grain" aria-hidden="true"></canvas>
+    <div id="robot-shadow" aria-hidden="true"></div>
+    <div id="robot-cursor" aria-hidden="true">
+      <div class="robot-body-wrapper" id="body-wrapper">
+        <div class="robot-head" id="head">
+          <div class="antenna-base" id="antenna">
+            <div class="antenna-tip"></div>
+          </div>
+          <div class="ear ear-l" id="ear-l"></div>
+          <div class="ear ear-r" id="ear-r"></div>
+          <div class="head-casing" id="casing">
+            <div class="screen-face" id="face-screen">
+              <div id="boot-text"></div>
+              <div id="scan-line"></div>
+              <div class="screen-fx-overlay"></div>
+              <div class="screen-text" id="screen-msg">VIEW</div>
+              <div class="screen-icon" id="screen-pointer" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 13V4.5a1.5 1.5 0 0 1 3 0V12" />
+                  <path d="M11 11.5v-2a1.5 1.5 0 1 1 3 0V12" />
+                  <path d="M14 10.5a1.5 1.5 0 0 1 3 0V12" />
+                  <path d="M17 11.5a1.5 1.5 0 0 1 3 0V16a6 6 0 0 1-6 6h-2a6 6 0 0 1-5.197-3L5 16c-.388-.744-1.17-2.01-2.133-3.5a1.56 1.56 0 0 1 .545-2.164L4 10l1.98.66A2 2 0 0 0 8 8.68V13" />
+                </svg>
+              </div>
+              <div class="screen-icon" id="screen-type" aria-hidden="true">
+                <span class="type-bar"></span>
+              </div>
+              <div class="expression-container face-neutral hidden" id="exp-container">
+                <div class="eyes-container" id="eyes-box">
+                  <div class="eye" id="eye-l"></div>
+                  <div class="eye" id="eye-r"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="root"></div>
 
     <script type="text/babel">
@@ -24,10 +429,15 @@
       );
 
       const Logo = ({ className }) => (
-        <svg className={className} viewBox="0 0 803 273" fill="currentColor" aria-hidden="true">
-          <path d="M165.65 146.41C165.65 110.87 141.67 80.89 108.64 80.89C94.03 80.89 80.82 86.89 71.39 96.48V272.07H0V41.01H71.39V56.45C81.25 46.17 96.09 40.16 113.62 40.16C163.66 40.16 206.66 81.32 206.66 139.55V146.41H165.65Z" />
-          <path d="M464.3 146.41C464.3 110.87 440.32 80.89 407.29 80.89C392.68 80.89 379.47 86.89 370.04 96.48V272.07H298.65V41.01H370.04V56.45C379.9 46.17 394.74 40.16 412.27 40.16C462.31 40.16 505.31 81.32 505.31 139.55V146.41H464.3Z" />
-          <path d="M762.3 146.41C762.3 110.87 738.32 80.89 705.29 80.89C690.68 80.89 677.47 86.89 668.04 96.48V272.07H596.65V41.01H668.04V56.45C677.9 46.17 692.74 40.16 710.27 40.16C760.31 40.16 803.31 81.32 803.31 139.55V146.41H762.3Z" />
+        <svg className={className} viewBox="0 0 786 297" fill="none" aria-hidden="true">
+          <path
+            d="M251.579 118.245C251.579 118.245 224.185 108.252 188.964 108.252C138.648 108.252 120.199 130.458 120.199 181.531V297H0V8.3271H101.75C116.285 8.3271 119.081 12.2131 119.081 16.6542C119.081 34.9738 73.7964 67.7271 73.7964 140.45H87.214C87.214 88.8224 124.112 2.7757 205.176 2.7757C221.389 2.7757 242.634 3.886 251.579 5.5514V118.245Z"
+            fill="currentColor"
+          />
+          <path
+            d="M468.452 155.994C468.452 114.914 455.034 96.0393 430.435 96.0393C401.923 96.0393 385.71 116.579 385.71 167.652V297H265.512V8.3271H370.616C384.592 8.3271 385.71 12.2131 385.71 16.6542C385.71 34.9738 340.985 64.3963 340.985 129.348H354.403C354.403 84.9364 394.655 0 479.633 0C540.571 0 564.611 35.529 564.611 51.0729C564.611 69.3925 541.13 75.4991 541.13 129.348H554.548C554.548 79.3851 592.005 0 676.983 0C764.197 0 786 67.7271 786 142.671V297H665.801V155.994C665.801 114.914 649.588 96.0393 625.549 96.0393C604.304 96.0393 588.65 111.028 588.65 162.101V297H468.452V155.994Z"
+            fill="currentColor"
+          />
         </svg>
       );
 
@@ -62,9 +472,9 @@
             <style
               dangerouslySetInnerHTML={{
                 __html: `
-                @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@500;700;900&display=swap');
-                .font-brutal { font-family: 'Archivo Black', sans-serif; }
-                .font-body { font-family: 'Inter', sans-serif; }
+                @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,400;1,400&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Space+Grotesk:wght@400;500;600;700&family=Audiowide&family=Roboto:wght@400;500;700&display=swap');
+                .font-brutal { font-family: 'Audiowide', sans-serif; }
+                .font-body { font-family: 'JetBrains Mono', monospace; }
               `,
               }}
             />
@@ -256,6 +666,272 @@
       }
 
       ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+    <script>
+      (function () {
+        const canvas = document.getElementById("grain");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        let width = 0;
+        let height = 0;
+        let frame = 0;
+        function resize() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener("resize", resize);
+        (function tick() {
+          requestAnimationFrame(tick);
+          if (++frame % 3) return;
+          if (!width || !height) return;
+          const img = ctx.createImageData(width, height);
+          const data = img.data;
+          for (let index = 0; index < data.length; index += 4) {
+            const value = (Math.random() * 255) | 0;
+            data[index] = data[index + 1] = data[index + 2] = value;
+            data[index + 3] = 255;
+          }
+          ctx.putImageData(img, 0, 0);
+        })();
+      })();
+
+      (function () {
+        const cursor = document.getElementById("robot-cursor");
+        const shadow = document.getElementById("robot-shadow");
+        const head = document.getElementById("head");
+        const bodyWrapper = document.getElementById("body-wrapper");
+        const faceScreen = document.getElementById("face-screen");
+        const antenna = document.getElementById("antenna");
+        const earL = document.getElementById("ear-l");
+        const earR = document.getElementById("ear-r");
+        const expContainer = document.getElementById("exp-container");
+        const bootText = document.getElementById("boot-text");
+        const screenMsg = document.getElementById("screen-msg");
+        if (!cursor || !shadow || !head || !bodyWrapper || !faceScreen || !antenna || !earL || !earR || !expContainer || !bootText || !screenMsg) return;
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let rigidX = mouseX;
+        let rigidY = mouseY;
+        let innerX = 0;
+        let innerY = 0;
+        let velX = 0;
+        let velY = 0;
+        let lastMoveTime = Date.now();
+        let isOverriding = false;
+        let isBooting = true;
+        let screenMode = "normal";
+        let currentTarget = null;
+
+        const faces = ["face-happy", "face-neutral", "face-sleep", "face-focus"];
+
+        function setExpression(faceClass, override = false) {
+          if (override) isOverriding = true;
+          faces.forEach((face) => expContainer.classList.remove(face));
+          expContainer.classList.add(faceClass);
+        }
+
+        function showEyes() {
+          expContainer.classList.remove("hidden");
+          faceScreen.classList.remove("mode-pointer", "mode-type");
+          screenMsg.classList.remove("active");
+          faceScreen.classList.remove("is-scanning");
+          currentTarget = null;
+        }
+
+        function enterTextMode(message, target) {
+          screenMode = "text";
+          currentTarget = target ? target.getBoundingClientRect() : null;
+          faceScreen.classList.add("is-scanning");
+          faceScreen.classList.remove("mode-pointer", "mode-type");
+          expContainer.classList.add("hidden");
+          screenMsg.innerText = message;
+          screenMsg.classList.add("active");
+        }
+
+        function exitTextMode() {
+          screenMode = "normal";
+          showEyes();
+          setExpression("face-neutral");
+        }
+
+        function enterPointerMode() {
+          if (screenMode === "text") return;
+          screenMode = "pointer";
+          expContainer.classList.add("hidden");
+          screenMsg.classList.remove("active");
+          faceScreen.classList.remove("mode-type");
+          faceScreen.classList.add("mode-pointer");
+        }
+
+        function exitPointerMode() {
+          if (screenMode !== "pointer") return;
+          screenMode = "normal";
+          showEyes();
+          setExpression("face-neutral");
+        }
+
+        function enterTypeMode() {
+          if (screenMode === "text") return;
+          screenMode = "type";
+          expContainer.classList.add("hidden");
+          screenMsg.classList.remove("active");
+          faceScreen.classList.remove("mode-pointer");
+          faceScreen.classList.add("mode-type");
+        }
+
+        function exitTypeMode() {
+          if (screenMode !== "type") return;
+          screenMode = "normal";
+          showEyes();
+          setExpression("face-neutral");
+        }
+
+        function addRobotHover(selector, message) {
+          document.querySelectorAll(selector).forEach((element) => {
+            element.addEventListener("mouseenter", () => {
+              if (isBooting) return;
+              enterTextMode(message, element);
+            });
+            element.addEventListener("mouseleave", () => {
+              if (isBooting) return;
+              exitTextMode();
+            });
+          });
+        }
+
+        addRobotHover("#root section", "VIEW");
+
+        const skipPointer = "#robot-cursor";
+
+        document.addEventListener("mouseover", (event) => {
+          if (isBooting) return;
+          const element = event.target.closest("button, a[href], [role='button']");
+          if (!element || element.closest(skipPointer)) return;
+          enterPointerMode();
+        });
+        document.addEventListener("mouseout", (event) => {
+          if (isBooting) return;
+          const element = event.target.closest("button, a[href], [role='button']");
+          if (!element || element.closest(skipPointer)) return;
+          exitPointerMode();
+        });
+
+        document.addEventListener("mouseover", (event) => {
+          if (isBooting) return;
+          if (event.target.closest("input, textarea")) enterTypeMode();
+        });
+        document.addEventListener("mouseout", (event) => {
+          if (isBooting) return;
+          if (event.target.closest("input, textarea")) exitTypeMode();
+        });
+
+        window.addEventListener("mousedown", () => {
+          if (isBooting) return;
+          faceScreen.classList.add("is-clicked");
+          bodyWrapper.style.transform = "scale(0.88) translateZ(-20px)";
+          earL.style.transform = "translateX(-4px) rotate(-15deg)";
+          earR.style.transform = "translateX(4px) rotate(15deg)";
+        });
+
+        window.addEventListener("mouseup", () => {
+          faceScreen.classList.remove("is-clicked");
+          bodyWrapper.style.transform = "";
+          earL.style.transform = "";
+          earR.style.transform = "";
+        });
+
+        document.addEventListener(
+          "mousemove",
+          (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+            lastMoveTime = Date.now();
+            if (screenMode === "normal" && !isOverriding && !isBooting) setExpression("face-neutral");
+          },
+          { passive: true }
+        );
+
+        function update() {
+          rigidX += (mouseX - rigidX) * 0.16;
+          rigidY += (mouseY - rigidY) * 0.16;
+          cursor.style.transform = `translate3d(${rigidX}px, ${rigidY}px, 0)`;
+
+          shadow.style.left = rigidX + "px";
+          shadow.style.top = rigidY + 50 + "px";
+          shadow.style.transform = `translate(-50%,-50%) scale(${1 - Math.abs(innerY) / 90})`;
+
+          if (mouseX < 15 || mouseX > window.innerWidth - 15 || mouseY < 15 || mouseY > window.innerHeight - 15) {
+            faceScreen.classList.add("glitch-active");
+          } else {
+            faceScreen.classList.remove("glitch-active");
+          }
+
+          const targetX = (mouseX - rigidX) * 0.25;
+          const targetY = (mouseY - rigidY) * 0.25;
+          velX += (targetX - innerX) * 0.15;
+          velY += (targetY - innerY) * 0.15;
+          velX *= 0.82;
+          velY *= 0.82;
+          innerX += velX;
+          innerY += velY;
+
+          const tiltX = velX * 1.6;
+          const tiltY = velY * 1.6;
+          head.style.transform = `translate3d(${innerX}px,${innerY}px,0) rotateX(${-tiltY}deg) rotateY(${tiltX}deg)`;
+          antenna.style.transform = `rotateZ(${-tiltX * 1.3}deg) rotateX(${-tiltY}deg)`;
+
+          let lookX = (mouseX - rigidX) * 0.18;
+          let lookY = (mouseY - rigidY) * 0.18;
+
+          if (currentTarget) {
+            lookX = (currentTarget.left + currentTarget.width / 2 - rigidX) * 0.28;
+            lookY = (currentTarget.top + currentTarget.height / 2 - rigidY) * 0.28;
+            setExpression("face-focus");
+          }
+
+          if (Date.now() - lastMoveTime > 3500 && screenMode === "normal" && !isBooting) {
+            const time = Date.now() * 0.001;
+            lookX = Math.sin(time) * 14;
+            lookY = Math.cos(time * 0.7) * 8;
+            if (Date.now() - lastMoveTime > 10000) setExpression("face-sleep");
+          }
+
+          expContainer.style.transform = `translate3d(${lookX}px,${lookY}px,0)`;
+          requestAnimationFrame(update);
+        }
+
+        function blink() {
+          if (!isOverriding && !isBooting && screenMode === "normal" && (expContainer.classList.contains("face-neutral") || expContainer.classList.contains("face-focus"))) {
+            expContainer.classList.add("blink");
+            setTimeout(() => expContainer.classList.remove("blink"), 120);
+          }
+          setTimeout(blink, Math.random() * 4500 + 1500);
+        }
+
+        function runBootSequence() {
+          bootText.style.opacity = 1;
+          const lines = ["BOOT_V2.7", "LAYER_SYNC: OK", "READY."];
+          let index = 0;
+          const interval = setInterval(() => {
+            bootText.innerHTML += lines[index] + "<br>";
+            index++;
+            if (index >= lines.length) {
+              clearInterval(interval);
+              setTimeout(() => {
+                bootText.style.opacity = 0;
+                expContainer.classList.remove("hidden");
+                isBooting = false;
+              }, 400);
+            }
+          }, 250);
+        }
+
+        runBootSequence();
+        update();
+        blink();
+      })();
     </script>
   </body>
 </html>
