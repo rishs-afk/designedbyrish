@@ -1,328 +1,261 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Discover Tomorrow — Brand Proposal</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discover Tomorrow - Brand Proposal</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta
-      name="description"
-      content="Brand proposal for Discover Tomorrow, styled to match designedbyrish.com."
-    />
-    <style>
-      :root {
-        color-scheme: light;
-        --bg: #f0ede8;
-        --ink: #111111;
-        --muted: rgba(17, 17, 17, 0.68);
-        --line: rgba(17, 17, 17, 0.16);
-        --accent: #d42b21;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .page {
-        width: min(1200px, calc(100% - 40px));
-        margin: 0 auto;
-        padding: 32px 0 72px;
-      }
-
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 24px;
-        padding-bottom: 26px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 700;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        font-size: 0.86rem;
-      }
-
-      .brand-mark {
-        width: 13px;
-        height: 13px;
-        border-radius: 999px;
-        background: var(--accent);
-        box-shadow: 0 0 0 7px rgba(212, 43, 33, 0.12);
-      }
-
-      .topnote {
-        font-size: 0.72rem;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--muted);
-        text-align: right;
-      }
-
-      .hero {
-        padding: 34px 0 28px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .eyebrow {
-        margin: 0 0 14px;
-        font-size: 0.72rem;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--accent);
-        font-weight: 700;
-      }
-
-      h1 {
-        margin: 0;
-        max-width: 12ch;
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: clamp(3.2rem, 7vw, 6.4rem);
-        line-height: 0.92;
-        letter-spacing: -0.06em;
-      }
-
-      .intro {
-        max-width: 64ch;
-        margin: 24px 0 0;
-        font-size: clamp(1rem, 1.4vw, 1.08rem);
-        line-height: 1.85;
-        color: var(--muted);
-      }
-
-      .section {
-        padding-top: 24px;
-      }
-
-      .accordion {
-        border-top: 1px solid var(--line);
-      }
-
-      details {
-        border-bottom: 1px solid var(--line);
-      }
-
-      summary {
-        list-style: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        padding: 22px 0;
-        font-size: clamp(1rem, 1.4vw, 1.15rem);
-        font-weight: 700;
-        letter-spacing: 0.01em;
-      }
-
-      summary::-webkit-details-marker {
-        display: none;
-      }
-
-      summary::after {
-        content: '+';
-        flex-shrink: 0;
-        font-size: 1.4rem;
-        line-height: 1;
-        color: var(--accent);
-      }
-
-      details[open] summary::after {
-        content: '−';
-      }
-
-      .panel {
-        padding: 0 0 24px;
-        max-width: 70ch;
-        color: var(--muted);
-        line-height: 1.82;
-      }
-
-      .panel-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px 28px;
-        margin-top: 8px;
-      }
-
-      .metric {
-        padding-top: 14px;
-        border-top: 1px solid var(--line);
-      }
-
-      .metric strong,
-      .panel strong {
-        color: var(--ink);
-      }
-
-      .metric-label {
-        display: block;
-        margin-bottom: 6px;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        color: var(--accent);
-        font-weight: 700;
-      }
-
-      .stack-list {
-        margin: 10px 0 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        gap: 10px;
-      }
-
-      .stack-list li {
-        padding-left: 18px;
-        position: relative;
-      }
-
-      .stack-list li::before {
-        content: '•';
-        position: absolute;
-        left: 0;
-        color: var(--accent);
-      }
-
-      @media (max-width: 760px) {
-        .page {
-          width: min(100% - 20px, 1200px);
-          padding-top: 18px;
-        }
-
-        .topbar {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .topnote {
-          text-align: left;
-        }
-
-        .panel-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
+    <meta name="description" content="Brand proposal for Discover Tomorrow." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
-  <body>
-    <main class="page">
-      <header class="topbar">
-        <a class="brand" href="/">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Discover Tomorrow</span>
-        </a>
-        <div class="topnote">Brand Proposal · Branding + Website</div>
-      </header>
+  <body class="m-0 p-0">
+    <div id="root"></div>
 
-      <section class="hero" aria-labelledby="proposal-title">
-        <p class="eyebrow">Branding + Website</p>
-        <h1 id="proposal-title">Discover Tomorrow.</h1>
-        <p class="intro">
-          Discover Tomorrow needs a brand system and a website presence that feels modern,
-          confident, and easy to expand. The direction should carry a clear identity, a
-          deliberate editorial tone, and a structure that can support the launch without
-          feeling overbuilt.
-        </p>
-      </section>
+    <script type="text/babel">
+      const { createElement: h } = React;
 
-      <section class="section" aria-label="Project proposal details">
-        <div class="accordion">
-          <details open>
-            <summary>Scope</summary>
-            <div class="panel">
-              The scope covers brand direction, visual identity, and a focused website
-              concept that can be used to present the project clearly from the first screen
-              onward.
-            </div>
-          </details>
+      const BrutalArrow = ({ className }) => (
+        <svg viewBox="0 0 100 24" fill="currentColor" className={className}>
+          <path d="M0,9 H75 V0 L100,12 L75,24 V15 H0 Z" />
+        </svg>
+      );
 
-          <details>
-            <summary>Timeline</summary>
-            <div class="panel">
-              <div class="panel-grid">
-                <div class="metric">
-                  <span class="metric-label">Phase 1</span>
-                  <strong>Discovery & direction</strong>
-                  <div>2–3 days for alignment, references, and creative framing.</div>
-                </div>
-                <div class="metric">
-                  <span class="metric-label">Phase 2</span>
-                  <strong>Design development</strong>
-                  <div>4–6 days for identity, structure, and visual refinement.</div>
-                </div>
-                <div class="metric">
-                  <span class="metric-label">Phase 3</span>
-                  <strong>Website build</strong>
-                  <div>3–5 days to translate the proposal into a live page.</div>
-                </div>
-                <div class="metric">
-                  <span class="metric-label">Phase 4</span>
-                  <strong>Final polish</strong>
-                  <div>1–2 days for QA, adjustments, and launch prep.</div>
+      const Logo = ({ className }) => (
+        <svg className={className} viewBox="0 0 803 273" fill="currentColor" aria-hidden="true">
+          <path d="M165.65 146.41C165.65 110.87 141.67 80.89 108.64 80.89C94.03 80.89 80.82 86.89 71.39 96.48V272.07H0V41.01H71.39V56.45C81.25 46.17 96.09 40.16 113.62 40.16C163.66 40.16 206.66 81.32 206.66 139.55V146.41H165.65Z" />
+          <path d="M464.3 146.41C464.3 110.87 440.32 80.89 407.29 80.89C392.68 80.89 379.47 86.89 370.04 96.48V272.07H298.65V41.01H370.04V56.45C379.9 46.17 394.74 40.16 412.27 40.16C462.31 40.16 505.31 81.32 505.31 139.55V146.41H464.3Z" />
+          <path d="M762.3 146.41C762.3 110.87 738.32 80.89 705.29 80.89C690.68 80.89 677.47 86.89 668.04 96.48V272.07H596.65V41.01H668.04V56.45C677.9 46.17 692.74 40.16 710.27 40.16C760.31 40.16 803.31 81.32 803.31 139.55V146.41H762.3Z" />
+        </svg>
+      );
+
+      const CardFooter = ({ page, sectionName, clientName = "Discover Tomorrow", theme = "dark" }) => (
+        <>
+          <div
+            className={`absolute bottom-4 left-4 md:bottom-8 md:left-12 text-[10px] md:text-xs font-bold leading-tight tracking-tight uppercase z-10 ${
+              theme === "dark" ? "text-[#171717]" : "text-[#F1F0EA]"
+            }`}
+          >
+            Page {page}
+            <br />
+            {sectionName}
+            <br />
+            designedbyrish x
+            <br />
+            {clientName}
+          </div>
+          <Logo
+            className={`w-12 h-auto absolute bottom-4 right-4 md:bottom-8 md:right-12 z-10 ${
+              theme === "dark" ? "text-[#171717]" : "text-[#F1F0EA]"
+            }`}
+          />
+        </>
+      );
+
+      function App() {
+        const clientName = "Discover Tomorrow";
+
+        return (
+          <div className="relative w-full bg-[#171717] font-body overflow-x-hidden selection:bg-[#DF2921] selection:text-[#F1F0EA]">
+            <style
+              dangerouslySetInnerHTML={{
+                __html: `
+                @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@500;700;900&display=swap');
+                .font-brutal { font-family: 'Archivo Black', sans-serif; }
+                .font-body { font-family: 'Inter', sans-serif; }
+              `,
+              }}
+            />
+
+            <section className="sticky top-0 h-screen w-full bg-[#DF2921] z-10 flex flex-col items-center justify-center p-8 overflow-hidden">
+              <div className="text-center w-full max-w-6xl">
+                <h2 className="text-xl md:text-3xl font-black uppercase tracking-tighter mb-4 text-[#171717]">A Brand Proposal For</h2>
+                <h1 className="text-[10vw] md:text-[8vw] leading-[0.85] font-brutal uppercase text-[#F1F0EA] mb-8 transform hover:scale-105 transition-transform duration-500">
+                  {clientName}
+                </h1>
+                <p className="text-lg md:text-2xl font-bold uppercase tracking-tight max-w-2xl mx-auto border-t-4 border-[#171717] text-[#171717] pt-6">
+                  Branding + Multi-Site Development & Post-Launch Support.
+                </p>
+              </div>
+              <div className="absolute bottom-12 flex flex-col items-center justify-center w-full text-[#171717]">
+                <span className="font-bold uppercase tracking-widest text-[10px] md:text-xs">Scroll to explore</span>
+                <span className="block mt-1 text-xl animate-bounce">↓</span>
+              </div>
+              <CardFooter page="01" sectionName="Introduction" theme="dark" clientName={clientName} />
+            </section>
+
+            <section className="sticky top-0 h-screen w-full bg-[#F1F0EA] z-20 flex flex-col justify-center p-8 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
+              <div className="w-full max-w-5xl mx-auto flex flex-col text-[10vw] md:text-[7vw] leading-[0.85] font-brutal uppercase tracking-tighter text-[#171717]">
+                {[
+                  { num: "03", title: "Introduction" },
+                  { num: "07", title: "Scope" },
+                  { num: "13", title: "Investment" },
+                  { num: "16", title: "Timeline" },
+                  { num: "18", title: "Next Steps" },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex gap-4 md:gap-12 hover:pl-8 transition-all duration-300 cursor-default group">
+                    <span className="w-[15%] md:w-[12%] text-right opacity-80 text-[#DF2921] group-hover:scale-110 transition-transform">
+                      {item.num}
+                    </span>
+                    <span className="flex-1">{item.title}</span>
+                  </div>
+                ))}
+              </div>
+              <CardFooter page="02" sectionName="Overview" theme="dark" clientName={clientName} />
+            </section>
+
+            <section className="sticky top-0 h-screen w-full bg-[#DF2921] z-30 flex flex-col items-center pt-24 md:pt-32 px-4 md:px-12 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.2)] overflow-hidden">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 -rotate-90 origin-center text-[8vw] md:text-7xl font-brutal text-[#171717] tracking-tighter pointer-events-none opacity-10">
+                PROJECT
+              </div>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 origin-center text-[8vw] md:text-7xl font-brutal text-[#171717] tracking-tighter pointer-events-none opacity-10">
+                PLAN
+              </div>
+
+              <div className="w-full max-w-6xl mx-auto flex flex-col gap-4 md:gap-4 z-10 relative">
+                {[
+                  { week: "01", days: "Day 01 - 07", label: "Branding", detail: "Discover Tomorrow Identity" },
+                  { week: "02", days: "Day 08 - 14", label: "Website 01", detail: "Discover Tomorrow Dev" },
+                  { week: "03", days: "Day 15 - 21", label: "Website 02", detail: "Loved As You Are Dev" },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className={`w-full bg-[#171717] rounded-full p-2 md:p-3 flex items-center shadow-2xl transition-all duration-500 hover:scale-[1.01] hover:bg-black group ${
+                      i === 1 ? "ml-[5%] md:ml-[10%]" : i === 2 ? "ml-[10%] md:ml-[20%]" : ""
+                    }`}
+                    style={{ width: "90%" }}
+                  >
+                    <div className="flex flex-col items-center justify-center min-w-[70px] md:min-w-[120px] border-r border-[#F1F0EA]/20 mr-4 md:mr-8">
+                      <span className="text-[#F1F0EA] text-3xl md:text-6xl font-brutal leading-none">{item.week}</span>
+                      <span className="text-[#DF2921] text-[10px] md:text-[12px] font-black uppercase mt-1 tracking-tighter">{item.days}</span>
+                    </div>
+                    <BrutalArrow className="w-12 md:w-24 text-[#DF2921] mr-4 md:mr-10 shrink-0 group-hover:translate-x-2 transition-transform" />
+                    <div className="flex flex-col">
+                      <span className="text-[#F1F0EA] text-sm md:text-2xl font-black uppercase leading-none tracking-tight">{item.label}</span>
+                      <span className="text-[#F1F0EA]/60 text-[10px] md:text-sm font-bold uppercase mt-1">{item.detail}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="absolute bottom-12 left-12 right-12 md:left-24 md:right-24 z-10">
+                <div className="w-full h-1 md:h-1.5 bg-[#171717] relative mb-4"></div>
+                <div className="flex justify-between text-[10px] md:text-xs font-black uppercase text-[#171717]">
+                  <div className="flex flex-col">
+                    <span className="mb-0.5">Week 1</span>
+                    <span className="opacity-50">Discovery & Brand</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="mb-0.5">Week 2</span>
+                    <span className="opacity-50">Design & Build</span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="mb-0.5">Week 3</span>
+                    <span className="opacity-50">Final Delivery</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </details>
 
-          <details>
-            <summary>Deliverables</summary>
-            <div class="panel">
-              <ul class="stack-list">
-                <li>Brand direction and visual identity system.</li>
-                <li>Homepage concept and supporting web sections.</li>
-                <li>Responsive implementation for the proposal page.</li>
-                <li>Basic launch-ready assets and handoff notes.</li>
-              </ul>
-            </div>
-          </details>
+              <CardFooter page="16" sectionName="Timeline" theme="dark" clientName={clientName} />
+            </section>
 
-          <details>
-            <summary>Cost</summary>
-            <div class="panel">
-              <strong>Project fee:</strong> to be finalized after scope confirmation.
-              <br />
-              <strong>Structure:</strong> milestone-based, with a booking deposit to begin
-              work and the balance due before final handoff.
-            </div>
-          </details>
+            <section className="sticky top-0 h-screen w-full bg-[#171717] z-40 flex flex-col justify-center p-6 md:p-16 border-t-8 border-[#F1F0EA] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+              <div className="w-full max-w-6xl mx-auto relative z-10">
+                <h2 className="text-[#DF2921] text-5xl md:text-[6vw] font-brutal uppercase tracking-tighter mb-8 leading-none">Investment</h2>
 
-          <details>
-            <summary>Tech stack</summary>
-            <div class="panel">
-              <ul class="stack-list">
-                <li>Next.js for the proposal build structure.</li>
-                <li>Plain HTML/CSS for the published preview.</li>
-                <li>Shared favicon from the main designedbyrish.com site.</li>
-                <li>GitHub repo deployment with the proposal isolated at its own path.</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-      </section>
-    </main>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                  <div className="bg-[#F1F0EA] p-6 rounded-3xl group hover:-translate-y-2 transition-transform">
+                    <h3 className="font-brutal text-[#171717] text-sm md:text-base uppercase mb-1">Branding</h3>
+                    <p className="text-3xl md:text-4xl font-black text-[#DF2921]">₹50,000</p>
+                    <p className="text-[10px] text-[#171717]/60 font-bold uppercase">Identity & Visuals</p>
+                  </div>
+                  <div className="bg-[#F1F0EA] p-6 rounded-3xl group hover:-translate-y-2 transition-transform">
+                    <h3 className="font-brutal text-[#171717] text-sm md:text-base uppercase mb-1">Website 01</h3>
+                    <p className="text-3xl md:text-4xl font-black text-[#DF2921]">₹1,00,000</p>
+                    <p className="text-[10px] text-[#171717]/60 font-bold uppercase">Discover Tomorrow</p>
+                  </div>
+                  <div className="bg-[#F1F0EA] p-6 rounded-3xl group hover:-translate-y-2 transition-transform">
+                    <h3 className="font-brutal text-[#171717] text-sm md:text-base uppercase mb-1">Website 02</h3>
+                    <p className="text-3xl md:text-4xl font-black text-[#DF2921]">₹50,000</p>
+                    <p className="text-[10px] text-[#171717]/60 font-bold uppercase">Loved As You Are</p>
+                  </div>
+                  <div className="bg-[#DF2921] p-6 rounded-3xl shadow-[0_0_20px_rgba(223,41,33,0.3)] group hover:-translate-y-2 transition-transform">
+                    <h3 className="font-brutal text-[#F1F0EA] text-sm md:text-base uppercase mb-1">Retainer</h3>
+                    <p className="text-3xl md:text-4xl font-black text-[#171717]">₹30,000</p>
+                    <p className="text-[10px] font-bold text-[#F1F0EA] uppercase">Monthly Social + Web</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-[#F1F0EA] p-6 md:p-10 rounded-[2.5rem] flex items-center justify-between shadow-xl">
+                    <div>
+                      <p className="text-[10px] font-bold text-[#171717]/60 uppercase tracking-widest mb-1">Milestone 01 / Upfront</p>
+                      <p className="text-4xl md:text-6xl font-brutal text-[#171717]">₹50,000</p>
+                    </div>
+                    <BrutalArrow className="w-12 md:w-20 text-[#DF2921]" />
+                  </div>
+                  <div className="bg-[#DF2921] p-6 md:p-10 rounded-[2.5rem] flex items-center justify-between text-[#F1F0EA] shadow-xl">
+                    <div>
+                      <p className="text-[10px] font-bold text-[#F1F0EA]/60 uppercase tracking-widest mb-1">Milestone 02 / Completion</p>
+                      <p className="text-4xl md:text-6xl font-brutal">₹1,50,000</p>
+                    </div>
+                    <BrutalArrow className="w-12 md:w-20 text-[#171717]" />
+                  </div>
+                </div>
+              </div>
+              <CardFooter page="13" sectionName="Investment" theme="light" clientName={clientName} />
+            </section>
+
+            <section className="sticky top-0 h-screen w-full bg-[#F1F0EA] z-50 flex flex-col justify-center p-8 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+              <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-[#DF2921] text-6xl md:text-[8vw] font-brutal uppercase tracking-tighter mb-12 leading-none">Next Steps</h2>
+                <div className="space-y-6 md:space-y-8">
+                  {[
+                    "Review the proposal and investment structure",
+                    "Schedule a quick alignment call to finalize scope",
+                    "50k Upfront deposit to secure the timeline",
+                    "Project kickoff and branding discovery phase",
+                  ].map((step, i) => (
+                    <div key={i} className="flex items-center gap-6 group cursor-default">
+                      <span className="text-4xl md:text-6xl font-brutal text-[#171717] opacity-20 group-hover:opacity-100 group-hover:text-[#DF2921] transition-all">
+                        {i + 1}
+                      </span>
+                      <p className="text-xl md:text-4xl font-bold uppercase text-[#171717] group-hover:translate-x-4 transition-transform duration-300">
+                        {step}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <CardFooter page="18" sectionName="Next Steps" theme="dark" clientName={clientName} />
+            </section>
+
+            <section className="sticky top-0 h-screen w-full bg-[#DF2921] z-[60] flex items-center justify-center p-6 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+              <div className="w-full text-center max-w-6xl">
+                <h1 className="text-[12vw] md:text-[11vw] leading-[0.8] font-brutal uppercase tracking-tighter text-[#171717] break-words">
+                  Let's Create
+                  <br />
+                  Something
+                  <br />
+                  <span className="text-[#F1F0EA] italic">Special</span>
+                  <br />
+                  Together
+                </h1>
+                <div className="mt-12 flex justify-center">
+                  <div className="px-10 py-5 bg-[#171717] text-[#F1F0EA] font-brutal uppercase text-xl md:text-3xl rounded-full transform hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-2xl">
+                    Get Started
+                  </div>
+                </div>
+              </div>
+              <CardFooter page="20" sectionName="Contact" theme="dark" clientName={clientName} />
+            </section>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
   </body>
 </html>
