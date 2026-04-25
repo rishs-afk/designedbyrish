@@ -3,7 +3,10 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Discover Tomorrow',
-  description: 'A standalone Next.js proposal deployed at /proposals/discover-tomorrow.'
+  description: 'A standalone Next.js proposal deployed at /proposals/discover-tomorrow.',
+  icons: {
+    icon: '/favicon.svg'
+  }
 };
 
 export default function RootLayout({
