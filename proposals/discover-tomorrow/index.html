@@ -3,340 +3,326 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Discover Tomorrow</title>
+    <title>Discover Tomorrow — Brand Proposal</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta
       name="description"
-      content="Standalone proposal preview for Discover Tomorrow."
+      content="Brand proposal for Discover Tomorrow, styled to match designedbyrish.com."
     />
     <style>
-      <!doctype html>
-      <html lang="en">
-        <head>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>Discover Tomorrow — Brand Proposal</title>
-          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-          <meta
-            name="description"
-            content="Brand proposal for Discover Tomorrow, styled to match designedbyrish.com."
-          />
-          <style>
-            :root {
-              color-scheme: light;
-              --bg: #f0ede8;
-              --ink: #111111;
-              --muted: rgba(17, 17, 17, 0.68);
-              --line: rgba(17, 17, 17, 0.16);
-              --line-strong: rgba(17, 17, 17, 0.28);
-              --accent: #d42b21;
-            }
+      :root {
+        color-scheme: light;
+        --bg: #f0ede8;
+        --ink: #111111;
+        --muted: rgba(17, 17, 17, 0.68);
+        --line: rgba(17, 17, 17, 0.16);
+        --accent: #d42b21;
+      }
 
-            * {
-              box-sizing: border-box;
-            }
+      * {
+        box-sizing: border-box;
+      }
 
-            html {
-              scroll-behavior: smooth;
-            }
+      html {
+        scroll-behavior: smooth;
+      }
 
-            body {
-              margin: 0;
-              min-height: 100vh;
-              background: var(--bg);
-              color: var(--ink);
-              font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-            }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+      }
 
-            a {
-              color: inherit;
-              text-decoration: none;
-            }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-            .page {
-              width: min(1200px, calc(100% - 40px));
-              margin: 0 auto;
-              padding: 32px 0 72px;
-            }
+      .page {
+        width: min(1200px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 32px 0 72px;
+      }
 
-            .topbar {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 24px;
-              padding-bottom: 26px;
-              border-bottom: 1px solid var(--line);
-            }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding-bottom: 26px;
+        border-bottom: 1px solid var(--line);
+      }
 
-            .brand {
-              display: inline-flex;
-              align-items: center;
-              gap: 12px;
-              font-weight: 700;
-              letter-spacing: 0.03em;
-              text-transform: uppercase;
-              font-size: 0.86rem;
-            }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        font-size: 0.86rem;
+      }
 
-            .brand-mark {
-              width: 13px;
-              height: 13px;
-              border-radius: 999px;
-              background: var(--accent);
-              box-shadow: 0 0 0 7px rgba(212, 43, 33, 0.12);
-            }
+      .brand-mark {
+        width: 13px;
+        height: 13px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 7px rgba(212, 43, 33, 0.12);
+      }
 
-            .topnote {
-              font-size: 0.72rem;
-              letter-spacing: 0.22em;
-              text-transform: uppercase;
-              color: var(--muted);
-              text-align: right;
-            }
+      .topnote {
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-align: right;
+      }
 
-            .hero {
-              padding: 34px 0 28px;
-              border-bottom: 1px solid var(--line);
-            }
+      .hero {
+        padding: 34px 0 28px;
+        border-bottom: 1px solid var(--line);
+      }
 
-            .eyebrow {
-              margin: 0 0 14px;
-              font-size: 0.72rem;
-              letter-spacing: 0.22em;
-              text-transform: uppercase;
-              color: var(--accent);
-              font-weight: 700;
-            }
+      .eyebrow {
+        margin: 0 0 14px;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 700;
+      }
 
-            h1 {
-              margin: 0;
-              max-width: 12ch;
-              font-family: Georgia, 'Times New Roman', serif;
-              font-size: clamp(3.2rem, 7vw, 6.4rem);
-              line-height: 0.92;
-              letter-spacing: -0.06em;
-            }
+      h1 {
+        margin: 0;
+        max-width: 12ch;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(3.2rem, 7vw, 6.4rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+      }
 
-            .intro {
-              max-width: 64ch;
-              margin: 24px 0 0;
-              font-size: clamp(1rem, 1.4vw, 1.08rem);
-              line-height: 1.85;
-              color: var(--muted);
-            }
+      .intro {
+        max-width: 64ch;
+        margin: 24px 0 0;
+        font-size: clamp(1rem, 1.4vw, 1.08rem);
+        line-height: 1.85;
+        color: var(--muted);
+      }
 
-            .section {
-              padding-top: 24px;
-            }
+      .section {
+        padding-top: 24px;
+      }
 
-            .accordion {
-              border-top: 1px solid var(--line);
-            }
+      .accordion {
+        border-top: 1px solid var(--line);
+      }
 
-            details {
-              border-bottom: 1px solid var(--line);
-            }
+      details {
+        border-bottom: 1px solid var(--line);
+      }
 
-            summary {
-              list-style: none;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 20px;
-              padding: 22px 0;
-              font-size: clamp(1rem, 1.4vw, 1.15rem);
-              font-weight: 700;
-              letter-spacing: 0.01em;
-            }
+      summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px 0;
+        font-size: clamp(1rem, 1.4vw, 1.15rem);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
 
-            summary::-webkit-details-marker {
-              display: none;
-            }
+      summary::-webkit-details-marker {
+        display: none;
+      }
 
-            summary::after {
-              content: '+';
-              flex-shrink: 0;
-              font-size: 1.4rem;
-              line-height: 1;
-              color: var(--accent);
-              transition: transform 160ms ease;
-            }
+      summary::after {
+        content: '+';
+        flex-shrink: 0;
+        font-size: 1.4rem;
+        line-height: 1;
+        color: var(--accent);
+      }
 
-            details[open] summary::after {
-              content: '−';
-            }
+      details[open] summary::after {
+        content: '−';
+      }
 
-            .panel {
-              padding: 0 0 24px;
-              max-width: 70ch;
-              color: var(--muted);
-              line-height: 1.82;
-            }
+      .panel {
+        padding: 0 0 24px;
+        max-width: 70ch;
+        color: var(--muted);
+        line-height: 1.82;
+      }
 
-            .panel-grid {
-              display: grid;
-              grid-template-columns: repeat(2, minmax(0, 1fr));
-              gap: 14px 28px;
-              margin-top: 8px;
-            }
+      .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px 28px;
+        margin-top: 8px;
+      }
 
-            .metric {
-              padding-top: 14px;
-              border-top: 1px solid var(--line);
-            }
+      .metric {
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
 
-            .metric strong,
-            .panel strong {
-              color: var(--ink);
-            }
+      .metric strong,
+      .panel strong {
+        color: var(--ink);
+      }
 
-            .metric-label {
-              display: block;
-              margin-bottom: 6px;
-              font-size: 0.72rem;
-              text-transform: uppercase;
-              letter-spacing: 0.16em;
-              color: var(--accent);
-              font-weight: 700;
-            }
+      .metric-label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--accent);
+        font-weight: 700;
+      }
 
-            .stack-list {
-              margin: 10px 0 0;
-              padding: 0;
-              list-style: none;
-              display: grid;
-              gap: 10px;
-            }
+      .stack-list {
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
 
-            .stack-list li {
-              padding-left: 18px;
-              position: relative;
-            }
+      .stack-list li {
+        padding-left: 18px;
+        position: relative;
+      }
 
-            .stack-list li::before {
-              content: '•';
-              position: absolute;
-              left: 0;
-              color: var(--accent);
-            }
+      .stack-list li::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
 
-            @media (max-width: 760px) {
-              .page {
-                width: min(100% - 20px, 1200px);
-                padding-top: 18px;
-              }
+      @media (max-width: 760px) {
+        .page {
+          width: min(100% - 20px, 1200px);
+          padding-top: 18px;
+        }
 
-              .topbar {
-                flex-direction: column;
-                align-items: flex-start;
-              }
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
 
-              .topnote {
-                text-align: left;
-              }
+        .topnote {
+          text-align: left;
+        }
 
-              .panel-grid {
-                grid-template-columns: 1fr;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          <main class="page">
-            <header class="topbar">
-              <a class="brand" href="/">
-                <span class="brand-mark" aria-hidden="true"></span>
-                <span>Discover Tomorrow</span>
-              </a>
-              <div class="topnote">Brand Proposal · Branding + Website</div>
-            </header>
+        .panel-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Discover Tomorrow</span>
+        </a>
+        <div class="topnote">Brand Proposal · Branding + Website</div>
+      </header>
 
-            <section class="hero" aria-labelledby="proposal-title">
-              <p class="eyebrow">Branding + Website</p>
-              <h1 id="proposal-title">Discover Tomorrow.</h1>
-              <p class="intro">
-                Discover Tomorrow needs a brand system and a website presence that feels
-                modern, confident, and easy to expand. The direction should carry a clear
-                identity, a deliberate editorial tone, and a structure that can support the
-                launch without feeling overbuilt.
-              </p>
-            </section>
+      <section class="hero" aria-labelledby="proposal-title">
+        <p class="eyebrow">Branding + Website</p>
+        <h1 id="proposal-title">Discover Tomorrow.</h1>
+        <p class="intro">
+          Discover Tomorrow needs a brand system and a website presence that feels modern,
+          confident, and easy to expand. The direction should carry a clear identity, a
+          deliberate editorial tone, and a structure that can support the launch without
+          feeling overbuilt.
+        </p>
+      </section>
 
-            <section class="section" aria-label="Project proposal details">
-              <div class="accordion">
-                <details open>
-                  <summary>Scope</summary>
-                  <div class="panel">
-                    The scope covers brand direction, visual identity, and a focused website
-                    concept that can be used to present the project clearly from the first
-                    screen onward.
-                  </div>
-                </details>
+      <section class="section" aria-label="Project proposal details">
+        <div class="accordion">
+          <details open>
+            <summary>Scope</summary>
+            <div class="panel">
+              The scope covers brand direction, visual identity, and a focused website
+              concept that can be used to present the project clearly from the first screen
+              onward.
+            </div>
+          </details>
 
-                <details>
-                  <summary>Timeline</summary>
-                  <div class="panel">
-                    <div class="panel-grid">
-                      <div class="metric">
-                        <span class="metric-label">Phase 1</span>
-                        <strong>Discovery & direction</strong>
-                        <div>2–3 days for alignment, references, and creative framing.</div>
-                      </div>
-                      <div class="metric">
-                        <span class="metric-label">Phase 2</span>
-                        <strong>Design development</strong>
-                        <div>4–6 days for identity, structure, and visual refinement.</div>
-                      </div>
-                      <div class="metric">
-                        <span class="metric-label">Phase 3</span>
-                        <strong>Website build</strong>
-                        <div>3–5 days to translate the proposal into a live page.</div>
-                      </div>
-                      <div class="metric">
-                        <span class="metric-label">Phase 4</span>
-                        <strong>Final polish</strong>
-                        <div>1–2 days for QA, adjustments, and launch prep.</div>
-                      </div>
-                    </div>
-                  </div>
-                </details>
-
-                <details>
-                  <summary>Deliverables</summary>
-                  <div class="panel">
-                    <ul class="stack-list">
-                      <li>Brand direction and visual identity system.</li>
-                      <li>Homepage concept and supporting web sections.</li>
-                      <li>Responsive implementation for the proposal page.</li>
-                      <li>Basic launch-ready assets and handoff notes.</li>
-                    </ul>
-                  </div>
-                </details>
-
-                <details>
-                  <summary>Cost</summary>
-                  <div class="panel">
-                    <strong>Project fee:</strong> to be finalized after scope confirmation.
-                    <br />
-                    <strong>Structure:</strong> milestone-based, with a booking deposit to begin
-                    work and the balance due before final handoff.
-                  </div>
-                </details>
-
-                <details>
-                  <summary>Tech stack</summary>
-                  <div class="panel">
-                    <ul class="stack-list">
-                      <li>Next.js for the proposal build structure.</li>
-                      <li>Plain HTML/CSS for the published preview.</li>
-                      <li>Shared favicon from the main designedbyrish.com site.</li>
-                      <li>GitHub repo deployment with the proposal isolated at its own path.</li>
-                    </ul>
-                  </div>
-                </details>
+          <details>
+            <summary>Timeline</summary>
+            <div class="panel">
+              <div class="panel-grid">
+                <div class="metric">
+                  <span class="metric-label">Phase 1</span>
+                  <strong>Discovery & direction</strong>
+                  <div>2–3 days for alignment, references, and creative framing.</div>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Phase 2</span>
+                  <strong>Design development</strong>
+                  <div>4–6 days for identity, structure, and visual refinement.</div>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Phase 3</span>
+                  <strong>Website build</strong>
+                  <div>3–5 days to translate the proposal into a live page.</div>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Phase 4</span>
+                  <strong>Final polish</strong>
+                  <div>1–2 days for QA, adjustments, and launch prep.</div>
+                </div>
               </div>
-            </section>
-          </main>
-        </body>
-      </html>
+            </div>
+          </details>
+
+          <details>
+            <summary>Deliverables</summary>
+            <div class="panel">
+              <ul class="stack-list">
+                <li>Brand direction and visual identity system.</li>
+                <li>Homepage concept and supporting web sections.</li>
+                <li>Responsive implementation for the proposal page.</li>
+                <li>Basic launch-ready assets and handoff notes.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>Cost</summary>
+            <div class="panel">
+              <strong>Project fee:</strong> to be finalized after scope confirmation.
+              <br />
+              <strong>Structure:</strong> milestone-based, with a booking deposit to begin
+              work and the balance due before final handoff.
+            </div>
+          </details>
+
+          <details>
+            <summary>Tech stack</summary>
+            <div class="panel">
+              <ul class="stack-list">
+                <li>Next.js for the proposal build structure.</li>
+                <li>Plain HTML/CSS for the published preview.</li>
+                <li>Shared favicon from the main designedbyrish.com site.</li>
+                <li>GitHub repo deployment with the proposal isolated at its own path.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
