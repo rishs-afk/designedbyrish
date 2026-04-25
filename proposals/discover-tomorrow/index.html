@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Discover Tomorrow</title>
+    <meta
+      name="description"
+      content="Standalone proposal preview for Discover Tomorrow."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5efe6;
+        --ink: #102033;
+        --accent: #0f766e;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        padding: 24px;
+        font-family: 'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(228, 111, 47, 0.2), transparent 28%),
+          radial-gradient(circle at 80% 20%, rgba(15, 118, 110, 0.16), transparent 24%),
+          linear-gradient(180deg, #fcfaf6 0%, var(--bg) 100%);
+      }
+
+      main {
+        width: min(720px, 100%);
+        padding: 40px;
+        border: 1px solid rgba(16, 32, 51, 0.12);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 24px 70px rgba(16, 32, 51, 0.12);
+        backdrop-filter: blur(18px);
+      }
+
+      p {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      h1 {
+        margin: 14px 0 12px;
+        font-size: clamp(2.8rem, 9vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.05em;
+        font-family: Georgia, 'Times New Roman', serif;
+      }
+
+      .subtext {
+        max-width: 36rem;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #516074;
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>Proposal preview</p>
+      <h1>Hello, world.</h1>
+      <p class="subtext">
+        This preview lives at /proposals/discover-tomorrow on designedbyrish.com and
+        stays separate from the main site.
+      </p>
+    </main>
+  </body>
+</html>
