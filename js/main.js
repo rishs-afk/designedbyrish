@@ -1635,7 +1635,7 @@ window.addEventListener('load', () => {
   }
 
   // ── PASSWORD GATE ──────────────────────────────────────────────
-  const PW = 'workwithme<3';
+  const PW = 'workwithme1';
   const pwGate    = document.getElementById('pw-gate');
   const pwInput   = document.getElementById('pw-gate-input');
   const pwSubmit  = document.getElementById('pw-gate-submit');

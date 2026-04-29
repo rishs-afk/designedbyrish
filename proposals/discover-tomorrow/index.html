@@ -466,6 +466,7 @@
 
       function App() {
         const clientName = "Discover Tomorrow";
+        const panelClass = "relative min-h-[100svh] w-full";
 
         return (
           <div className="relative w-full bg-[#171717] font-body overflow-x-hidden selection:bg-[#DF2921] selection:text-[#F1F0EA]">
@@ -475,48 +476,350 @@
                 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,400;1,400&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Space+Grotesk:wght@400;500;600;700&family=Audiowide&family=Roboto:wght@400;500;700&display=swap');
                 .font-brutal { font-family: 'Audiowide', sans-serif; }
                 .font-body { font-family: 'JetBrains Mono', monospace; }
+                html { scroll-behavior: smooth; }
+
+                .proposal-hero {
+                  background: #F0EDEA;
+                  color: #111111;
+                  border-top: 1px solid rgba(17,17,17,0.15);
+                  border-bottom: 1px solid rgba(17,17,17,0.15);
+                  position: relative;
+                  overflow: visible;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding-top: 0;
+                  padding-bottom: 2rem;
+                }
+
+                .proposal-hero-content {
+                  flex: 1;
+                  min-height: calc(100svh - 2rem);
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  width: 100%;
+                  text-align: center;
+                  max-width: min(1320px, calc(100% - 2rem));
+                  margin: 0 auto;
+                }
+
+                .proposal-hero-slot {
+                  flex: 0 0 auto;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  position: relative;
+                  overflow: visible;
+                  padding: 1.2rem 0;
+                }
+
+                .proposal-hero-slot--small {
+                  min-height: clamp(64px, 10vh, 96px);
+                }
+
+                .proposal-hero-slot--title {
+                  min-height: clamp(150px, 24vh, 240px);
+                }
+
+                .proposal-hero-slot--service {
+                  min-height: clamp(130px, 21vh, 210px);
+                }
+
+                .proposal-hero-slot--sub {
+                  min-height: clamp(110px, 17vh, 170px);
+                }
+
+                .proposal-hero-line-wrap {
+                  width: 100vw;
+                  position: absolute;
+                  bottom: 0;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  z-index: 3;
+                  pointer-events: none;
+                  overflow: visible;
+                }
+
+                .proposal-hline-svg {
+                  width: 100%;
+                  height: 20px;
+                  display: block;
+                  overflow: visible;
+                  transform: translateY(50%);
+                }
+
+                .proposal-hline-path {
+                  stroke: rgba(17,17,17,0.32);
+                  stroke-width: 1;
+                  fill: none;
+                }
+
+                .proposal-hero-eyebrow {
+                  font-family: 'JetBrains Mono', monospace;
+                  font-size: 0.8125rem;
+                  letter-spacing: 0.18em;
+                  color: #D42B21;
+                  line-height: 1.1;
+                  text-transform: uppercase;
+                }
+
+                .proposal-hero-row {
+                  font-family: 'Audiowide', sans-serif;
+                  font-weight: 700;
+                  font-size: clamp(2.1rem, min(8vw, 10vh), 6.2rem);
+                  line-height: 0.95;
+                  letter-spacing: -0.02em;
+                  text-transform: uppercase;
+                  text-align: center;
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0 1rem;
+                }
+
+                .proposal-hero-row em {
+                  color: #D42B21;
+                  font-style: italic;
+                }
+
+                .proposal-hero-sub {
+                  font-family: 'Space Grotesk', sans-serif;
+                  font-size: clamp(0.95rem, 1.1vw, 1.22rem);
+                  font-weight: 400;
+                  color: #4a4a4a;
+                  line-height: 1.75;
+                  letter-spacing: 0.01em;
+                  white-space: normal;
+                  text-align: center;
+                  max-width: 68ch;
+                  padding: 0 1rem;
+                  margin: 0 auto;
+                  text-wrap: pretty;
+                }
+
+                .proposal-toc {
+                  background: #F1F0EA;
+                  color: #111111;
+                }
+
+                .proposal-toc-list {
+                  width: 100%;
+                  border-top: 1px solid rgba(17,17,17,0.32);
+                  border-bottom: 1px solid rgba(17,17,17,0.32);
+                }
+
+                .proposal-toc-row {
+                  width: 100%;
+                  display: grid;
+                  grid-template-columns: minmax(0, 1fr) auto;
+                  align-items: center;
+                  gap: 1.25rem;
+                  min-height: clamp(84px, 11vh, 140px);
+                  padding: 0 clamp(1rem, 4vw, 4rem);
+                  text-decoration: none;
+                  color: inherit;
+                  transition: background-color 180ms ease;
+                }
+
+                .proposal-toc-row + .proposal-toc-row {
+                  border-top: 1px solid rgba(17,17,17,0.32);
+                }
+
+                .proposal-toc-row:hover,
+                .proposal-toc-row:focus-visible {
+                  background: rgba(17,17,17,0.045);
+                  outline: none;
+                }
+
+                .proposal-toc-left {
+                  min-width: 0;
+                  display: flex;
+                  align-items: baseline;
+                  gap: clamp(0.9rem, 2vw, 1.8rem);
+                }
+
+                .proposal-toc-num {
+                  flex-shrink: 0;
+                  font-family: 'Audiowide', sans-serif;
+                  font-size: clamp(2.2rem, 6.6vw, 4.4rem);
+                  line-height: 0.92;
+                  color: #DF2921;
+                  letter-spacing: -0.02em;
+                }
+
+                .proposal-toc-title {
+                  min-width: 0;
+                  font-family: 'Audiowide', sans-serif;
+                  font-size: clamp(1.85rem, 5.2vw, 5.1rem);
+                  line-height: 0.92;
+                  letter-spacing: -0.015em;
+                  text-transform: uppercase;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+
+                .proposal-toc-arrow {
+                  flex-shrink: 0;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: clamp(2.8rem, 5vw, 4.2rem);
+                  height: clamp(2.8rem, 5vw, 4.2rem);
+                  border-radius: 999px;
+                  border: 1px solid rgba(17,17,17,0.32);
+                  color: #111111;
+                  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+                }
+
+                .proposal-toc-arrow-icon {
+                  width: clamp(0.95rem, 1.45vw, 1.35rem);
+                  height: clamp(0.95rem, 1.45vw, 1.35rem);
+                  display: block;
+                }
+
+                .proposal-toc-row:hover .proposal-toc-arrow,
+                .proposal-toc-row:focus-visible .proposal-toc-arrow {
+                  transform: translateX(4px);
+                  background: #111111;
+                  color: #F1F0EA;
+                }
+
+                @media (max-width: 768px) {
+                  .proposal-hero-content {
+                    min-height: calc(100svh - 1.5rem);
+                    max-width: calc(100% - 1.2rem);
+                  }
+
+                  .proposal-hero-slot {
+                    padding: 0.8rem 0;
+                  }
+
+                  .proposal-hero-slot--small {
+                    min-height: 56px;
+                  }
+
+                  .proposal-hero-slot--title {
+                    min-height: clamp(130px, 23vh, 180px);
+                  }
+
+                  .proposal-hero-slot--service {
+                    min-height: clamp(108px, 19vh, 155px);
+                  }
+
+                  .proposal-hero-slot--sub {
+                    min-height: clamp(104px, 16vh, 142px);
+                  }
+
+                  .proposal-hero-row {
+                    font-size: clamp(1.65rem, 8.8vw, 2.75rem);
+                  }
+                  .proposal-hero-eyebrow {
+                    font-size: 0.625rem;
+                    letter-spacing: 0.12em;
+                    padding: 0 1rem;
+                  }
+
+                  .proposal-toc-row {
+                    min-height: clamp(72px, 10vh, 92px);
+                    padding: 0 0.85rem;
+                    gap: 0.7rem;
+                  }
+
+                  .proposal-toc-left {
+                    gap: 0.6rem;
+                  }
+
+                  .proposal-toc-num {
+                    font-size: clamp(1.85rem, 10vw, 2.8rem);
+                  }
+
+                  .proposal-toc-title {
+                    font-size: clamp(1.55rem, 8vw, 2.45rem);
+                  }
+
+                  .proposal-toc-arrow {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                  }
+                }
               `,
               }}
             />
 
-            <section className="sticky top-0 h-screen w-full bg-[#DF2921] z-10 flex flex-col items-center justify-center p-8 overflow-hidden">
-              <div className="text-center w-full max-w-6xl">
-                <h2 className="text-xl md:text-3xl font-black uppercase tracking-tighter mb-4 text-[#171717]">A Brand Proposal For</h2>
-                <h1 className="text-[10vw] md:text-[8vw] leading-[0.85] font-brutal uppercase text-[#F1F0EA] mb-8 transform hover:scale-105 transition-transform duration-500">
-                  {clientName}
-                </h1>
-                <p className="text-lg md:text-2xl font-bold uppercase tracking-tight max-w-2xl mx-auto border-t-4 border-[#171717] text-[#171717] pt-6">
-                  Branding + Multi-Site Development & Post-Launch Support.
-                </p>
+            <section id="introduction" className={`${panelClass} proposal-hero z-10`}>
+              <div className="proposal-hero-content">
+                <div className="proposal-hero-slot proposal-hero-slot--small">
+                  <div className="proposal-hero-line-wrap" aria-hidden="true">
+                    <svg className="proposal-hline-svg" viewBox="0 0 1000 38" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                      <path className="proposal-hline-path" d="M 0,19 Q 500,19 1000,19" />
+                    </svg>
+                  </div>
+                  <p className="proposal-hero-eyebrow">Discover Tomorrow · Branding + Website</p>
+                </div>
+
+                <div className="proposal-hero-slot proposal-hero-slot--title">
+                  <div className="proposal-hero-line-wrap" aria-hidden="true">
+                    <svg className="proposal-hline-svg" viewBox="0 0 1000 38" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                      <path className="proposal-hline-path" d="M 0,19 Q 500,19 1000,19" />
+                    </svg>
+                  </div>
+                  <div className="proposal-hero-row">Discover Tomorrow</div>
+                </div>
+
+                <div className="proposal-hero-slot proposal-hero-slot--service">
+                  <div className="proposal-hero-line-wrap" aria-hidden="true">
+                    <svg className="proposal-hline-svg" viewBox="0 0 1000 38" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                      <path className="proposal-hline-path" d="M 0,19 Q 500,19 1000,19" />
+                    </svg>
+                  </div>
+                  <div className="proposal-hero-row">
+                    <em>Branding + Website</em>
+                  </div>
+                </div>
+
+                <div className="proposal-hero-slot proposal-hero-slot--sub">
+                  <p className="proposal-hero-sub">
+                    This brand proposal outlines the identity direction, website structure,
+                    deliverables, timeline, and investment needed to launch Discover Tomorrow
+                    with a clear and scalable foundation.
+                  </p>
+                </div>
               </div>
-              <div className="absolute bottom-12 flex flex-col items-center justify-center w-full text-[#171717]">
-                <span className="font-bold uppercase tracking-widest text-[10px] md:text-xs">Scroll to explore</span>
-                <span className="block mt-1 text-xl animate-bounce">↓</span>
-              </div>
+
               <CardFooter page="01" sectionName="Introduction" theme="dark" clientName={clientName} />
             </section>
 
-            <section className="sticky top-0 h-screen w-full bg-[#F1F0EA] z-20 flex flex-col justify-center p-8 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
-              <div className="w-full max-w-5xl mx-auto flex flex-col text-[10vw] md:text-[7vw] leading-[0.85] font-brutal uppercase tracking-tighter text-[#171717]">
+            <section className={`${panelClass} proposal-toc z-20 flex flex-col justify-center border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.1)]`}>
+              <div className="proposal-toc-list">
                 {[
-                  { num: "03", title: "Introduction" },
-                  { num: "07", title: "Scope" },
-                  { num: "13", title: "Investment" },
-                  { num: "16", title: "Timeline" },
-                  { num: "18", title: "Next Steps" },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex gap-4 md:gap-12 hover:pl-8 transition-all duration-300 cursor-default group">
-                    <span className="w-[15%] md:w-[12%] text-right opacity-80 text-[#DF2921] group-hover:scale-110 transition-transform">
-                      {item.num}
+                  { num: "03", title: "Introduction", href: "#introduction" },
+                  { num: "07", title: "Scope", href: "#scope" },
+                  { num: "13", title: "Investment", href: "#investment" },
+                  { num: "16", title: "Timeline", href: "#timeline" },
+                  { num: "18", title: "Next Steps", href: "#next-steps" },
+                ].map((item) => (
+                  <a key={item.num} className="proposal-toc-row" href={item.href}>
+                    <span className="proposal-toc-left">
+                      <span className="proposal-toc-num">{item.num}</span>
+                      <span className="proposal-toc-title">{item.title}</span>
                     </span>
-                    <span className="flex-1">{item.title}</span>
-                  </div>
+                    <span className="proposal-toc-arrow" aria-hidden="true">
+                      <svg className="proposal-toc-arrow-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 7H17V17" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M7 17L17 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </a>
                 ))}
               </div>
               <CardFooter page="02" sectionName="Overview" theme="dark" clientName={clientName} />
             </section>
 
-            <section className="sticky top-0 h-screen w-full bg-[#DF2921] z-30 flex flex-col items-center pt-24 md:pt-32 px-4 md:px-12 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.2)] overflow-hidden">
+            <section id="scope" className={`${panelClass} bg-[#DF2921] z-30 flex flex-col items-center pt-24 md:pt-32 px-4 md:px-12 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.2)] overflow-hidden`}>
+              <span id="timeline" className="sr-only">Timeline</span>
               <div className="absolute left-4 top-1/2 -translate-y-1/2 -rotate-90 origin-center text-[8vw] md:text-7xl font-brutal text-[#171717] tracking-tighter pointer-events-none opacity-10">
                 PROJECT
               </div>
@@ -571,7 +874,7 @@
               <CardFooter page="16" sectionName="Timeline" theme="dark" clientName={clientName} />
             </section>
 
-            <section className="sticky top-0 h-screen w-full bg-[#171717] z-40 flex flex-col justify-center p-6 md:p-16 border-t-8 border-[#F1F0EA] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+            <section id="investment" className={`${panelClass} bg-[#171717] z-40 flex flex-col justify-center p-6 md:p-16 border-t-8 border-[#F1F0EA] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]`}>
               <div className="w-full max-w-6xl mx-auto relative z-10">
                 <h2 className="text-[#DF2921] text-5xl md:text-[6vw] font-brutal uppercase tracking-tighter mb-8 leading-none">Investment</h2>
 
@@ -618,7 +921,7 @@
               <CardFooter page="13" sectionName="Investment" theme="light" clientName={clientName} />
             </section>
 
-            <section className="sticky top-0 h-screen w-full bg-[#F1F0EA] z-50 flex flex-col justify-center p-8 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+            <section id="next-steps" className={`${panelClass} bg-[#F1F0EA] z-50 flex flex-col justify-center p-8 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]`}>
               <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-[#DF2921] text-6xl md:text-[8vw] font-brutal uppercase tracking-tighter mb-12 leading-none">Next Steps</h2>
                 <div className="space-y-6 md:space-y-8">
@@ -642,7 +945,7 @@
               <CardFooter page="18" sectionName="Next Steps" theme="dark" clientName={clientName} />
             </section>
 
-            <section className="sticky top-0 h-screen w-full bg-[#DF2921] z-[60] flex items-center justify-center p-6 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+            <section className={`${panelClass} bg-[#DF2921] z-[60] flex items-center justify-center p-6 md:p-16 border-t-8 border-[#171717] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]`}>
               <div className="w-full text-center max-w-6xl">
                 <h1 className="text-[12vw] md:text-[11vw] leading-[0.8] font-brutal uppercase tracking-tighter text-[#171717] break-words">
                   Let's Create
