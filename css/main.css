@@ -1262,7 +1262,7 @@ main { margin-left: var(--sidebar-w); }
 .hero-sub {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(0.875rem, 1.05vw, 1.125rem); font-weight: 400;
-  color: #555555; line-height: 1.7; letter-spacing: .01em;
+  color: #555555; line-height: 1.35; letter-spacing: .01em;
   opacity: 0;
   white-space: normal;
   text-align: center;
@@ -2836,7 +2836,7 @@ main { margin-left: var(--sidebar-w); }
   .hero-eyebrow-detail { display: none; }
   .hwi { padding-bottom: 0.04em; }
   .hero-sub {
-    font-size: 0.8125rem; line-height: 1.6;
+    font-size: 0.8125rem; line-height: 1.35;
     white-space: normal;
     padding: 0 clamp(1rem, 5vw, 2rem);
     margin-top: 0.5rem;
