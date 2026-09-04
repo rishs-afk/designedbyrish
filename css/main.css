@@ -989,7 +989,7 @@ main { margin-left: var(--sidebar-w); }
 .hero-hl-row {
   font-family: 'Audiowide', sans-serif;
   font-weight: 700;
-  font-size: clamp(3rem, min(9vw, 13vh), 9rem);
+  font-size: clamp(2.75rem, min(5.7vw, 9vh), 6.5rem);
   line-height: .95; letter-spacing: -.02em;
   color: var(--ink);
   text-transform: uppercase;
@@ -999,7 +999,7 @@ main { margin-left: var(--sidebar-w); }
 /* Third line — italic red */
 .hero-hl-row--editorial {
   
-  font-size: clamp(3rem, min(9vw, 13vh), 9rem);
+  font-size: clamp(2.75rem, min(5.5vw, 8.5vh), 6.25rem);
   color: var(--moss);
   letter-spacing: -.02em;
   text-transform: uppercase;
@@ -1060,7 +1060,7 @@ main { margin-left: var(--sidebar-w); }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(1.25rem, 2.5vw, 3rem);
+  gap: clamp(1rem, 1.8vw, 2rem);
   overflow: visible;
 }
 .hero-hl-row--with-stack .hwi {
@@ -2590,14 +2590,14 @@ main { margin-left: var(--sidebar-w); }
   }
   .hero-line-wrap { width: 100%; overflow: hidden; }
   .hero-hl-row {
-    font-size: clamp(2.25rem, 8.5vw, 5.5rem);
+    font-size: clamp(1.75rem, 6.2vw, 4rem);
     margin-right: 0;
     white-space: normal;
     word-break: keep-all;
     padding: 0 clamp(0.75rem, 3vw, 2rem);
     overflow: hidden;
   }
-  .hero-hl-row--editorial { font-size: clamp(2rem, 7.5vw, 5rem); }
+  .hero-hl-row--editorial { font-size: clamp(1.75rem, 6vw, 3.75rem); }
   .hero-slot--small { flex: 0.4; overflow: hidden; }
   .hero-slot--large { flex: 0.9; overflow: hidden; }
   .hero-sub {
@@ -2820,12 +2820,12 @@ main { margin-left: var(--sidebar-w); }
   .hero-line-wrap { width: 100%; overflow: hidden; }
   .hero-hl-row {
     margin-right: 0;
-    font-size: clamp(1.25rem, 8vw, 3rem);
+    font-size: clamp(1.125rem, 6.2vw, 2.25rem);
     white-space: nowrap;
     padding: 0 clamp(1rem, 5vw, 2rem);
     overflow: hidden;
   }
-  .hero-hl-row--editorial { font-size: clamp(1.25rem, 8vw, 3rem); }
+  .hero-hl-row--editorial { font-size: clamp(1.125rem, 6vw, 2.125rem); }
   .hero-slot--small { flex: 0 0 auto; overflow: hidden; padding: 1rem 0; }
   .hero-slot--large { flex: 0 0 auto; overflow: hidden; padding: 1.125rem 0; }
   .hscroll-img { width: clamp(110px, 28vw, 160px); height: clamp(150px, 38vw, 210px); }
@@ -5230,6 +5230,7 @@ body.iframe-open #robot-shadow { display: none !important; }
   position: relative;
   width: clamp(130px, 13vw, 190px);
   height: 0;
+  margin-right: clamp(4.5rem, 8vw, 8rem);
   flex-shrink: 0;
   overflow: visible;
   z-index: 20;
@@ -5375,7 +5376,7 @@ body.iframe-open #robot-shadow { display: none !important; }
 .hrc-tagline {
   position: absolute;
   top: 50%;
-  left: calc(100% + 22px);
+  left: calc(100% + 6px);
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
