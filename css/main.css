@@ -708,6 +708,8 @@ body {
   padding: 0.8125rem 0;
   border-bottom: 1px solid rgba(17,17,17,0.15);
   display: flex; align-items: center; gap: 1rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
   transition: color .15s, padding-left .2s;
   counter-increment: service-counter;
 }
@@ -2614,6 +2616,7 @@ main { margin-left: var(--sidebar-w); }
   #services {
     grid-template-columns: 1fr;
     grid-template-areas: "left" "list" "foot";
+    scroll-margin-top: 52px;
   }
   .svc-left {
     position: static; height: auto;
