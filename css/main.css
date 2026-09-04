@@ -1985,6 +1985,7 @@ main { margin-left: var(--sidebar-w); }
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
   flex-shrink: 0;
+  min-height: clamp(28rem, 42vh, 34rem);
   border-top: 1px solid rgba(17,17,17,0.15);
 }
 .mf-body-col {
@@ -2625,7 +2626,7 @@ main { margin-left: var(--sidebar-w); }
 
   /* ── MANIFESTO ── */
   .mf-word { font-size: clamp(3.25rem, 14vw, 7rem); }
-  .mf-body-row { grid-template-columns: 1fr; }
+  .mf-body-row { grid-template-columns: 1fr; min-height: 0; }
   .mf-body-col { border-right: none; border-bottom: 1px solid rgba(17,17,17,0.15); }
   .mf-body-col:last-child { border-bottom: none; }
   #statement { position: static; min-height: auto; }
@@ -2873,11 +2874,11 @@ main { margin-left: var(--sidebar-w); }
   .svc-left-title { font-size: clamp(1.75rem, 8vw, 3rem); }
 
   /* ── MANIFESTO ── */
-  #statement { padding: 0; position: static; height: auto; min-height: 100svh; overflow: hidden; }
+  #statement { padding: 0; position: static; height: auto; min-height: 100svh; overflow: visible; }
   .mf-row { padding: 0.75rem 1rem; overflow: hidden; }
   .mf-word { font-size: clamp(2rem, 11vw, 4rem); white-space: nowrap; overflow: hidden; max-width: 100%; }
   .mf-note { display: none; }
-  .mf-body-row { grid-template-columns: 1fr; }
+  .mf-body-row { grid-template-columns: 1fr; min-height: 0; }
   .mf-body-col { border-right: none; border-bottom: 1px solid rgba(17,17,17,0.15); padding: clamp(1.25rem,3vh,2rem) clamp(1rem,4vw,2rem); }
   .mf-body-col:last-child { border-bottom: none; }
   .mf-body-label { font-size: clamp(0.875rem, 4vw, 1.125rem); }
