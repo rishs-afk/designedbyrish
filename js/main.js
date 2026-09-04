@@ -412,7 +412,7 @@ if (window.innerWidth <= 1024) {
   const wrap  = document.getElementById('pre-proceed-wrap');
   const btn   = document.getElementById('pre-proceed');
   const logo  = document.getElementById('pre-masthead-logo');
-  const allCells = document.querySelectorAll('.pre-cell');
+  const allCells = document.querySelectorAll('#pc-1, #pc-2, #pc-3, #pc-4');
 
   // ── 1. Set initial states ─────────────────────────────────
   wrap.style.opacity = '0';

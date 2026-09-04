@@ -394,13 +394,17 @@ body {
   background: rgba(17,17,17,0.15); opacity: 0;
   transform: scaleX(0); transform-origin: left;
 }
-#phl-1 { top: 25%; } #phl-2 { top: 50%; } #phl-3 { top: 75%; }
+#phl-1 { top: 50%; }
+#phl-2,
+#phl-3 { display: none; }
 .pre-vline {
   position: absolute; top: 0; bottom: 0; width: 1px;
   background: rgba(17,17,17,0.15); opacity: 0;
   transform: scaleY(0); transform-origin: top;
 }
-#pvl-1 { left: 25%; } #pvl-2 { left: 50%; } #pvl-3 { left: 75%; }
+#pvl-1 { left: 33.3333%; }
+#pvl-2 { left: 66.6666%; }
+#pvl-3 { display: none; }
 
 .pre-cell {
   position: absolute;
@@ -472,25 +476,25 @@ body {
 }
 
 /* Cell positions */
-#pc-1  { top: 0;    left: 25%;  width: 25%; height: 25%; }
-#pc-2  { top: 0;    left: 50%;  width: 25%; height: 25%; }
-#pc-3  { top: 0;    left: 75%;  width: 25%; height: 25%; }
-#pc-4  { top: 25%;  left: 0;    width: 25%; height: 25%; }
-#pc-5  { top: 25%;  left: 25%;  width: 25%; height: 25%; }
-#pc-6  { top: 25%;  left: 50%;  width: 25%; height: 25%; }
-#pc-7  { top: 25%;  left: 75%;  width: 25%; height: 25%; }
-#pc-8  { top: 50%;  left: 0;    width: 25%; height: 25%; }
-#pc-9  { top: 50%;  left: 25%;  width: 25%; height: 25%; }
-#pc-10 { top: 50%;  left: 50%;  width: 25%; height: 25%; }
-#pc-11 { top: 50%;  left: 75%;  width: 25%; height: 25%; }
-#pc-12 { top: 75%;  left: 0;    width: 25%; height: 25%; }
-#pc-13 { top: 75%;  left: 25%;  width: 25%; height: 25%; }
-#pc-14 { top: 75%;  left: 50%;  width: 25%; height: 25%; }
+#pc-1  { top: 0;   left: 33.3333%; width: 33.3333%; height: 50%; }
+#pc-2  { top: 0;   left: 66.6666%; width: 33.3334%; height: 50%; }
+#pc-3  { top: 50%; left: 0;        width: 33.3333%; height: 50%; }
+#pc-4  { top: 50%; left: 33.3333%; width: 33.3333%; height: 50%; }
+#pc-5,
+#pc-6,
+#pc-7,
+#pc-8,
+#pc-9,
+#pc-10,
+#pc-11,
+#pc-12,
+#pc-13,
+#pc-14 { display: none; }
 
 /* Masthead */
 #pre-masthead {
   position: absolute; top: 0; left: 0;
-  width: 25%; height: 25%; padding: 1.25rem 1.5rem;
+  width: 33.3333%; height: 50%; padding: 1.25rem 1.5rem;
   display: flex; flex-direction: column; justify-content: space-between;
 }
 #pre-masthead-logo { width: 40%; height: auto; }
@@ -515,7 +519,7 @@ body {
 
 /* Proceed button */
 #pre-proceed-wrap {
-  position: absolute; top: 75%; left: 75%; width: 25%; height: 25%;
+  position: absolute; top: 50%; left: 66.6666%; width: 33.3334%; height: 50%;
   pointer-events: none; z-index: 10;
   visibility: visible;
 }
