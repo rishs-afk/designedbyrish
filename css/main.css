@@ -1913,7 +1913,8 @@ main { margin-left: var(--sidebar-w); }
   background: var(--bg);
   display: flex; flex-direction: column;
   isolation: isolate;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
 }
 
 /* Horizontal rule lines — the grid scaffolding */
